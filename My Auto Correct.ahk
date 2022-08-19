@@ -21,7 +21,6 @@
 ::vanita::Vanita
 ::rakesh::Rakesh
 ::oren::Oren
-::madhan::Madhan
 ::mason::Mason
 ::raja::Raja
 ::teja::Teja
@@ -33,14 +32,10 @@
 ::jesse::Jesse
 ::cms::CMS
 ::wfh::WFH
-::i'll::I'll
-::i'd::I'd
-::i've::I've
-::i'm::I'm
-
-::1/4::¼             ; One-quarter
-::1/2::½             ; One-half
-::3/4::¾             ; Three-quarters
+;::i'll::I'll
+;::i'd::I'd
+;::i've::I've
+;::i'm::I'm
 
 ; Things that I mistype that aren't in AutoCorrect.ahk
 ::havent::haven't

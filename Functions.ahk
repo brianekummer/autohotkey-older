@@ -2,6 +2,15 @@
 ; do not include re-usable utility type functions
 
 
+;--------------------------------------------------------------------------------------------------
+; Price watch web sites
+;
+; Note that sometimes I have to escape special characters like %
+; Edge is being a pain and sometimes launching here, so I'm explicitly saying to use Chrome
+;--------------------------------------------------------------------------------------------------
+PriceWatchWebsites()
+{
+}
 
 
 ;--------------------------------------------------------------------------------------------------
@@ -16,7 +25,8 @@
 ;--------------------------------------------------------------------------------------------------
 JIRA()
 {
-  If GetKeyState("Ctrl")      ; Ctrl is pressed
+  Global JiraUrl
+  If GetKeyState("Ctrl")
   {
     regexStoryNumberWithoutProject = \b\d{1,5}\b
     regexStoryNumberWithProject = i)\b(%JiraMyProjectKeys%)([-_ ]|( - ))?\d{1,5}\b
@@ -37,7 +47,7 @@ JIRA()
         storyNumber = %JiraDefaultProjectKey%-%storyNumber%
       }
     }  
-
+    
     If StrLen(storyNumber) = 0
     { 
       ; Search for a ConEmu terminal with a JIRA story number
@@ -55,7 +65,8 @@ JIRA()
     If StrLen(storyNumber) = 0
     {
       ; Could not find any JIRA story number, go to a default JIRA board
-      Run, %JiraUrl%%pathDefaultBoard%
+      url = %JiraUrl%%pathDefaultBoard%
+      RunOrActivateAppOrUrl("Agile Board - Jira", url, 3, true, false)
     }
     Else
     {
@@ -66,31 +77,29 @@ JIRA()
         storyNumber := RegExReplace(storyNumber, "(\d+)", "-$1")
       }
       
-      Run, %JiraUrl%%pathBrowse%%storyNumber%
+      url = %JiraUrl%%pathBrowse%%storyNumber%
+      title = [%storyNumber%]
+      RunOrActivateAppOrUrl(title, url, 3, true, false)
     }
   }
   Else                             ; Ctrl is not pressed
   {
-    ; Don't really need to use RunAppOrUrl() here
   	pathDefaultBoard = /secure/RapidBoard.jspa?rapidView=%JiraDefaultRapidKey%&projectKey=%JiraDefaultProjectKey%&sprint=%JiraDefaultSprint%
-	  Run, %JiraUrl%%pathDefaultBoard%
+    url = %JiraUrl%%pathDefaultBoard%
+    RunOrActivateAppOrUrl("Agile Board - Jira", url, 3, true, false)
   }
 }
 
 
+;--------------------------------------------------------------------------------------------------
+; Run or activate Spotify
+;   Since this is a Microsoft Store app, I needed to add a shortcut to me Start menu so that I can
+;   run the shortcut.
+;--------------------------------------------------------------------------------------------------
 RunOrActivateSpotify()
 {
-  RunOrActivateAppOrUrl("Spotify Premium", "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
+  RunOrActivateAppOrUrl("Spotify Premium", WindowsUserProfile . "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
 }
-
-
-
-
-SwitchAudioOutput(audioDevice) 
-{
-  Run, nircmd setdefaultsounddevice %audioDevice%,, Hide
-}
-
 
 
 ;--------------------------------------------------------------------------------------------------
@@ -117,8 +126,9 @@ ActivateOrStartMicrosoftOutlook(shortcut := "")
 }	
 
 
-
-
+;--------------------------------------------------------------------------------------------------
+; Execute a home automation command
+;--------------------------------------------------------------------------------------------------
 HomeAutomationCommand(command) 
 {
   ; I'd love to get this working asynchronously, so I could pound the key a couple
@@ -139,8 +149,9 @@ HomeAutomationCommand(command)
 }
 
 
-
-
+;--------------------------------------------------------------------------------------------------
+; Generate a lowercase GUID
+;--------------------------------------------------------------------------------------------------
 GenerateLowercaseGUID() 
 {
   newGUID := CreateGUID()
@@ -148,9 +159,24 @@ GenerateLowercaseGUID()
   SendInput %newGUID%
 }
 
+
+;--------------------------------------------------------------------------------------------------
+; Generate an uppercase GUID
+;--------------------------------------------------------------------------------------------------
 GenerateUppercaseGUID()
 {
   newGUID := CreateGUID()
 	StringUpper, newGUID, newGUID
   SendInput %newGUID%
 }
+
+
+;--------------------------------------------------------------------------------------------------
+; Switch audio output
+;   I originally created this to switch my Jabra headphones between "headphones" and "headset", but
+;   this is unnecessary with my Jabra Link.
+;--------------------------------------------------------------------------------------------------
+;SwitchAudioOutput(audioDevice) 
+;{
+;  Run, nircmd setdefaultsounddevice %audioDevice%,, Hide
+;}

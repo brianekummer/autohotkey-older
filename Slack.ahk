@@ -50,14 +50,15 @@ SlackStatusUpdate_Initialize()
   SlackStatusUpdate_MySlackTokens := StrSplit(slackTokens, "|")
 
   slackStatusMeeting := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_MEETING", "In a meeting|:spiral_calendar_pad:", 0)
-  slackStatusWorkingInOffice := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_WORKING_OFFICE", "|", 0)
+  slackStatusWorkingInOffice := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_WORKING_OFFICE", "In the office|:cityscape:", 0)
   slackStatusWorkingRemotely := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_WORKING_REMOTELY", "Working remotely|:house_with_garden:", 0)
   slackStatusVacation := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_VACATION", "Vacationing|:palm_tree:", 0)
   slackStatusLunch := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_LUNCH", "At lunch|:hamburger:", 0)
+  slackStatusDinner := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_DINNER", "At dinner|:poultry_leg:", 0)
   slackStatusBeRightBack := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_BRB", "Be Right Back|:brb:", 0)
   slackStatusPlaying := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_PLAYING", "Playing|:8bit:", 0)
   slackStatusNone := {"text": "", "emoji": "", "expiration": 0}
-  global SlackStatusUpdate_SlackStatuses := {"meeting": slackStatusMeeting, "workingInOffice": slackStatusWorkingInOffice, "workingRemotely": slackStatusWorkingRemotely, "vacation": slackStatusVacation, "lunch": slackStatusLunch, "brb": slackStatusBeRightBack, "none": slackStatusNone, "playing": slackStatusPlaying}
+  global SlackStatusUpdate_SlackStatuses := {"meeting": slackStatusMeeting, "workingInOffice": slackStatusWorkingInOffice, "workingRemotely": slackStatusWorkingRemotely, "vacation": slackStatusVacation, "lunch": slackStatusLunch, "dinner": slackStatusDinner, "brb": slackStatusBeRightBack, "none": slackStatusNone, "playing": slackStatusPlaying}
 }
 
 

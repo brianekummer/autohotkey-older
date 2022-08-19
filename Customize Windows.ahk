@@ -43,29 +43,31 @@ CapsLock:: Return
 ; title is "How to Use Slack".  Also, Microsoft Edge browser is more complex than a single process, so detecting it is
 ; more complex.
 ;---------------------------------------------------------------------------------------------------------------------
-xbutton1::
-  WinMinimize, A
-	Return
+#IfWinNotActive ahk_exe parsecd.exe
+  xbutton1::
+    WinMinimize, A
+	  Return
 
-xbutton2::
-  WinGet, processName, ProcessName, A
-  SplitPath, processName,,,, processNameNoExtension
+  xbutton2::
+    WinGet, processName, ProcessName, A
+    SplitPath, processName,,,, processNameNoExtension
 
-  If RegExMatch(processNameNoExtension, "i)skype|outlook|wmplayer|slack|typora") 
+    If RegExMatch(processNameNoExtension, "i)skype|outlook|wmplayer|slack|typora") 
     or WinActive("iHeartRadio ahk_exe i)ApplicationFrameHost.exe")
-  {
-	WinMinimize, A     ; Do not want to close these apps
-  }
-  Else If RegExMatch(processNameNoExtension, "i)chrome|iexplore|firefox|notepad++|ssms|devenv|eclipse|winmergeu|robo3t|code|idea64") 
+    {
+	    WinMinimize, A     ; Do not want to close these apps
+    }
+    Else If RegExMatch(processNameNoExtension, "i)chrome|iexplore|firefox|notepad++|ssms|devenv|eclipse|winmergeu|robo3t|code|idea64") 
     or WinActive("ahk_exe msedge.exe")
-  {
-    SendInput ^{f4}    ; Close a WINDOW/TAB/DOCUMENT
-  }
-  Else
-  {
-    SendInput !{f4}    ; Close the APP
-  }
-  Return
+    {
+      SendInput ^{f4}    ; Close a WINDOW/TAB/DOCUMENT
+    }
+    Else
+    {
+      SendInput !{f4}    ; Close the APP
+    }
+    Return
+#IfWinNotActive
 
 
 ;---------------------------------------------------------------------------------------------------------------------
@@ -76,15 +78,22 @@ xbutton2::
 ;   ⇪ XButton1           Previous track
 ;   ⇪ XButton2           Next track
 ;---------------------------------------------------------------------------------------------------------------------
-CapsLock & wheelup::  	 SendInput {Blind}{Volume_Up 1}
-CapsLock & wheeldown::   SendInput {Blind}{Volume_Down 1}
-CapsLock & LButton::     SendInput {Blind}{Media_Play_Pause}
-CapsLock & RButton::     RunOrActivateSpotify()
-CapsLock & XButton1::    SendInput {Blind}{Media_Prev}
-CapsLock & XButton2::    SendInput {Blind}{Media_Next}
+#If IsWorkLaptop
+  CapsLock & wheelup::   SendInput {Blind}{Volume_Up 1}
+  CapsLock & wheeldown:: SendInput {Blind}{Volume_Down 1}
+  CapsLock & LButton::   SendInput {Blind}{Media_Play_Pause}
+  CapsLock & RButton::   RunOrActivateSpotify()
+  CapsLock & XButton1::  SendInput {Blind}{Media_Prev}
+  CapsLock & XButton2::  SendInput {Blind}{Media_Next}
+#If
 
 
-; I wanted a toggle, but I couldn't find a way to determine the current setting. Could just toggle a varaible and it might be
-; out of sync the first time.
-^#pause::                SwitchAudioOutput("Headphones")    ; ^numlock = ^pause
-^#numpadsub::            SwitchAudioOutput("Headset")
+;--------------------------------------------------------------------------------------------------
+; Switch audio output
+;   - I originally created this to switch my Jabra headphones between "headphones" and "headset",
+;     but this appears to be unnecessary with my Jabra Link.
+;   - I wanted a toggle, but I couldn't find a way to determine the current setting. Could just
+;     toggle a varaible and it might be out of sync the first time.
+;--------------------------------------------------------------------------------------------------
+;^#pause::                SwitchAudioOutput("Headphones")    ; ^numlock = ^pause
+;^#numpadsub::            SwitchAudioOutput("Headset")

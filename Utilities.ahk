@@ -1,7 +1,8 @@
 ;--------------------------------------------------------------------------------------------------
 ; Utilities
+;
+; Some of this code may assume "SetTitleMatchMode RegEx" was set
 ;--------------------------------------------------------------------------------------------------
-SetTitleMatchMode RegEx       ; Make windowing commands use regex
 
 
 
@@ -15,27 +16,35 @@ RunAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False)
 
   If maximize
   {
-    WinMaximize, A
+    WinMaximize
   }
 }
 
 
 
-RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False)
+RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False, asAdminUser := true)
 {
   If Not WinExist(appTitle)
   {
-    Run, %whatToRun%
+    If asAdminUser
+    {
+      Run, %whatToRun%
+    }
+    Else
+    {
+  	  ShellRun(whatToRun)
+    }
+
 	  WinWaitActive, %appTitle%,, %timeToWait%
   }
   Else 
   {
-    WinActivate, %appTitle%
+    WinActivate
   }
 
   If maximize
   {
-    WinMaximize, A
+    WinMaximize
   }
 }
 
@@ -142,3 +151,158 @@ CreateGUID()
 	newGUID := StrReplace(NewGUID, "}")
   Return newGUID
 }
+
+
+
+
+
+
+
+ConnectToPersonalComputer()
+{
+  ; Two issues addressed here:
+  ;   1. Running D:\Portable Apps\Parsec\parsecd.exe didn't work, so I'm running the shortcut
+  ;   2. I could not get RunOrActivateAppOrUrl() to work with the parameter I'm passing to parsecd, so I just replicated the
+  ;      relevant parts of that function here
+
+  ;Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=26LSLjCqFjpJh97tr7jOy4SF2ql
+  ;WinWaitActive, ahk_exe parsecd.exe,, 5
+  ;If ErrorLevel
+  ;{
+  ;  MsgBox, WinWait timed out.
+  ;  Return
+  ;}
+
+  ; TODO- This appears to work if Parsec is not running, but fails if it is already open
+  If Not WinExist("ahk_exe parsecd.exe")
+  {
+    ;msgbox Parsec is NOT running
+    ;Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=2CONfBq8o5QTpLLAXgsolEDVqBJ
+    Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=%ParsecPeerId%
+    
+    WinWaitActive, ahk_exe parsecd.exe,, 5
+    If ErrorLevel
+    {
+      MsgBox, WinWait timed out.
+      Return
+    }
+  }
+  Else
+  {
+    ;Msgbox Parsec IS running
+  
+    ; Is Parsec connected?
+    ; Looks like I need to use FindText to look for the Connect button: https://www.autohotkey.com/boards/viewtopic.php?p=167586#p167586
+    
+    WinActivate
+  }
+  
+  WinMaximize  ; Use the window found by WinExist|WinWaitActive
+}
+
+
+;--------------------------------------------------------------------------------------------------
+; Send keystrokes to Parsec, optionally activating the window first
+;--------------------------------------------------------------------------------------------------
+SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := true)
+{
+  If activateFirst
+  {
+    ; Two issues addressed here:
+    ;   1. Running D:\Portable Apps\Parsec\parsecd.exe didn't work, so I'm running the shortcut
+    ;   2. I could not get RunOrActivateAppOrUrl() to work with the parameter I'm passing to parsecd, so I just replicated the
+    ;      relevant parts of that function here
+
+
+    ;Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=26LSLjCqFjpJh97tr7jOy4SF2ql
+    ;WinWaitActive, ahk_exe parsecd.exe,, 5
+    ;If ErrorLevel
+    ;{
+    ;  MsgBox, WinWait timed out.
+    ;  Return
+    ;}
+
+
+    ; TODO- This appears to work if Parsec is not running, but fails if it is already open
+    If Not WinExist("ahk_exe parsecd.exe")
+    {
+      msgbox Parsec is NOT running
+      Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=26LSLjCqFjpJh97tr7jOy4SF2ql
+      WinWaitActive, ahk_exe parsecd.exe,, 5
+      If ErrorLevel
+      {
+        MsgBox, WinWait timed out.
+        Return
+      }
+    }
+    Else
+    {
+      ;Msgbox Parsec IS running
+    
+      ; Is Parsec connected?
+      ; Looks like I need to use FindText to look for the Connect button: https://www.autohotkey.com/boards/viewtopic.php?p=167586#p167586
+    
+      WinActivate
+    }
+    WinMaximize   ; Use the window found by WinExist|WinWaitActive
+  }
+  
+  ; Wait for "brianekummer#8283717" or "Connect to your computers or a friend's computer in low latency desktop mode" to disappear
+  ; Also beware having to log into computer w/pin code
+  ;   - I changed NUC to be same pic all the time- find "I forgot my pin"
+  ;Sleep 500    ; If Parsec is connected, this is enough time. If not connected, it is not
+  ;WaitForParsecToConnect() 
+
+  ;ControlSend,, %keystrokes%, ahk_exe parsecd.exe
+  
+  ; OLD STUFF I DON'T NEED
+  ;OLD- ControlSend,, %keystrokes%, Parsec
+  ;SendInput {Blind}%keystrokes%
+}
+
+
+
+;---------------------------------------------------------------------------------------------------------------------
+; Run a DOS command
+;---------------------------------------------------------------------------------------------------------------------
+RunWaitHidden(cmd)
+{
+	Sleep, 250                ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
+  clipSaved := ClipboardAll	; Save the entire clipboard
+  Clipboard = 
+
+	Runwait %cmd% | clip,,hide
+  output := Clipboard
+	
+	Sleep, 250                ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
+  Clipboard := clipSaved	  ; Restore the original clipboard. Note the use of Clipboard (not ClipboardAll).
+  clipSaved =			          ; Free the memory in case the clipboard was very large
+
+	Return output
+}
+
+
+AmNearWifiNetwork(wifiNetworks)
+; wifiNetworks is regex like "(mycompany|mycobyod)"
+{
+  ;msgbox Looking for networks %wifiNetworks%
+  nearWifiNetwork := False
+
+	cmd = %comspec% /c netsh wlan show networks
+	allNetworks := RunWaitHidden(cmd)
+	
+  wifiNetworksPattern = i)%wifiNetworks%
+	pos=1
+  While pos := RegExMatch(allNetworks, "i)\Rssid.+?:\s(.*)\R", oneNetwork, pos+StrLen(oneNetwork)) 
+	{
+	  ; oneNetwork is the line like "SSID x : network_ssid", so parse out the network's SSID
+	  networkSSID := RegExReplace(oneNetwork, "\R.*?:\s(\V+)\R", "$1")
+    ;msgbox Checking if %networkSSID% is work or not
+
+	  If RegExMatch(networkSSID, wifiNetworksPattern)
+	    nearWifiNetwork := True
+  }	
+
+  ;msgbox "Result is %nearWifiNetwork%"
+	Return %nearWifiNetwork%
+}	
