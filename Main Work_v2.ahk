@@ -1,4 +1,4 @@
-﻿;--------------------------------------------------------------------------------------------------
+﻿/*
 ; My AutoHotKey Automations - Work
 ;
 ;
@@ -272,39 +272,35 @@
 ; -------
 ;   - CapsLock as a Windows modifier: https://www.howtogeek.com/446418/how-to-use-caps-lock-as-a-modifier-key-on-windows/
 ;                                     https://www.autohotkey.com/boards/viewtopic.php?t=70854
-;--------------------------------------------------------------------------------------------------
+*/
 
 
 
-;---------------------------------------------------------------------------------------------------------------------
-; AutoHotKey configuration options
-;---------------------------------------------------------------------------------------------------------------------
-; #Warn                         ; Enable warnings to assist with detecting common errors
-#SingleInstance FORCE           ; Skip invocation dialog box and silently replace previously executing instance of this script
-Persistent                       ; I ASSUME THIS IS NECESSARY W/V2???
-SendMode("Input")               ; Recommended for new scripts due to its superior speed and reliability
-SetWorkingDir(A_ScriptDir)      ; Ensures a consistent starting directory
-
-SetTitleMatchMode("RegEx")      ; Make windowing commands use regex
+/*
+  AutoHotKey configuration options
+*/
+#SingleInstance FORCE            ; Skip invocation dialog box and silently replace previously executing instance of this script
+Persistent
+SendMode("Input")                ; Recommended for new scripts due to its superior speed and reliability
+SetWorkingDir(A_ScriptDir)       ; Ensures a consistent starting directory
+SetCapsLockState("AlwaysOff")    ; Disable the CapsLock LED on my keyboard
+SetNumLockState("On")            ; Turn on Scroll Lock, so my macros with keypad work
+SetTitleMatchMode("RegEx")       ; Make windowing commands use regex
 RunAsAdmin()
 
-SetCapsLockState("AlwaysOff")   ; Disable the CapsLock LED on my keyboard
-SetNumLockState("On")           ; Turn on Scroll Lock, so my macros with keypad work
 
-
-
-;---------------------------------------------------------------------------------------------------------------------
-; Global variables
-;---------------------------------------------------------------------------------------------------------------------
-Global WindowsLocalAppDataFolder
-Global WindowsProgramFilesX86Folder
-Global WindowsProgramFilesFolder
-Global WindowsUserName
-Global WindowsUserDomain
-Global WindowsUserProfile
-Global MyDocumentsFolder
-Global UserEmailAddress
-Global IsWorkLaptop
+/*
+  Global variables
+*/
+global WindowsLocalAppDataFolder
+global WindowsProgramFilesX86Folder
+global WindowsProgramFilesFolder
+global WindowsUserName
+global WindowsUserDomain
+global WindowsUserProfile
+global MyDocumentsFolder
+global UserEmailAddress
+global IsWorkLaptop
 WindowsLocalAppDataFolder := EnvGet("LOCALAPPDATA")
 WindowsProgramFilesX86Folder := EnvGet("PROGRAMFILES(X86)")
 WindowsProgramFilesFolder := EnvGet("PROGRAMFILES")
@@ -316,17 +312,17 @@ UserEmailAddress := EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN")
 IsWorkLaptop := true
 
 ; These come from my Windows environment variables. See "Configure.bat" for details
-Global MyPersonalFolder
-Global MyPersonalDocumentsFolder
-Global JiraUrl
-Global JiraMyProjectKeys
-Global JiraDefaultProjectKey
-Global JiraDefaultRapidKey
-Global JiraDefaultSprint
-Global SourceCodeUrl
-Global SourceSchemaUrl
-Global SlackStatusUpdate_OfficeNetworks
-Global ParsecPeerId
+global MyPersonalFolder
+global MyPersonalDocumentsFolder
+global JiraUrl
+global JiraMyProjectKeys
+global JiraDefaultProjectKey
+global JiraDefaultRapidKey
+global JiraDefaultSprint
+global SourceCodeUrl
+global SourceSchemaUrl
+global SlackStatusUpdate_OfficeNetworks
+global ParsecPeerId
 MyPersonalFolder := EnvGet("PERSONAL_FILES")
 MyPersonalDocumentsFolder := MyPersonalFolder . "\Documents\"
 JiraUrl := EnvGet("AHK_JIRA_URL")
@@ -340,72 +336,60 @@ SlackStatusUpdate_OfficeNetworks := EnvGet("SLACK_OFFICE_NETWORKS")
 ParsecPeerId := EnvGet("PARSEC_PEER_ID")
 
 
-
-
-;---------------------------------------------------------------------------------------------------------------------
-; This code executes when the script starts
-;---------------------------------------------------------------------------------------------------------------------
-
+/*
+  This code executes when the script starts
+*/
 ; Configure Slack status updates based on the network. *REQUIRES* several Windows environment variables - see 
 ; "Slack.ahk" for details
 SlackStatusUpdate_Initialize()
 SlackStatusUpdate_SetSlackStatusBasedOnNetwork()
-Return
+return
 
 
-
-;--------------------------------------------------------------------------------------------------
-; Toggle mute in VOIP apps (Slack/Microsoft Teams/Zoom/Google Meet)
-;   Mute                 Activate the current VOIP call/meeting and toggles mute
-;--------------------------------------------------------------------------------------------------
+/*
+  Toggle mute in VOIP apps (Slack/Microsoft Teams/Zoom/Google Meet)
+    Mute                 Activate the current VOIP call/meeting and toggles mute
+*/
 Volume_Mute::            ToggleMuteVOIPApps()
 
 
-;--------------------------------------------------------------------------------------------------
-; When looking at my personal laptop
-;   â‡ª [                  On my personal laptop, toggle left sidebar
-;--------------------------------------------------------------------------------------------------
+/*
+  When looking at my personal laptop
+    â‡ª [                  On my personal laptop, toggle left sidebar
+*/
 #HotIf WinActive("ahk_exe parsecd.exe", )
   CapsLock & [::         SendKeystrokesToPersonalLaptop("{CapsLock down}[{CapsLock up}")
 #HotIf
 
 
-;---------------------------------------------------------------------------------------------------------------------
-; Slack
-;   â‡ª k                  Open Slack
-;   â‡ª ^ k                Open Slack and go to the "jump to" window
-;   â‡ª [                  Toggle left sidebar
-;   ^ mousewheel         Decrease/increase font size
-;   ^ k                  Insert hyperlink (overrides Slack opening "jump to" window)
-;   Statuses
-;     â‡ª # b              Status - Be Right Back. Sets Slack statuses to brb.
-;     â‡ª # c              Status - Cleared. Clears Slack status.
-;     â‡ª # e              Status - Eating. Sets Slack statuses to lunch/dinner.
-;                        Also locks my laptop and turns off my office lights if I'm at home.
-;     â‡ª # m              Status - In a meeting. Sets Slack statuses to mtg.
-;     â‡ª # p              Status - Playing. Sets home Slack status to 8bit.
-;     â‡ª # w              Status - Working. Clears Slack statuses.
-;---------------------------------------------------------------------------------------------------------------------
+/*
+  Slack
+    â‡ª k                  Open Slack
+    â‡ª ^ k                Open Slack and go to the "jump to" window
+    â‡ª [                  Toggle left sidebar
+    ^ mousewheel         Decrease/increase font size
+    ^ k                  Insert hyperlink (overrides Slack opening "jump to" window)
+
+    Statuses
+      â‡ª # b              Status - Be Right Back. Sets Slack statuses to brb.
+      â‡ª # c              Status - Cleared. Clears Slack status.
+      â‡ª # e              Status - Eating. Sets Slack statuses to lunch/dinner.
+                          Also locks my laptop and turns off my office lights if I'm at home.
+      â‡ª # m              Status - In a meeting. Sets Slack statuses to mtg.
+      â‡ª # p              Status - Playing. Sets home Slack status to 8bit.
+      â‡ª # w              Status - Working. Clears Slack statuses.
+*/
 CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))    
 
 #HotIf WinActive("ahk_exe i)\\slack\.exe$", )
-  ^wheelup::  SendInput("^{=}")
-  ^wheeldown::  SendInput("^{-}")
-  CapsLock & [::  SendInput("^+{d}")
-  ^k::  SendInput("^+{u}")
+  ^wheelup::             SendInput("^{=}")
+  ^wheeldown::           SendInput("^{-}")
+  CapsLock & [::         SendInput("^+{d}")
+  ^k::                   SendInput("^+{u}")
 #HotIf
 
 ; Since upgrading to AHK v2, Windows key was opening the Start menu. So I switched to using
 ; the Alt key.
-; Also couldn't get this working w/AHK v2: https://github.com/HelgeffegleH/longhotkey
-; #HotIf GetKeyState("LWin")
-;   CapsLock & b::         SlackStatusUpdate_SetSlackStatusAndPresence("brb", "away")
-;   CapsLock & e::         SlackStatus_Eating()
-;   CapsLock & m::         SlackStatusUpdate_SetSlackStatusAndPresence("meeting", "auto")
-;   CapsLock & p::         SlackStatusUpdate_SetHomeSlackStatus("playing")
-;   CapsLock & w::         SlackStatus_Working()
-; #HotIf
-
 #HotIf GetKeyState("Alt")
   CapsLock & b::         SlackStatusUpdate_SetSlackStatusAndPresence("brb", "away")
   CapsLock & c::         SlackStatusUpdate_SetSlackStatusAndPresence("none", "auto")
@@ -417,158 +401,140 @@ CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))
 
 OpenSlack(shortcut := "")
 {
-  RunOrActivateAppOrUrl("ahk_exe slack.exe", WindowsLocalAppDataFolder . "\Slack\Slack.exe", 3, True)
+  RunOrActivateAppOrUrl("ahk_exe slack.exe", WindowsLocalAppDataFolder "\Slack\Slack.exe", 3, True)
   if (shortcut != "")
     SendInput(shortcut)
-  Return
+  return
 }
 
 SlackStatus_Eating()
 {
-  If (A_Hour < 15)   ; Before 3:00 pm
-  {
+  if (A_Hour < 15)   ; Before 3:00 pm
     SlackStatusUpdate_SetSlackStatusAndPresence("lunch", "away")
-  }
-  Else
-  {
+  else
     SlackStatusUpdate_SetSlackStatusAndPresence("dinner", "away")
-  }
-  If AmNearWifiNetwork("(kummer)")
-  {
+
+  if AmNearWifiNetwork("(kummer)")
     HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
-  }
   DllCall("user32.dll\LockWorkStation")
-  Return
+  return
 }
 
 SlackStatus_Working()
 {
-  If AmNearWifiNetwork(SlackStatusUpdate_OfficeNetworks)
-  {
-    ;Msgbox Am in the office
+  if AmNearWifiNetwork(SlackStatusUpdate_OfficeNetworks)
     SlackStatusUpdate_SetSlackStatusAndPresence("workingInOffice", "auto")
-  }
-  Else
-  {
-    ;Msgbox Am at home
+  else
     SlackStatusUpdate_SetSlackStatusAndPresence("workingRemotely", "auto")
-  }
-  Return
+  return
 }
 
 
-;--------------------------------------------------------------------------------------------------
-; Calendar
-;   â‡ª c                  Run or activate Outlook and switch to the calendar, using an Outlook
-;                        shortcut to switch to the calendar
-;--------------------------------------------------------------------------------------------------
+/*
+  Calendar
+    â‡ª c                  Run or activate Outlook and switch to the calendar, using an Outlook
+                         shortcut to switch to the calendar
+*/
 CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
 
 
-;--------------------------------------------------------------------------------------------------
-; Inbox
-;   â‡ª i                  Run or activate Outlook and switch to the inbox, using an Outlook shortcut
-;                        to switch to the inbox
-;--------------------------------------------------------------------------------------------------
+/*
+  Inbox
+    â‡ª i                  Run or activate Outlook and switch to the inbox, using an Outlook shortcut
+                         to switch to the inbox
+*/
 CapsLock & i::           ActivateOrStartMicrosoftOutlook("^+I")
 
 
-;--------------------------------------------------------------------------------------------------
-; JIRA
-;   â‡ª j                  Opens the current board
-;   â‡ª ^ j                Opens the selected story number
-;                          * If the highlighted text looks like a JIRA story number (e.g. 
-;                            PROJECT-1234), then open that story
-;                          * If the Git Bash window has text that looks like a JIRA story number, 
-;                            then open that story
-;                          * Last resort is to open the current board
-;--------------------------------------------------------------------------------------------------
+/*
+  JIRA
+    â‡ª j                  Opens the current board
+    â‡ª ^ j                Opens the selected story number
+                           * If the highlighted text looks like a JIRA story number (e.g. 
+                             PROJECT-1234), then open that story
+                           * If the Git Bash window has text that looks like a JIRA story number, 
+                             then open that story
+                           * Last resort is to open the current board
+*/
 CapsLock & j::           JIRA()
 
 
-;--------------------------------------------------------------------------------------------------
-; Music/Spotify
-;   â‡ª m                  Run or activate Spotify
-;--------------------------------------------------------------------------------------------------
+/*
+  Music/Spotify
+    â‡ª m                  Run or activate Spotify
+*/
 CapsLock & m::           RunOrActivateSpotify()
 #HotIf WinActive("ahk_exe i)\\spotify\.exe$", )
-  ^wheelup::  SendInput("^{=}")
-  ^wheeldown::  SendInput("^{-}")
+  ^wheelup::              SendInput("^{=}")
+  ^wheeldown::            SendInput("^{-}")
 #HotIf
   
 
-
-;--------------------------------------------------------------------------------------------------
-; Personal computer
-;   â‡ª p                  Connect to personal computer
-;--------------------------------------------------------------------------------------------------
+/*
+  Personal computer
+    â‡ª p                  Connect to personal computer
+*/
 CapsLock & p::           ConnectToPersonalComputer()
 
 
-
-;--------------------------------------------------------------------------------------------------
-; Source code
-;   â‡ª s                  Source code/BitBucket
-;   â‡ª ^ s                Source code/BitBucket- schemas
-;--------------------------------------------------------------------------------------------------
+/*
+  Source code
+    â‡ª s                  Source code/BitBucket
+    â‡ª ^ s                Source code/BitBucket- schemas
+*/
 CapsLock & s:: 
 {
-  If GetKeyState("Ctrl")
-  {
-    RunOrActivateAppOrUrl("eventschema", SourceSchemaUrl, 3, true, false)
-  }
-  Else
-  {
-    RunOrActivateAppOrUrl("overview", SourceCodeUrl, 3, true, false)
-  }
-  Return
+  if GetKeyState("Ctrl")
+    RunOrActivateAppOrUrl("eventschema", SourceSchemaUrl, 3, True, False)
+  else
+    RunOrActivateAppOrUrl("overview", SourceCodeUrl, 3, True, False)
+  return
 }
 
 
-;--------------------------------------------------------------------------------------------------
-; Visual Studio
-;   â‡ª [                  Toggle left sidebar
-;                        Use Shift+Esc to exit, or click outside
-;                        I could not find a way to determine if the Solution Explorer was open or 
-;                        not, to determine if I should do â‡ª[ or +{Esc}
-;--------------------------------------------------------------------------------------------------
+/*
+  Visual Studio
+    â‡ª [                  Toggle left sidebar
+                         Use Shift+Esc to exit, or click outside
+                         I could not find a way to determine if the Solution Explorer was open or 
+                         not, to determine if I should do â‡ª[ or +{Esc}
+*/
 #HotIf WinActive("ahk_exe i)\\devenv\.exe$", )
-  CapsLock & [::  SendInput("^!l")
+  CapsLock & [::          SendInput("^!l")
 #HotIf
 
 
-;--------------------------------------------------------------------------------------------------
-; IntelliJ
-;   â‡ª l                  Start IntelliJ
-;   â‡ª [                  Toggle left sidebar
-;--------------------------------------------------------------------------------------------------
-CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", WindowsProgramFilesFolder . "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe")
+/*
+  IntelliJ
+    â‡ª l                  Start IntelliJ
+    â‡ª [                  Toggle left sidebar
+*/
+CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe")
 #HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
-  CapsLock & [::  SendInput("!1")
+  CapsLock & [::         SendInput("!1")
 #HotIf
 
 
-;--------------------------------------------------------------------------------------------------
-; Home automation
-;   (keys listed are on the numeric keypad)
-;   â‡ª +                   Air cleaner: toggle on/off
-;
-;   â‡ª Enter                       Fan: toggle on/off
-;
-;   â‡ª 7|8|9                 Top light: brightness down|toggle on/off|brightness up
-;   â‡ª ^ 7|9                 Top light: brightness 1%|brightness 100%
-;
-;   â‡ª 4|5|6              Middle light: brightness down|toggle on/off|brightness up
-;   â‡ª ^ 4|6              Middle light: brightness 1%|brightness 100%
-;
-;   â‡ª 1|2|3              Bottom light: brightness down|toggle on/off|brightness up
-;   â‡ª ^ 1|3              Bottom light: brightness 1%|brightness 100%
-;
-;
-; DISABLED
-;  â‡ª ^ +                 Air cleaner: cycle between fan speeds
-;                        THIS IS VALID FOR VESYNC AIR CLEANER, NOT WYZE PLUG
-;--------------------------------------------------------------------------------------------------
+/*
+  Home automation
+    (keys listed are on the numeric keypad)
+    â‡ª +                   Air cleaner: toggle on/off
+    â‡ª Enter                       Fan: toggle on/off
+
+    â‡ª 7|8|9                 Top light: brightness down|toggle on/off|brightness up
+    â‡ª ^ 7|9                 Top light: brightness 1%|brightness 100%
+
+    â‡ª 4|5|6              Middle light: brightness down|toggle on/off|brightness up
+    â‡ª ^ 4|6              Middle light: brightness 1%|brightness 100%
+
+    â‡ª 1|2|3              Bottom light: brightness down|toggle on/off|brightness up
+    â‡ª ^ 1|3              Bottom light: brightness 1%|brightness 100%
+
+
+  DISABLED
+   â‡ª ^ +                 Air cleaner: cycle between fan speeds
+                           THIS IS VALID FOR VESYNC AIR CLEANER, NOT WYZE PLUG
+*/
 CapsLock & NumpadAdd::   HomeAutomationCommand("officeac  toggle")     
 CapsLock & NumpadEnter:: HomeAutomationCommand("officefan toggle")
 
@@ -591,31 +557,21 @@ CapsLock & Numpad2::     HomeAutomationCommand("officelitebottom toggle")
 CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "100" : "+"))
 
 
-;---------------------------------------------------------------------------------------------------------------------
-; Generate a UUID/GUID
-;   â‡ª u                  Generate random UUID (lowercase)
-;   â‡ª + u                Generate random UUID (uppercase)
-;---------------------------------------------------------------------------------------------------------------------
+/*
+  Generate a UUID/GUID
+    â‡ª u                  Generate random UUID (lowercase)
+    â‡ª + u                Generate random UUID (uppercase)
+*/
 CapsLock & u::             GenerateGUID(GetKeyState("Shift"))
 
 
 
 
+/*
+  Include all libraries, utilities, and other AutoHotKey scripts
 
-
-
-
-
-
-
-
-
-
-;--------------------------------------------------------------------------------------------------
-; Include all libraries, utilities, and other AutoHotKey scripts
-;
-; I have to put this at the bottom of my script, or else it interferes with other code in this script
-;--------------------------------------------------------------------------------------------------
+  I have to put this at the bottom of my script, or else it interferes with other code in this script
+*/
 #Include "%A_ScriptDir%\Shared_v2.ahk"
 #Include "%A_ScriptDir%\Functions_v2.ahk"
 #Include "%A_ScriptDir%\Utilities_v2.ahk"

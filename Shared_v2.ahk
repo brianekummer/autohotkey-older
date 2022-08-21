@@ -1,4 +1,4 @@
-﻿;--------------------------------------------------------------------------------------------------
+﻿/*
 ; My AutoHotKey Automations - Shared Between Personal and Work
 ;
 ;
@@ -268,32 +268,102 @@
 ; -------
 ;   - CapsLock as a Windows modifier: https://www.howtogeek.com/446418/how-to-use-caps-lock-as-a-modifier-key-on-windows/
 ;                                     https://www.autohotkey.com/boards/viewtopic.php?t=70854
-;--------------------------------------------------------------------------------------------------
+*/
 
 
 
+/*
+  Emergency Reload
+    â‡ª ^ ! Esc            Reload this script
 
-;--------------------------------------------------------------------------------------------------
-; Emergency Reload
-;   â‡ª ^ ! Esc            Reload this script
-;
-; I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
-; for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
-;--------------------------------------------------------------------------------------------------
+  I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
+  for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
+*/
 #HotIf GetKeyState("Alt") and GetKeyState("Ctrl")
   CapsLock & Esc::
   {
-    if WinActive("ahk_exe parsecd.exe")      ; When using personal laptop at work, tell personal laptop to reload
-    {
+    if (WinActive("ahk_exe parsecd.exe"))      ; When using personal laptop at work, tell personal laptop to reload
       SendKeystrokesToPersonalLaptop("{Alt down}{Control down}{CapsLock down}{Esc}{CapsLock up}{Control up}{Alt up}")
-    }
-    Else
-    {
-      Reload                              ; Reload AHK on either work or personal laptop
-    }
-    Return
+    else
+      Reload                                   ; Reload AHK on either work or personal laptop
+
+    return
   }
 #HotIf
+
+
+
+
+
+
+
+/*
+  Standardizing keys for video playback for video apps and web sites,
+  specifically for speeding up/down video and skipping forward/backward.
+  I'm doing this for Youtube, VLC, and Udemy.
+
+  These keys are already standard
+    play/pause                                  space
+    full screen                                 F
+  My code standardizes these keys
+    VIDEO_BACKWARD_BIG/VIDEO_FORWARD_BIG        H+keypad 7 / H+keypad 9
+    VIDEO_BACKWARD_SMALL/VIDEO_FORWARD_SMALL    H+keypad 4 / H+keypad 6
+    VIDEO_SLOWER/VIDEO_FASTER                   H+keypad 1 / H+keypad 3
+*/
+/*
+executeActionInVideo = function(keyRemappingName)
+  local VIDEO_APP_KEY_MAPPINGS = {
+    [ "VIDEO_SLOWER,com.google.Chrome,youtube.com"         ] = { keyModifiers={"shift"},        key=","     },  -- <
+    [ "VIDEO_FASTER,com.google.Chrome,youtube.com"         ] = { keyModifiers={"shift"},        key="."     },  -- >
+    [ "VIDEO_BACKWARD_SMALL,com.google.Chrome,youtube.com" ] = { keyModifiers={},               key="left"  },
+    [ "VIDEO_FORWARD_SMALL,com.google.Chrome,youtube.com"  ] = { keyModifiers={},               key="right" },
+    [ "VIDEO_BACKWARD_BIG,com.google.Chrome,youtube.com"   ] = { keyModifiers={},               key="j"     },
+    [ "VIDEO_FORWARD_BIG,com.google.Chrome,youtube.com"    ] = { keyModifiers={},               key="l"     },
+
+    [ "VIDEO_SLOWER,com.google.Chrome,udemy.com"           ] = { keyModifiers={"shift"},        key="left"  },
+    [ "VIDEO_FASTER,com.google.Chrome,udemy.com"           ] = { keyModifiers={"shift"},        key="right" },
+    [ "VIDEO_BACKWARD_SMALL,com.google.Chrome,udemy.com"   ] = { keyModifiers={},               key="left"  },
+    [ "VIDEO_FORWARD_SMALL,com.google.Chrome,udemy.com"    ] = { keyModifiers={},               key="right" },
+    -- Udemy doesn't have equivalent of VIDEO_BACKWARD_BIG and VIDEO_FORWARD_BIG
+
+    [ "VIDEO_SLOWER,org.videolan.vlc"                      ] = { keyModifiers={},               key="["     },
+    [ "VIDEO_FASTER,org.videolan.vlc"                      ] = { keyModifiers={},               key="]"     },
+    [ "VIDEO_BACKWARD_SMALL,org.videolan.vlc"              ] = { keyModifiers={"cmd","option"}, key="left"  },
+    [ "VIDEO_FORWARD_SMALL,org.videolan.vlc"               ] = { keyModifiers={"cmd","option"}, key="right" },
+    [ "VIDEO_BACKWARD_BIG,org.videolan.vlc"                ] = { keyModifiers={"cmd","shift"},  key="left"  },
+    [ "VIDEO_FORWARD_BIG,org.videolan.vlc"                 ] = { keyModifiers={"cmd","shift"},  key="right" }
+  }
+
+  local app = hs.application.frontmostApplication()
+  local appBundleId = hs.application.frontmostApplication():bundleID()
+  local searchKey
+
+  if appBundleId == "com.google.Chrome" then 
+    local result, url = hs.osascript.applescript('tell application "Google Chrome" to return URL of active tab of front window')
+    local domainName = getDomainNameFromUrl(url)
+
+    searchKey = keyRemappingName .. ",com.google.Chrome," .. domain["Name"] 
+  else
+    searchKey = keyRemappingName .. "," .. appBundleId
+  end
+
+  local found = VIDEO_APP_KEY_MAPPINGS[searchKey]
+  --local inspect = require('lib.inspect')
+  --print("found=" .. inspect(found))
+
+  if found ~= nil then
+    hyper.triggered = true
+    if tableLength(found.keyModifiers) == 0 and found.key:len() == 1 then
+      -- Don't want to use this for "left", or else it will send the characters
+      -- "l", "e", "f", "t"
+      hs.eventtap.keyStrokes(found.key)
+    else
+      hs.eventtap.keyStroke(found.keyModifiers, found.key)
+    end
+  end
+end
+
+
 
 
 
@@ -451,20 +521,17 @@
 ;    end
 ;  end
 ;end
+*/
 
 
 
 
+/*
+  Price Watch
+    â‡ª F12                Load stuff I'm watching
 
-
-
-
-
-
-;--------------------------------------------------------------------------------------------------
-; Price Watch
-;   â‡ª F12                On my personal laptop, load web pages for stuff I'm price watching
-;--------------------------------------------------------------------------------------------------
+  Note that sometimes I have to escape special characters like %
+*/
 #HotIf IsWorkLaptop
   CapsLock & F12::       SendKeystrokesToPersonalLaptop("{CapsLock down}{F12}{CapsLock up}")
 #HotIf !IsWorkLaptop
@@ -472,12 +539,12 @@
 #HotIf
 
 
-;--------------------------------------------------------------------------------------------------
-; Convert case of selected text
-;   â‡ª RShift             Cycle selected text between lower/upper/sentence/title case
-;
+/*
+  Convert case of selected text
+    â‡ª RShift             Cycle selected text between lower/upper/sentence/title case
+
 ; Since you cannot send RShift key to another window, I am using F17 here
-;--------------------------------------------------------------------------------------------------
+*/
 #HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
   CapsLock & RShift::    SendKeystrokesToPersonalLaptop("{CapsLock down}{F17}{CapsLock up}")
 #HotIf
@@ -485,92 +552,92 @@ CapsLock & RShift::      ConvertCase()    ; Work laptop reacts to this
 CapsLock & F17::         ConvertCase()    ; Personal laptop reacts to this
 
 
-;---------------------------------------------------------------------------------------------------------------------
-; Screen shot
-;   PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
-;---------------------------------------------------------------------------------------------------------------------
+/*
+  Screen shot
+    PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
+*/
 #HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
   PrintScreen::          SendKeystrokesToPersonalLaptop("{LWin down}{Shift down}s{Shift up}{LWin up}")
 #HotIf
 PrintScreen::SendInput("#+s")
 
 
-;---------------------------------------------------------------------------------------------------------------------
-; Typora
-;   â‡ª n                  Run or activate my notes in Typora on my work laptop
-;   â‡ª ! n                Run or activate my notes in Typora on my personal laptop
-;
-;   ^ mousewheel         Decrease/increase font size
-;   â‡ª [                  Toggle left sidebar
-;---------------------------------------------------------------------------------------------------------------------
+/*
+  Typora
+    â‡ª n                  Run or activate my notes in Typora on my work laptop
+    â‡ª ! n                Run or activate my notes in Typora on my personal laptop
+
+    ^ mousewheel         Decrease/increase font size
+    â‡ª [                  Toggle left sidebar
+*/
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & n::         SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
 ;#If
-CapsLock & n::           RunOrActivateAppOrUrl("ahk_exe i)\\typora\.exe$", WindowsProgramFilesFolder . "\Typora\Typora.exe")
+CapsLock & n::           RunOrActivateAppOrUrl("ahk_exe i)\\typora\.exe$", WindowsProgramFilesFolder "\Typora\Typora.exe")
 
 #HotIf WinActive("ahk_exe i)\\typora\.exe$", )
-  ^wheelup::  SendInput("{Blind}^+{=}")
-  ^wheeldown::  SendInput("{Blind}^+{-}")
-  Capslock & [::  SendInput("^+{l}")
+  ^wheelup::                        SendInput("{Blind}^+{=}")
+  ^wheeldown::                      SendInput("{Blind}^+{-}")
+  Capslock & [::                    SendInput("^+{l}")
 #HotIf
 
 
-;---------------------------------------------------------------------------------------------------------------------
-; Chrome
-;   â‡ª b                  Run or activate Chrome on my work laptop
-;   â‡ª ! b                Run or activate Chrome on my personal laptop
-;---------------------------------------------------------------------------------------------------------------------
+/*
+  Chrome
+    â‡ª b                  Run or activate Chrome on my work laptop
+    â‡ª ! b                Run or activate Chrome on my personal laptop
+*/
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
 ;#If
-CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", WindowsProgramFilesFolder . "\Google\Chrome\Application\chrome.exe", 3, true, false)
+CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe", 3, True, False)
 
 
-;--------------------------------------------------------------------------------------------------
-; Terminal/Cmder/bash
-;   â‡ª t                  Run or activate the terminal on my work laptop
-;   â‡ª ! t                Run or activate the terminal on my personal laptop
-;--------------------------------------------------------------------------------------------------
+/*
+  Terminal/Cmder/bash
+    â‡ª t                  Run or activate the terminal on my work laptop
+    â‡ª ! t                Run or activate the terminal on my personal laptop
+*/
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & t::         SendKeystrokesToPersonalLaptop("{CapsLock down}t{CapsLock up}")
 ;#If
 CapsLock & t::           RunOrActivateAppOrUrl("Cmder", "C:\tools\Cmder\Cmder.exe")
 
 
-;--------------------------------------------------------------------------------------------------
-; Visual Studio Code
-;   â‡ª v                  Open VS Code on my work laptop
-;   â‡ª ! v                Open VS Code on my personal laptop
-;
-;   ^ mousewheel         Decrease/increase font size
-;   â‡ª [                  Toggle left sidebar
-;
-; TODO-
-;   â‡ª ^ v                Open VS Code, create a new doc, paste selected text, then format it
-;--------------------------------------------------------------------------------------------------
+/*
+  Visual Studio Code
+    â‡ª v                  Open VS Code on my work laptop
+    â‡ª ! v                Open VS Code on my personal laptop
+
+    ^ mousewheel         Decrease/increase font size
+    â‡ª [                  Toggle left sidebar
+
+  TODO-
+    â‡ª ^ v                Open VS Code, create a new doc, paste selected text, then format it
+*/
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & v::         SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
 ;#If
-CapsLock & v::           RunOrActivateAppOrUrl("ahk_exe i)\\code\.exe$", WindowsProgramFilesFolder . "\Microsoft VS Code\Code.exe")
+CapsLock & v::           RunOrActivateAppOrUrl("ahk_exe i)\\code\.exe$", WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
 
 #HotIf WinActive("ahk_exe i)\\code\.exe$", )
-  ^wheelup::  SendInput("{Blind}^{=}")
-  ^wheeldown::  SendInput("{Blind}^{-}")
-  CapsLock & [::  SendInput("^b")
+  ^wheelup::                 SendInput("{Blind}^{=}")
+  ^wheeldown::               SendInput("{Blind}^{-}")
+  CapsLock & [::             SendInput("^b")
 #HotIf
 
 
 
-;--------------------------------------------------------------------------------------------------
-; Include all libraries, utilities, and other AutoHotKey scrisss
-;
-; I have to put this at the bottom of my script, or else it interferes with other code in this script
-;--------------------------------------------------------------------------------------------------
-;#Include A_ScriptDir "\Shared_v2new.ahk"
-;#Include A_ScriptDir "\Functions_v2new.ahk"
-;#Include A_ScriptDir "\Utilities_v2new.ahk"
-;#Include A_ScriptDir "\Customize Windows_v2new.ahk"
-;#Include A_ScriptDir "\My Auto Correct_v2new.ahk"
-;#Include A_ScriptDir "\Convert Case_v2new.ahk"
+/*
+  Include all libraries, utilities, and other AutoHotKey scripts
 
-;#Include A_ScriptDir "\lib\RunAsAdmin_v2new.ahk"
+  I have to put this at the bottom of my script, or else it interferes with other code in this script
+*/
+;#Include "%A_ScriptDir%\Shared_v2new.ahk"
+;#Include "%A_ScriptDir%\Functions_v2new.ahk"
+;#Include "%A_ScriptDir%\Utilities_v2new.ahk"
+;#Include "%A_ScriptDir%\Customize Windows_v2new.ahk"
+;#Include "%A_ScriptDir%\My Auto Correct_v2new.ahk"
+;#Include "%A_ScriptDir%\Convert Case_v2new.ahk"
+
+;#Include "%A_ScriptDir%\lib\RunAsAdmin_v2new.ahk"
