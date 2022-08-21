@@ -85,10 +85,41 @@ CapsLock:: Return
 ;   â‡ª XButton2           Next track
 ;---------------------------------------------------------------------------------------------------------------------
 #HotIf IsWorkLaptop
-  CapsLock & wheelup::     SendInput("{Blind}{Volume_Up 1}")
-  CapsLock & wheeldown::   SendInput("{Blind}{Volume_Down 1}")
-  CapsLock & LButton::     SendInput("{Blind}{Media_Play_Pause}")
-  CapsLock & RButton::     RunOrActivateSpotify()
-  CapsLock & XButton1::    SendInput("{Blind}{Media_Prev}")
-  CapsLock & XButton2::    SendInput("{Blind}{Media_Next}")
+  CapsLock & wheelup::     SendMediaKey("{Blind}{Volume_Up 1}")
+  CapsLock & wheeldown::   SendMediaKey("{Blind}{Volume_Down 1}")
+  CapsLock & LButton::     SendMediaKey("{Blind}{Media_Play_Pause}")
+  CapsLock & RButton::     RunSpotifyByMediaKey()
+  CapsLock & XButton1::    SendMediaKey("{Blind}{Media_Prev}")
+  CapsLock & XButton2::    SendMediaKey("{Blind}{Media_Next}")
 #HotIf
+
+
+SendMediaKey(mediaKey)
+{
+  SendInput mediaKey
+  FixBrokenCapsLock()
+}
+
+RunSpotifyByMediaKey()
+{
+  RunOrActivateSpotify()
+  FixBrokenCapsLock()
+}
+
+/*
+   I have problems with CapsLock sometimes getting stuck
+*/
+FixBrokenCapsLock()
+{
+  if (GetKeyState("CapsLock"))    ; Does it matter if I use "P", "T", or no 2nd param?
+  {
+    ; Both of these commands seem to fix my problem
+    SetCapsLockState("AlwaysOff")  ; Disable the CapsLock LED on my keyboard
+    ; Reload                       ; I don't like this because it loses static variables like used by ConvertCase
+
+    ; These do not fix the problem
+    ;Send "{Blind}{CapsLock up}"
+    ;Send "{CapsLock up}"
+  }
+  Return
+}

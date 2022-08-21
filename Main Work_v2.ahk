@@ -601,6 +601,16 @@ CapsLock & u::             GenerateGUID(GetKeyState("Shift"))
 
 
 
+
+
+
+
+
+
+
+
+
+
 ;--------------------------------------------------------------------------------------------------
 ; Include all libraries, utilities, and other AutoHotKey scripts
 ;

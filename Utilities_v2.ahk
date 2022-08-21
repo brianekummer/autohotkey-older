@@ -17,7 +17,6 @@ RunAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False)
 }
 
 
-
 RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False, asAdminUser := true)
 {
   If Not WinExist(appTitle)
@@ -41,6 +40,10 @@ RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False, a
   If maximize
   {
     WinMaximize()
+  }
+  Else
+  {
+    WinShow()
   }
 }
 

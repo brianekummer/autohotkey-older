@@ -198,11 +198,12 @@ JIRA_OLD()
 ;--------------------------------------------------------------------------------------------------
 ; Run or activate Spotify
 ;   Since this is a Microsoft Store app, I needed to add a shortcut to me Start menu so that I can
-;   run the shortcut.
+;   run the shortcut. Since the window title changes depending if something is playing or not, so
+;   I am using the filename.
 ;--------------------------------------------------------------------------------------------------
 RunOrActivateSpotify()
 {
-  RunOrActivateAppOrUrl("Spotify Premium", WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
+  RunOrActivateAppOrUrl("ahk_exe Spotify.exe", WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
 }
 
 
