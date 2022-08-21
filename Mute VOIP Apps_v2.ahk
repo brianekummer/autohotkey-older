@@ -1,4 +1,4 @@
-; TEAMS TEST CASES
+﻿; TEAMS TEST CASES
 ;   1. PASSED- Not in a call, just have calendar open
 ;   2. PASSED- In a mtg like standup, with no screen sharing
 ;   3. PASSED- In a planned mtg with screen share, like preplanning, etc
@@ -58,13 +58,6 @@
 ;
 ;
 ;
-
-
-
-
-#Requires Autohotkey v1.1.33+
-
-
 ; GOOGLE MEET (in a Chrome tab)
 ; Window title: "Meet - xxx-xxxx-xxx - Google Chrome"
 ; ctrl-d to mute
@@ -90,7 +83,7 @@ ToggleMuteVOIPApps() {
   If ActivateWindowByIdAndSendKeystroke(GetTeamsMeetingWindowId(), "^+m")
     Return
 
-  MsgBox Muting NOTHING
+  MsgBox("Muting NOTHING")
 }
 
 GetTeamsMeetingWindowId() {
@@ -100,41 +93,46 @@ GetTeamsMeetingWindowId() {
   ;
   ; I tried to simplify this using a single regex, but doing NOT is ugly in regex, and excluding the
   ; null title made this very confusing. This code is MUCH simpler.
-  WinGet, id, List, ahk_exe Teams.exe
-  Loop, %id%
+  oid := WinGetList("ahk_exe Teams.exe",,,)
+  aid := Array()
+  id := oid.Length
+  For v in oid
+  {   aid.Push(v)
+  }
+  Loop aid.Length
   {
-    thisId := id%A_Index%
-    WinGetTitle, title, ahk_id %thisId%
+    thisId := aid[A_Index]
+    title := WinGetTitle("ahk_id " thisId)
     
-    If (title <> Microsoft Teams Notification) And (title <> "") And (Not RegExMatch(title, "\[QSP\]$"))
+    If (title != "Microsoft Teams Notification") And (title != "") And (Not RegExMatch(title, "\[QSP\]$"))
     {
       ;msgbox TEAMS Window: %title%
-      Return %thisId%
+      return thisId
     }
   }
   
   Return
 }
 GetSlackCallWindowId() {
-  WinGet, windowId, ID, Slack call with .* \| \d+:\d\d
+  windowId := WinGetID("Slack call with .* \| \d+:\d\d")
   ; I don't believe I can get multiple windows, so I think this code is unnecessary
   ;WinGet, callWindowIds, List, Slack call with .* \| \d+:\d\d
   ;windowId := callWindowIds1    ; Return 1st matching window
   Return windowId
 }
 GetSlackHuddleWindowId() {
-  WinGet, windowId, ID, (.* screen share)
+  windowId := WinGetID("(.* screen share)")
   ; I don't believe I can get multiple windows, so I think this code is unnecessary
   ;WinGet, huddleWindowIds, List, (.* screen share)
   ;windowId := huddleWindowIds1    ; Return 1st matching window
   Return windowId
 }
 GetZoomMeetingWindowId() {
-  WinGet, windowId, ID, ahk_class ZPContentViewWndClass
+  windowId := WinGetID("ahk_class ZPContentViewWndClass")
   Return windowId
 }
 GetGoogleMeetWindowId() {
 ; Does NOT search through open tabs. But if the Meet is the active tab in any instance of Chrome, then it finds it
-  WinGet, windowId, ID, Meet - \w{3}\-\w{4}\-\w{3} \- Google Chrome
+  windowId := WinGetID("Meet - \w{3}\-\w{4}\-\w{3} \- Google Chrome")
   Return windowId
 }

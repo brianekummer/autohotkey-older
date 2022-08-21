@@ -1,11 +1,10 @@
-;--------------------------------------------------------------------------------------------------
+﻿;--------------------------------------------------------------------------------------------------
 ; Add auto-correct to EVERY application
 ; includes my customizations
 ; 
 ; https://www.autohotkey.com/download/AutoCorrect.ahk, based on http://www.biancolo.com/articles/autocorrect/
 ;--------------------------------------------------------------------------------------------------
-#Requires Autohotkey v1.1.33+
-#Include %A_ScriptDir%\Lib\AutoCorrect.ahk
+#Include "%A_ScriptDir%\Lib\AutoCorrect_v2.ahk"
 
 ;----- Things I intentionally do NOT want to fix -----
 ;::brian::Brian      ; Doing this always capitalizes Brian-kummer@company.com

@@ -1,6 +1,7 @@
 ;---------------------------------------------------------------------------
 ; To check for Administrator rights then elevate if needed.
 ;---------------------------------------------------------------------------
+#Requires Autohotkey v1.1.33+
 
 RunAsAdmin() {
     IfEqual, A_IsAdmin, 1, Return 0

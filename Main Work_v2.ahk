@@ -1,10 +1,10 @@
-;--------------------------------------------------------------------------------------------------
+﻿;--------------------------------------------------------------------------------------------------
 ; My AutoHotKey Automations - Work
 ;
 ;
 ; Keep in Mind While Developing This
 ; ----------------------------------
-;   - Any use for text-to-speech? ComObjCreate("SAPI.SpVoice").Speak("Speak this phrase")
+;   - Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
 ;   - Popup menus are useful- can I use them elsewhere?
 ;   - Are timed tooltips useful somewhere?
 ;   - Are classes useful anywhere?
@@ -12,7 +12,7 @@
 ;
 ; Modifiers
 ; ---------
-; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ⇪ = CapsLock/Hyper
+; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      â‡ª = CapsLock/Hyper
 ;
 ;
 ; Windows Provided
@@ -29,63 +29,63 @@
 ;
 ; Shortcuts
 ; ---------
-; ⇪ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
-; ⇪ b                   Windows (AHK)    Browser
-; ⇪ c                   Windows (AHK)    Calendar
-; ⇪ i                   Windows (AHK)    Inbox
-; ⇪ l                   Windows (AHK)    IntelliJ
-; ⇪ j                   Windows (AHK)    JIRA- current project board
-; ⇪ ^ j                 Windows (AHK)    JIRA- open selected story number
-; ⇪ m                   Windows (AHK)    Music/Spotify
-; ⇪ n                   Windows (AHK)    Notes (Typora)
-; ⇪ t                   Windows (AHK)    Terminal/Cmder/bash
-; ⇪ v                   Windows (AHK)    Visual Studio Code
+; â‡ª ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
+; â‡ª b                   Windows (AHK)    Browser
+; â‡ª c                   Windows (AHK)    Calendar
+; â‡ª i                   Windows (AHK)    Inbox
+; â‡ª l                   Windows (AHK)    IntelliJ
+; â‡ª j                   Windows (AHK)    JIRA- current project board
+; â‡ª ^ j                 Windows (AHK)    JIRA- open selected story number
+; â‡ª m                   Windows (AHK)    Music/Spotify
+; â‡ª n                   Windows (AHK)    Notes (Typora)
+; â‡ª t                   Windows (AHK)    Terminal/Cmder/bash
+; â‡ª v                   Windows (AHK)    Visual Studio Code
 ; PrintScreen           Windows (AHK)    Windows screenshot tool
 ;
 ;
 ; Personal Shortcuts
 ; ------------------
-; ⇪ p                   Windows (AHK)    Personal computer (Parsec)
+; â‡ª p                   Windows (AHK)    Personal computer (Parsec)
 ;                                        Problem is that sometimes pewrsonal computer is locked and need to enter pin.
 ;                                        I want the pin, so can't automate this. So simply a hotkey to connect to that
 ;                                        computer.
-; ~~⇪ F12                 Windows (AHK)    Browser - Open websites of stuff I'm price watching~~
-; ~~⇪ ! b                 Windows (AHK)    Browser~~
-; ~~⇪ ! n                 Windows (AHK)    Notes (Typora)~~
-; ~~⇪ ! t                 Windows (AHK)    Terminal/Cmder/bash~~
-; ~~⇪ ! v                 Windows (AHK)    Visual Studio Code~~
+; ~~â‡ª F12                 Windows (AHK)    Browser - Open websites of stuff I'm price watching~~
+; ~~â‡ª ! b                 Windows (AHK)    Browser~~
+; ~~â‡ª ! n                 Windows (AHK)    Notes (Typora)~~
+; ~~â‡ª ! t                 Windows (AHK)    Terminal/Cmder/bash~~
+; ~~â‡ª ! v                 Windows (AHK)    Visual Studio Code~~
 ;
 ;
 ; Other Stuff
 ; -----------
-; ⇪ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
-; ⇪ u                   Windows (AHK)    Generate a random UUID (lowercase)
-; ⇪ + u                 Windows (AHK)    Generate a random UUID (uppercase)
+; â‡ª RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
+; â‡ª u                   Windows (AHK)    Generate a random UUID (lowercase)
+; â‡ª + u                 Windows (AHK)    Generate a random UUID (uppercase)
 ;
 ;
 ; Media Controls
 ; --------------
-; ⇪ WheelUp/WheelDown   Windows (AHK)    Volume up/down
-; ⇪ LButton             Windows (AHK)    Play/pause
-; ⇪ RButton             Windows (AHK)    Music app (Spotify)
-; ⇪ XButton1            Windows (AHK)    Previous track
-; ⇪ XButton2            Windows (AHK)    Next track
+; â‡ª WheelUp/WheelDown   Windows (AHK)    Volume up/down
+; â‡ª LButton             Windows (AHK)    Play/pause
+; â‡ª RButton             Windows (AHK)    Music app (Spotify)
+; â‡ª XButton1            Windows (AHK)    Previous track
+; â‡ª XButton2            Windows (AHK)    Next track
 ; Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
 ;
 ;
 ; Home Automation
 ; ---------------
 ; (keys listed are numeric keypad)
-; ⇪ +                   Windows (AHK)     Air cleaner: toggle on/off
-; ⇪ Enter               Windows (AHK)             Fan: toggle on/off
+; â‡ª +                   Windows (AHK)     Air cleaner: toggle on/off
+; â‡ª Enter               Windows (AHK)             Fan: toggle on/off
 ;
-; ⇪ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
-; ⇪ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
-; ⇪ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
+; â‡ª 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
+; â‡ª 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
+; â‡ª 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
 ;
-; ⇪ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
-; ⇪ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
-; ⇪ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
+; â‡ª ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
+; â‡ª ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
+; â‡ª ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
 ;
 ;
 ; Customizing Windows Behavior
@@ -101,47 +101,47 @@
 ; Slack:
 ;   ^ mousewheel        Slack (AHK)      Decrease/increase font size
 ;   ^ k                 Slack (AHK)      Insert hyperlink
-;   ⇪ [                 Slack (AHK)      Toggle left sidebar
-;   ⇪ # b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
-;   ⇪ # l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
-;   ⇪ # m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
-;   ⇪ # p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
-;   ⇪ # w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
+;   â‡ª [                 Slack (AHK)      Toggle left sidebar
+;   â‡ª # b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
+;   â‡ª # l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
+;   â‡ª # m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
+;   â‡ª # p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
+;   â‡ª # w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
 ; Typora
 ;   ^ mousewheel        Typora (AHK)     Decrease/increase font size
-;   ⇪ [                 Typora (AHK)     Toggle left sidebar
+;   â‡ª [                 Typora (AHK)     Toggle left sidebar
 ; VS Code
 ;   ^ mousewheel        VS Code (AHK)    Decrease/increase font size
-;   ⇪ [                 VS Code (AHK)    Toggle left sidebar
+;   â‡ª [                 VS Code (AHK)    Toggle left sidebar
 ; IntelliJ
-;   ⇪ [                 IntelliJ (AHK)   Toggle left sidebar
+;   â‡ª [                 IntelliJ (AHK)   Toggle left sidebar
 ; Visual Studio
-;   ⇪ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
+;   â‡ª [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
 ;
 ;
 ; Code Structure
 ; --------------
 ; autohotkey/
-; ├─ experiments/                Temporary things I'm experimenting with
-; │  ├─ trying-to-do-blah.ahk
-; │  └─ can-i-do-this.ahk
-; │
-; ├─ examples to keep/           Interesting stuff I want to keep but am not using
-; │  └─ example1.ahk
-; │
-; ├─ lib/                        Libraries of other people's work that I'm using
-; │  ├─ AutoCorrect.ahk
-; │  ├─ RunAsAdmin.ahk
-; │  └─ FindText.ahk             ** TODO- AM I GOING TO USE THIS???
-; │
-; ├─ Configure.bat               Batch file to configure by setting environment variables
-; ├─ Main.ahk                    Main code, mostly hotkeys that call functions
-; ├─ Functions.ahk               Majority of my code is here
-; ├─ Convert Case.ahk            Cycle through lower/upper/sentence/title case
-; ├─ Customize Windows.ahk       Code that customizes how Windows works
-; ├─ My Auto Correct.ahk         My wrapper over AutoCorrect.ahk that includes my words to correct
-; ├─ Slack.ahk                   Controlling Slack
-; └─ Utilities.ahk               Utility functions
+; â”œâ”€ experiments/                Temporary things I'm experimenting with
+; â”‚  â”œâ”€ trying-to-do-blah.ahk
+; â”‚  â””â”€ can-i-do-this.ahk
+; â”‚
+; â”œâ”€ examples to keep/           Interesting stuff I want to keep but am not using
+; â”‚  â””â”€ example1.ahk
+; â”‚
+; â”œâ”€ lib/                        Libraries of other people's work that I'm using
+; â”‚  â”œâ”€ AutoCorrect.ahk
+; â”‚  â”œâ”€ RunAsAdmin.ahk
+; â”‚  â””â”€ FindText.ahk             ** TODO- AM I GOING TO USE THIS???
+; â”‚
+; â”œâ”€ Configure.bat               Batch file to configure by setting environment variables
+; â”œâ”€ Main.ahk                    Main code, mostly hotkeys that call functions
+; â”œâ”€ Functions.ahk               Majority of my code is here
+; â”œâ”€ Convert Case.ahk            Cycle through lower/upper/sentence/title case
+; â”œâ”€ Customize Windows.ahk       Code that customizes how Windows works
+; â”œâ”€ My Auto Correct.ahk         My wrapper over AutoCorrect.ahk that includes my words to correct
+; â”œâ”€ Slack.ahk                   Controlling Slack
+; â””â”€ Utilities.ahk               Utility functions
 ;
 ;
 ;
@@ -173,7 +173,7 @@
 ;   - Moved Solution Explorer to left side, pinned
 ;   - ^!l shows it 
 ;   - +{Esc} makes it go away
-;   - CAN I GET IT WORKING WITH AHK??? ⇪ [
+;   - CAN I GET IT WORKING WITH AHK??? â‡ª [
 ;        - Can't tell by the active window. maybe I can loop through all the active windows in
 ;
 ;
@@ -184,7 +184,7 @@
 ; Customizing App Behavior
 ; ------------------------
 ; Slack:
-;   ⇪ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
+;   â‡ª ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
 ; VS Code
 ;   ~$^s                VS Code (AHK)    After save AHK file, reload current script
 ;
@@ -192,7 +192,7 @@
 ; standardize video keys for youtube and udemy
 ;
 ; LOW PRIORITY
-; ⇪ ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
+; â‡ª ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
 ;
 ;
 ; EVALUATE ALL OF THIS
@@ -209,9 +209,9 @@
 ;
 ; >> Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
 ;
-;   H ⌘ f          HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
+;   H âŒ˜ f          HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
 ;                           which also sets Slack statuses to heads-down.
-;   H ⌘ s          HS       Studying. Starts Do Not Disturb timer for 60 minutes,
+;   H âŒ˜ s          HS       Studying. Starts Do Not Disturb timer for 60 minutes,
 ;                           which also sets Slack statuses to books and opens udemy.com.
 ;
 ; (on login/unlock)  Windows (AHK)       Set Slack status based on nearby wifi networks
@@ -225,11 +225,11 @@
 ; H right        HS       Snap active window to right half/third/two-thirds of the screen
 ; H up           HS       Snap active window to top half/third/two-thirds of the screen
 ; H down         HS       Snap active window to top half/third/two-thirds of the screen
-; H return       HS       Toggle full screen
-; H ⌘ up         HS       Maximize window
-; H ⌘ down       HS       Minimize window
-; H ⌘ left       HS       Move active window to the previous screen
-; H ⌘ right      HS       Move active window to the next screen
+; H return HS       Toggle full screen
+; H âŒ˜ up         HS       Maximize window
+; H âŒ˜ down       HS       Minimize window
+; H âŒ˜ left       HS       Move active window to the previous screen
+; H âŒ˜ right      HS       Move active window to the next screen
 ; ============================================================================================
 ;
 ;
@@ -279,18 +279,17 @@
 ;---------------------------------------------------------------------------------------------------------------------
 ; AutoHotKey configuration options
 ;---------------------------------------------------------------------------------------------------------------------
-#NoEnv                        ; Recommended for performance and compatibility with future AutoHotkey releases
-; #Warn                       ; Enable warnings to assist with detecting common errors
-#SingleInstance FORCE         ; Skip invocation dialog box and silently replace previously executing instance of this script
-#Requires Autohotkey v1.1.33+
-SendMode Input                ; Recommended for new scripts due to its superior speed and reliability
-SetWorkingDir %A_ScriptDir%   ; Ensures a consistent starting directory
+; #Warn                         ; Enable warnings to assist with detecting common errors
+#SingleInstance FORCE           ; Skip invocation dialog box and silently replace previously executing instance of this script
+Persistent                       ; I ASSUME THIS IS NECESSARY W/V2???
+SendMode("Input")               ; Recommended for new scripts due to its superior speed and reliability
+SetWorkingDir(A_ScriptDir)      ; Ensures a consistent starting directory
 
-SetTitleMatchMode RegEx       ; Make windowing commands use regex
+SetTitleMatchMode("RegEx")      ; Make windowing commands use regex
 RunAsAdmin()
 
-SetCapsLockState, AlwaysOff   ; Disable the CapsLock LED on my keyboard
-SetNumLockState, On           ; Turn on Scroll Lock, so my macros with keypad work
+SetCapsLockState("AlwaysOff")   ; Disable the CapsLock LED on my keyboard
+SetNumLockState("On")           ; Turn on Scroll Lock, so my macros with keypad work
 
 
 
@@ -304,14 +303,16 @@ Global WindowsUserName
 Global WindowsUserDomain
 Global WindowsUserProfile
 Global MyDocumentsFolder
+Global UserEmailAddress
 Global IsWorkLaptop
-EnvGet, WindowsLocalAppDataFolder, LOCALAPPDATA
-EnvGet, WindowsProgramFilesX86Folder, PROGRAMFILES(X86)
-EnvGet, WindowsProgramFilesFolder, PROGRAMFILES
-EnvGet, WindowsUserName, USERNAME
-EnvGet, WindowsUserDomain, USERDOMAIN
-EnvGet, WindowsUserProfile, USERPROFILE
-EnvGet, MyPersonalFolder, PERSONAL_FILES
+WindowsLocalAppDataFolder := EnvGet("LOCALAPPDATA")
+WindowsProgramFilesX86Folder := EnvGet("PROGRAMFILES(X86)")
+WindowsProgramFilesFolder := EnvGet("PROGRAMFILES")
+WindowsUserName := EnvGet("USERNAME")
+WindowsUserDomain := EnvGet("USERDOMAIN")
+WindowsUserProfile := EnvGet("USERPROFILE")
+MyPersonalFolder := EnvGet("PERSONAL_FILES")
+UserEmailAddress := EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN")
 IsWorkLaptop := true
 
 ; These come from my Windows environment variables. See "Configure.bat" for details
@@ -326,17 +327,17 @@ Global SourceCodeUrl
 Global SourceSchemaUrl
 Global SlackStatusUpdate_OfficeNetworks
 Global ParsecPeerId
-EnvGet, MyPersonalFolder, PERSONAL_FILES
-MyPersonalDocumentsFolder = %MyPersonalFolder%\Documents\
-EnvGet, JiraUrl, AHK_JIRA_URL
-EnvGet, JiraMyProjectKeys, AHK_JIRA_MY_PROJECT_KEYS
-EnvGet, JiraDefaultProjectKey, AHK_JIRA_DEFAULT_PROJECT_KEY
-EnvGet, JiraDefaultRapidKey, AHK_JIRA_DEFAULT_RAPID_KEY
-EnvGet, JiraDefaultSprint, AHK_JIRA_DEFAULT_SPRINT
-EnvGet, SourceCodeUrl, AHK_SOURCE_CODE_URL
-EnvGet, SourceSchemaUrl, AHK_SOURCE_CODE_SCHEMA_URL
-EnvGet, SlackStatusUpdate_OfficeNetworks, SLACK_OFFICE_NETWORKS
-EnvGet, ParsecPeerId, PARSEC_PEER_ID
+MyPersonalFolder := EnvGet("PERSONAL_FILES")
+MyPersonalDocumentsFolder := MyPersonalFolder . "\Documents\"
+JiraUrl := EnvGet("AHK_JIRA_URL")
+JiraMyProjectKeys := EnvGet("AHK_JIRA_MY_PROJECT_KEYS")
+JiraDefaultProjectKey := EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY")
+JiraDefaultRapidKey := EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY")
+JiraDefaultSprint := EnvGet("AHK_JIRA_DEFAULT_SPRINT")
+SourceCodeUrl := EnvGet("AHK_SOURCE_CODE_URL")
+SourceSchemaUrl := EnvGet("AHK_SOURCE_CODE_SCHEMA_URL")
+SlackStatusUpdate_OfficeNetworks := EnvGet("SLACK_OFFICE_NETWORKS")
+ParsecPeerId := EnvGet("PARSEC_PEER_ID")
 
 
 
@@ -362,85 +363,103 @@ Volume_Mute::            ToggleMuteVOIPApps()
 
 ;--------------------------------------------------------------------------------------------------
 ; When looking at my personal laptop
-;   ⇪ [                  On my personal laptop, toggle left sidebar
+;   â‡ª [                  On my personal laptop, toggle left sidebar
 ;--------------------------------------------------------------------------------------------------
-#IfWinActive ahk_exe parsecd.exe
+#HotIf WinActive("ahk_exe parsecd.exe", )
   CapsLock & [::         SendKeystrokesToPersonalLaptop("{CapsLock down}[{CapsLock up}")
-#If
+#HotIf
 
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Slack
-;   ⇪ k                  Open Slack
-;   ⇪ ^ k                Open Slack and go to the "jump to" window
-;   ⇪ [                  Toggle left sidebar
+;   â‡ª k                  Open Slack
+;   â‡ª ^ k                Open Slack and go to the "jump to" window
+;   â‡ª [                  Toggle left sidebar
 ;   ^ mousewheel         Decrease/increase font size
 ;   ^ k                  Insert hyperlink (overrides Slack opening "jump to" window)
 ;   Statuses
-;     ⇪ # b              Status - Be Right Back. Sets Slack statuses to brb.
-;     ⇪ # e              Status - Eating. Sets Slack statuses to lunch/dinner.
+;     â‡ª # b              Status - Be Right Back. Sets Slack statuses to brb.
+;     â‡ª # c              Status - Cleared. Clears Slack status.
+;     â‡ª # e              Status - Eating. Sets Slack statuses to lunch/dinner.
 ;                        Also locks my laptop and turns off my office lights if I'm at home.
-;     ⇪ # m              Status - In a meeting. Sets Slack statuses to mtg.
-;     ⇪ # p              Status - Playing. Sets home Slack status to 8bit.
-;     ⇪ # w              Status - Working. Clears Slack statuses.
+;     â‡ª # m              Status - In a meeting. Sets Slack statuses to mtg.
+;     â‡ª # p              Status - Playing. Sets home Slack status to 8bit.
+;     â‡ª # w              Status - Working. Clears Slack statuses.
 ;---------------------------------------------------------------------------------------------------------------------
 CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))    
 
-#IfWinActive ahk_exe i)\\slack\.exe$ 
-  ^wheelup::             SendInput ^{=}
-  ^wheeldown::           SendInput ^{-}
-  CapsLock & [::         SendInput ^+{d}
-  ^k::                   SendInput ^+{u}
-#IfWinActive
+#HotIf WinActive("ahk_exe i)\\slack\.exe$", )
+  ^wheelup::  SendInput("^{=}")
+  ^wheeldown::  SendInput("^{-}")
+  CapsLock & [::  SendInput("^+{d}")
+  ^k::  SendInput("^+{u}")
+#HotIf
 
-#If GetKeyState("LWin")
+; Since upgrading to AHK v2, Windows key was opening the Start menu. So I switched to using
+; the Alt key.
+; Also couldn't get this working w/AHK v2: https://github.com/HelgeffegleH/longhotkey
+; #HotIf GetKeyState("LWin")
+;   CapsLock & b::         SlackStatusUpdate_SetSlackStatusAndPresence("brb", "away")
+;   CapsLock & e::         SlackStatus_Eating()
+;   CapsLock & m::         SlackStatusUpdate_SetSlackStatusAndPresence("meeting", "auto")
+;   CapsLock & p::         SlackStatusUpdate_SetHomeSlackStatus("playing")
+;   CapsLock & w::         SlackStatus_Working()
+; #HotIf
+
+#HotIf GetKeyState("Alt")
   CapsLock & b::         SlackStatusUpdate_SetSlackStatusAndPresence("brb", "away")
-  CapsLock & e::   
-    If (A_Hour < 15)   ; Before 3:00 pm
-    {
-      SlackStatusUpdate_SetSlackStatusAndPresence("lunch", "away")
-    }
-    Else
-    {
-      SlackStatusUpdate_SetSlackStatusAndPresence("dinner", "away")
-    }
-    If AmNearWifiNetwork("(kummer)")
-    {
-      HomeAutomationCommand("officelite off")
-      HomeAutomationCommand("officelitetop off")
-      HomeAutomationCommand("officelitemiddle off")
-      HomeAutomationCommand("officelitebotltom off")
-    }
-    DllCall("user32.dll\LockWorkStation")
-    Return
+  CapsLock & c::         SlackStatusUpdate_SetSlackStatusAndPresence("none", "auto")
+  CapsLock & e::         SlackStatus_Eating()
   CapsLock & m::         SlackStatusUpdate_SetSlackStatusAndPresence("meeting", "auto")
   CapsLock & p::         SlackStatusUpdate_SetHomeSlackStatus("playing")
-  CapsLock & w::
-    If AmNearWifiNetwork(SlackStatusUpdate_OfficeNetworks)
-    {
-      ;Msgbox Am in the office
-      SlackStatusUpdate_SetSlackStatusAndPresence("workingInOffice", "auto")
-    }
-    Else
-    {
-      ;Msgbox Am at home
-      SlackStatusUpdate_SetSlackStatusAndPresence("workingRemotely", "auto")
-    }
-    Return
-#If
+  CapsLock & w::         SlackStatus_Working()
+#HotIf
 
 OpenSlack(shortcut := "")
 {
   RunOrActivateAppOrUrl("ahk_exe slack.exe", WindowsLocalAppDataFolder . "\Slack\Slack.exe", 3, True)
-  If shortcut <>
-    SendInput %shortcut%
+  if (shortcut != "")
+    SendInput(shortcut)
+  Return
+}
+
+SlackStatus_Eating()
+{
+  If (A_Hour < 15)   ; Before 3:00 pm
+  {
+    SlackStatusUpdate_SetSlackStatusAndPresence("lunch", "away")
+  }
+  Else
+  {
+    SlackStatusUpdate_SetSlackStatusAndPresence("dinner", "away")
+  }
+  If AmNearWifiNetwork("(kummer)")
+  {
+    HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
+  }
+  DllCall("user32.dll\LockWorkStation")
+  Return
+}
+
+SlackStatus_Working()
+{
+  If AmNearWifiNetwork(SlackStatusUpdate_OfficeNetworks)
+  {
+    ;Msgbox Am in the office
+    SlackStatusUpdate_SetSlackStatusAndPresence("workingInOffice", "auto")
+  }
+  Else
+  {
+    ;Msgbox Am at home
+    SlackStatusUpdate_SetSlackStatusAndPresence("workingRemotely", "auto")
+  }
   Return
 }
 
 
 ;--------------------------------------------------------------------------------------------------
 ; Calendar
-;   ⇪ c                  Run or activate Outlook and switch to the calendar, using an Outlook
+;   â‡ª c                  Run or activate Outlook and switch to the calendar, using an Outlook
 ;                        shortcut to switch to the calendar
 ;--------------------------------------------------------------------------------------------------
 CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
@@ -448,7 +467,7 @@ CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
 
 ;--------------------------------------------------------------------------------------------------
 ; Inbox
-;   ⇪ i                  Run or activate Outlook and switch to the inbox, using an Outlook shortcut
+;   â‡ª i                  Run or activate Outlook and switch to the inbox, using an Outlook shortcut
 ;                        to switch to the inbox
 ;--------------------------------------------------------------------------------------------------
 CapsLock & i::           ActivateOrStartMicrosoftOutlook("^+I")
@@ -456,8 +475,8 @@ CapsLock & i::           ActivateOrStartMicrosoftOutlook("^+I")
 
 ;--------------------------------------------------------------------------------------------------
 ; JIRA
-;   ⇪ j                  Opens the current board
-;   ⇪ ^ j                Opens the selected story number
+;   â‡ª j                  Opens the current board
+;   â‡ª ^ j                Opens the selected story number
 ;                          * If the highlighted text looks like a JIRA story number (e.g. 
 ;                            PROJECT-1234), then open that story
 ;                          * If the Git Bash window has text that looks like a JIRA story number, 
@@ -469,19 +488,19 @@ CapsLock & j::           JIRA()
 
 ;--------------------------------------------------------------------------------------------------
 ; Music/Spotify
-;   ⇪ m                  Run or activate Spotify
+;   â‡ª m                  Run or activate Spotify
 ;--------------------------------------------------------------------------------------------------
 CapsLock & m::           RunOrActivateSpotify()
-#IfWinActive ahk_exe i)\\spotify\.exe$ 
-  ^wheelup::             SendInput ^{=}
-  ^wheeldown::           SendInput ^{-}
-#IfWinActive
+#HotIf WinActive("ahk_exe i)\\spotify\.exe$", )
+  ^wheelup::  SendInput("^{=}")
+  ^wheeldown::  SendInput("^{-}")
+#HotIf
   
 
 
 ;--------------------------------------------------------------------------------------------------
 ; Personal computer
-;   ⇪ p                  Connect to personal computer
+;   â‡ª p                  Connect to personal computer
 ;--------------------------------------------------------------------------------------------------
 CapsLock & p::           ConnectToPersonalComputer()
 
@@ -489,10 +508,11 @@ CapsLock & p::           ConnectToPersonalComputer()
 
 ;--------------------------------------------------------------------------------------------------
 ; Source code
-;   ⇪ s                  Source code/BitBucket
-;   ⇪ ^ s                Source code/BitBucket- schemas
+;   â‡ª s                  Source code/BitBucket
+;   â‡ª ^ s                Source code/BitBucket- schemas
 ;--------------------------------------------------------------------------------------------------
 CapsLock & s:: 
+{
   If GetKeyState("Ctrl")
   {
     RunOrActivateAppOrUrl("eventschema", SourceSchemaUrl, 3, true, false)
@@ -502,81 +522,81 @@ CapsLock & s::
     RunOrActivateAppOrUrl("overview", SourceCodeUrl, 3, true, false)
   }
   Return
+}
 
 
 ;--------------------------------------------------------------------------------------------------
 ; Visual Studio
-;   ⇪ [                  Toggle left sidebar
+;   â‡ª [                  Toggle left sidebar
 ;                        Use Shift+Esc to exit, or click outside
 ;                        I could not find a way to determine if the Solution Explorer was open or 
-;                        not, to determine if I should do ⇪[ or +{Esc}
+;                        not, to determine if I should do â‡ª[ or +{Esc}
 ;--------------------------------------------------------------------------------------------------
-#IfWinActive ahk_exe i)\\devenv\.exe$ 
-  CapsLock & [::         SendInput ^!l
-#IfWinActive
+#HotIf WinActive("ahk_exe i)\\devenv\.exe$", )
+  CapsLock & [::  SendInput("^!l")
+#HotIf
 
 
 ;--------------------------------------------------------------------------------------------------
 ; IntelliJ
-;   ⇪ l                  Start IntelliJ
-;   ⇪ [                  Toggle left sidebar
+;   â‡ª l                  Start IntelliJ
+;   â‡ª [                  Toggle left sidebar
 ;--------------------------------------------------------------------------------------------------
 CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", WindowsProgramFilesFolder . "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe")
-#IfWinActive ahk_exe i)\\idea64\.exe$ 
-  CapsLock & [::         SendInput !1
-#IfWinActive
+#HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
+  CapsLock & [::  SendInput("!1")
+#HotIf
 
 
 ;--------------------------------------------------------------------------------------------------
 ; Home automation
 ;   (keys listed are on the numeric keypad)
-;   ⇪ +                   Air cleaner: toggle on/off
+;   â‡ª +                   Air cleaner: toggle on/off
 ;
-;   ⇪ Enter                       Fan: toggle on/off
+;   â‡ª Enter                       Fan: toggle on/off
 ;
-;   ⇪ 7|8|9                 Top light: brightness down|toggle on/off|brightness up
-;   ⇪ ^ 7|9                 Top light: brightness 1%|brightness 100%
+;   â‡ª 7|8|9                 Top light: brightness down|toggle on/off|brightness up
+;   â‡ª ^ 7|9                 Top light: brightness 1%|brightness 100%
 ;
-;   ⇪ 4|5|6              Middle light: brightness down|toggle on/off|brightness up
-;   ⇪ ^ 4|6              Middle light: brightness 1%|brightness 100%
+;   â‡ª 4|5|6              Middle light: brightness down|toggle on/off|brightness up
+;   â‡ª ^ 4|6              Middle light: brightness 1%|brightness 100%
 ;
-;   ⇪ 1|2|3              Bottom light: brightness down|toggle on/off|brightness up
-;   ⇪ ^ 1|3              Bottom light: brightness 1%|brightness 100%
+;   â‡ª 1|2|3              Bottom light: brightness down|toggle on/off|brightness up
+;   â‡ª ^ 1|3              Bottom light: brightness 1%|brightness 100%
 ;
 ;
 ; DISABLED
-;  ⇪ ^ +                 Air cleaner: cycle between fan speeds
-;                        THIS IS VALID FOR VESYNC AIRE CLEANER, NOT WYZE PLUG
+;  â‡ª ^ +                 Air cleaner: cycle between fan speeds
+;                        THIS IS VALID FOR VESYNC AIR CLEANER, NOT WYZE PLUG
 ;--------------------------------------------------------------------------------------------------
-CapsLock & NumpadAdd::   HomeAutomationCommand("officeac  toggle")      ; HomeAutomationCommand("ac " . (GetKeyState("Ctrl") ? "speed cycle" : "toggle"))
+CapsLock & NumpadAdd::   HomeAutomationCommand("officeac  toggle")     
 CapsLock & NumpadEnter:: HomeAutomationCommand("officefan toggle")
 
-CapsLock & NumLock::     HomeAutomationCommand("officelite       brightness " . (GetKeyState("Ctrl") ? "1"   : "-"))
+; Because ^NumLock produces key code of Pause, must do hot keys differently for minimum brightness for officelite
+CapsLock & NumLock::     HomeAutomationCommand("officelite       brightness -")
+CapsLock & Pause::       HomeAutomationCommand("officelite       brightness 1")
 CapsLock & NumpadDiv::   HomeAutomationCommand("officelite       toggle")
-CapsLock & NumpadMult::  HomeAutomationCommand("officelite       brightness " . (GetKeyState("Ctrl") ? "100" : "+"))
+CapsLock & NumpadMult::  HomeAutomationCommand("officelite       brightness " (GetKeyState("Ctrl") ? "100" : "+"))
 
-CapsLock & Numpad7::     HomeAutomationCommand("officelitetop    brightness " . (GetKeyState("Ctrl") ? "1"   : "-"))
+CapsLock & Numpad7::     HomeAutomationCommand("officelitetop    brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
 CapsLock & Numpad8::     HomeAutomationCommand("officelitetop    toggle")
-CapsLock & Numpad9::     HomeAutomationCommand("officelitetop    brightness " . (GetKeyState("Ctrl") ? "100" : "+"))
+CapsLock & Numpad9::     HomeAutomationCommand("officelitetop    brightness " (GetKeyState("Ctrl") ? "100" : "+"))
 
-CapsLock & Numpad4::     HomeAutomationCommand("officelitemiddle brightness " . (GetKeyState("Ctrl") ? "1"   : "-"))
+CapsLock & Numpad4::     HomeAutomationCommand("officelitemiddle brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
 CapsLock & Numpad5::     HomeAutomationCommand("officelitemiddle toggle")
-CapsLock & Numpad6::     HomeAutomationCommand("officelitemiddle brightness " . (GetKeyState("Ctrl") ? "100" : "+"))
+CapsLock & Numpad6::     HomeAutomationCommand("officelitemiddle brightness " (GetKeyState("Ctrl") ? "100" : "+"))
 
-CapsLock & Numpad1::     HomeAutomationCommand("officelitebottom brightness " . (GetKeyState("Ctrl") ? "1"   : "-"))
+CapsLock & Numpad1::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
 CapsLock & Numpad2::     HomeAutomationCommand("officelitebottom toggle")
-CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " . (GetKeyState("Ctrl") ? "100" : "+"))
+CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "100" : "+"))
 
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Generate a UUID/GUID
-;   ⇪ u                  Generate random UUID (lowercase)
-;   ⇪ + u                Generate random UUID (uppercase)
+;   â‡ª u                  Generate random UUID (lowercase)
+;   â‡ª + u                Generate random UUID (uppercase)
 ;---------------------------------------------------------------------------------------------------------------------
-CapsLock & u::           GenerateLowercaseGUID()
-#If GetKeyState("Shift")
-  CapsLock & u::         GenerateUppercaseGUID()
-#If
+CapsLock & u::             GenerateGUID(GetKeyState("Shift"))
 
 
 
@@ -586,14 +606,14 @@ CapsLock & u::           GenerateLowercaseGUID()
 ;
 ; I have to put this at the bottom of my script, or else it interferes with other code in this script
 ;--------------------------------------------------------------------------------------------------
-#Include %A_ScriptDir%\Shared.ahk
-#Include %A_ScriptDir%\Functions.ahk
-#Include %A_ScriptDir%\Utilities.ahk
-#Include %A_ScriptDir%\Customize Windows.ahk
-#Include %A_ScriptDir%\My Auto Correct.ahk
-#Include %A_ScriptDir%\Convert Case.ahk
+#Include "%A_ScriptDir%\Shared_v2.ahk"
+#Include "%A_ScriptDir%\Functions_v2.ahk"
+#Include "%A_ScriptDir%\Utilities_v2.ahk"
+#Include "%A_ScriptDir%\Customize Windows_v2.ahk"
+#Include "%A_ScriptDir%\My Auto Correct_v2.ahk"
+#Include "%A_ScriptDir%\Convert Case_v2.ahk"
 
-#Include %A_ScriptDir%\Slack.ahk
-#Include %A_ScriptDir%\Mute VOIP Apps.ahk
+#Include "%A_ScriptDir%\Slack_v2.ahk"
+#Include "%A_ScriptDir%\Mute VOIP Apps_v2.ahk"
 
-#Include %A_ScriptDir%\lib\RunAsAdmin.ahk
+#Include "%A_ScriptDir%\lib\RunAsAdmin_v2.ahk"

@@ -1,7 +1,6 @@
-;--------------------------------------------------------------------------------------------------
+﻿;--------------------------------------------------------------------------------------------------
 ; Customizing Windows
 ;--------------------------------------------------------------------------------------------------
-#Requires Autohotkey v1.1.33+
 
 
 ;---------------------------------------------------------------------------------------------------------------------
@@ -9,7 +8,7 @@
 ;   - First time you use it, un-maximizes (restores) the window
 ;   - Second second time you use it, it minimizes the window
 ;---------------------------------------------------------------------------------------------------------------------
-#down::  WinMinimize, A
+#down::WinMinimize("A")
 
 
 ;--------------------------------------------------------------------------------------------------
@@ -20,6 +19,7 @@
 ;  DO I EVEN WANT THIS? OR IS IT JUST SOMETHING I'LL MESS UP WITH? JUST HOLD DOWN SHIFT??
 ;--------------------------------------------------------------------------------------------------
 ;CapsLock::
+;{
 ;  KeyWait, CapsLock                                                   ; Wait forever until Capslock is released.
 ;  KeyWait, CapsLock, D T0.2                                           ; ErrorLevel = 1 if CapsLock not down within 0.2 seconds.
 ;  If ((ErrorLevel = 0) && (A_PriorKey = "CapsLock") )                 ; Is a double tap on CapsLock?
@@ -27,6 +27,7 @@
 ;    SetCapsLockState, % GetKeyState("CapsLock","T") ? "Off" : "On"    ; Toggle the state of CapsLock LED
 ;  }
 ;  Return
+;}
 
 ; If don't want the above, then disable CapsLock using below
 CapsLock:: Return
@@ -44,57 +45,50 @@ CapsLock:: Return
 ; title is "How to Use Slack".  Also, Microsoft Edge browser is more complex than a single process, so detecting it is
 ; more complex.
 ;---------------------------------------------------------------------------------------------------------------------
-#IfWinNotActive ahk_exe parsecd.exe
+#HotIf !WinActive("ahk_exe parsecd.exe", )
   xbutton1::
-    WinMinimize, A
+  {
+    WinMinimize("A")
 	  Return
+  }
 
   xbutton2::
-    WinGet, processName, ProcessName, A
-    SplitPath, processName,,,, processNameNoExtension
+  {
+    processName := WinGetProcessName("A")
+    SplitPath(processName, , , , &processNameNoExtension)
 
     If RegExMatch(processNameNoExtension, "i)skype|outlook|wmplayer|slack|typora") 
     or WinActive("iHeartRadio ahk_exe i)ApplicationFrameHost.exe")
     {
-	    WinMinimize, A     ; Do not want to close these apps
+	    WinMinimize("A")     ; Do not want to close these apps
     }
     Else If RegExMatch(processNameNoExtension, "i)chrome|iexplore|firefox|notepad++|ssms|devenv|eclipse|winmergeu|robo3t|code|idea64") 
     or WinActive("ahk_exe msedge.exe")
     {
-      SendInput ^{f4}    ; Close a WINDOW/TAB/DOCUMENT
+      SendInput("^{f4}")    ; Close a WINDOW/TAB/DOCUMENT
     }
     Else
     {
-      SendInput !{f4}    ; Close the APP
+      SendInput("!{f4}")    ; Close the APP
     }
     Return
-#IfWinNotActive
+  }
+#HotIf !WinActive(, )
 
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Mouse media controls
-;   ⇪ mouse wheel        Volume down/up
-;   ⇪ LButton            Play/pause
-;   ⇪ RButton            Music app (Spotify)
-;   ⇪ XButton1           Previous track
-;   ⇪ XButton2           Next track
+;   â‡ª mouse wheel        Volume down/up
+;   â‡ª LButton            Play/pause
+;   â‡ª RButton            Music app (Spotify)
+;   â‡ª XButton1           Previous track
+;   â‡ª XButton2           Next track
 ;---------------------------------------------------------------------------------------------------------------------
-#If IsWorkLaptop
-  CapsLock & wheelup::   SendInput {Blind}{Volume_Up 1}
-  CapsLock & wheeldown:: SendInput {Blind}{Volume_Down 1}
-  CapsLock & LButton::   SendInput {Blind}{Media_Play_Pause}
-  CapsLock & RButton::   RunOrActivateSpotify()
-  CapsLock & XButton1::  SendInput {Blind}{Media_Prev}
-  CapsLock & XButton2::  SendInput {Blind}{Media_Next}
-#If
-
-
-;--------------------------------------------------------------------------------------------------
-; Switch audio output
-;   - I originally created this to switch my Jabra headphones between "headphones" and "headset",
-;     but this appears to be unnecessary with my Jabra Link.
-;   - I wanted a toggle, but I couldn't find a way to determine the current setting. Could just
-;     toggle a varaible and it might be out of sync the first time.
-;--------------------------------------------------------------------------------------------------
-;^#pause::                SwitchAudioOutput("Headphones")    ; ^numlock = ^pause
-;^#numpadsub::            SwitchAudioOutput("Headset")
+#HotIf IsWorkLaptop
+  CapsLock & wheelup::     SendInput("{Blind}{Volume_Up 1}")
+  CapsLock & wheeldown::   SendInput("{Blind}{Volume_Down 1}")
+  CapsLock & LButton::     SendInput("{Blind}{Media_Play_Pause}")
+  CapsLock & RButton::     RunOrActivateSpotify()
+  CapsLock & XButton1::    SendInput("{Blind}{Media_Prev}")
+  CapsLock & XButton2::    SendInput("{Blind}{Media_Next}")
+#HotIf

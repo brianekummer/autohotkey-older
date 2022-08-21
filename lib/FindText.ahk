@@ -22,6 +22,7 @@
 ;
 ;===========================================
 ;*/
+#Requires Autohotkey v1.1.33+
 
 
 if (!A_IsCompiled and A_LineFile=A_ScriptFullPath)

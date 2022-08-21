@@ -1,5 +1,6 @@
 ; The body of most everything is here
 ; do not include re-usable utility type functions
+#Requires Autohotkey v1.1.33+
 
 
 ;--------------------------------------------------------------------------------------------------
@@ -136,6 +137,7 @@ HomeAutomationCommand(command)
 
   ; This works. It's synchronous, so don't love it, but at least it does not display a DOS box.
   ;Run, %ComSpec% /c "python c:\users\brian-kummer\Personal\Code\git\home-automation\home_automation.py %command%", "C:\Users\brian-kummer\Personal\Code\git\home-automation", Hide
+  clipboard := "python %MyPersonalFolder%\Code\git\home-automation\home_automation.py %command%" ;, "%MyPersonalFolder%\Code\git\home-automation"
   Run, %ComSpec% /c "python %MyPersonalFolder%\Code\git\home-automation\home_automation.py %command%", "%MyPersonalFolder%\Code\git\home-automation", Hide
 
 

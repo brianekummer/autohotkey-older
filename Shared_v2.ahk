@@ -1,4 +1,4 @@
-;--------------------------------------------------------------------------------------------------
+﻿;--------------------------------------------------------------------------------------------------
 ; My AutoHotKey Automations - Shared Between Personal and Work
 ;
 ;
@@ -10,7 +10,7 @@
 ;
 ; Keep in Mind While Developing This
 ; ----------------------------------
-;   - Any use for text-to-speech? ComObjCreate("SAPI.SpVoice").Speak("Speak this phrase")
+;   - Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
 ;   - Popup menus are useful- can I use them elsewhere?
 ;   - Are timed tooltips useful somewhere?
 ;   - Are classes useful anywhere?
@@ -18,7 +18,7 @@
 ;
 ; Modifiers
 ; ---------
-; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ⇪ = CapsLock/Hyper
+; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      â‡ª = CapsLock/Hyper
 ;
 ;
 ; Windows Provided
@@ -35,52 +35,52 @@
 ;
 ; Shortcuts
 ; ---------
-; ⇪ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
-; ⇪ b                   Windows (AHK)    Browser
-; ⇪ c                   Windows (AHK)    Calendar
-; ⇪ i                   Windows (AHK)    Inbox
-; ⇪ j                   Windows (AHK)    JIRA- current project board
-; ⇪ ^ j                 Windows (AHK)    JIRA- open selected story number
-; ⇪ m                   Windows (AHK)    Music/Spotify
-; ⇪ t                   Windows (AHK)    Terminal/Cmder/bash
+; â‡ª ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
+; â‡ª b                   Windows (AHK)    Browser
+; â‡ª c                   Windows (AHK)    Calendar
+; â‡ª i                   Windows (AHK)    Inbox
+; â‡ª j                   Windows (AHK)    JIRA- current project board
+; â‡ª ^ j                 Windows (AHK)    JIRA- open selected story number
+; â‡ª m                   Windows (AHK)    Music/Spotify
+; â‡ª t                   Windows (AHK)    Terminal/Cmder/bash
 ; PrintScreen           Windows (AHK)    Windows screenshot tool
 ;
 ;
 ; Other Stuff
 ; -----------
-; ⇪ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
-; ⇪ u                   Windows (AHK)    Generate a random UUID (lowercase)
-; ⇪ + u                 Windows (AHK)    Generate a random UUID (uppercase)
+; â‡ª RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
+; â‡ª u                   Windows (AHK)    Generate a random UUID (lowercase)
+; â‡ª + u                 Windows (AHK)    Generate a random UUID (uppercase)
 ;
 ;
 ; Media Controls
 ; --------------
-; ⇪ WheelUp/WheelDown   Windows (AHK)    Volume up/down
-; ⇪ LButton             Windows (AHK)    Play/pause
-; ⇪ RButton             Windows (AHK)    Music app (Spotify)
-; ⇪ XButton1            Windows (AHK)    Previous track
-; ⇪ XButton2            Windows (AHK)    Next track
+; â‡ª WheelUp/WheelDown   Windows (AHK)    Volume up/down
+; â‡ª LButton             Windows (AHK)    Play/pause
+; â‡ª RButton             Windows (AHK)    Music app (Spotify)
+; â‡ª XButton1            Windows (AHK)    Previous track
+; â‡ª XButton2            Windows (AHK)    Next track
 ; Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
 ;
 ;
 ; ?????
-;^#pause::        Run, nircmd setdefaultsounddevice "Headphones",, Hide      ; ^numlock = ^pause
-;^#numpadsub::    Run, nircmd setdefaultsounddevice "Headset",, Hide
+;^#pause::Run("nircmd setdefaultsounddevice `"Headphones`"", , "Hide")      ; ^numlock = ^pause
+;^#numpadsub::Run("nircmd setdefaultsounddevice `"Headset`"", , "Hide")
 ;
 ;
 ; Home Automation
 ; ---------------
 ; (keys listed are numeric keypad)
-; ⇪ +                   Windows (AHK)     Air cleaner: toggle on/off
-; ⇪ Enter               Windows (AHK)             Fan: toggle on/off
+; â‡ª +                   Windows (AHK)     Air cleaner: toggle on/off
+; â‡ª Enter               Windows (AHK)             Fan: toggle on/off
 ;
-; ⇪ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
-; ⇪ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
-; ⇪ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
+; â‡ª 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
+; â‡ª 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
+; â‡ª 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
 ;
-; ⇪ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
-; ⇪ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
-; ⇪ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
+; â‡ª ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
+; â‡ª ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
+; â‡ª ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
 ;
 ;
 ; Customizing Windows Behavior
@@ -96,50 +96,50 @@
 ; Slack:
 ;   ^ mousewheel        Slack (AHK)      Decrease/increase font size
 ;   ^ k                 Slack (AHK)      Insert hyperlink
-;   ⇪ [                 Slack (AHK)      Toggle left sidebar
-;   ⇪ ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
-;   ⇪ ! l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
-;   ⇪ ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
-;   ⇪ ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
-;   ⇪ ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
+;   â‡ª [                 Slack (AHK)      Toggle left sidebar
+;   â‡ª ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
+;   â‡ª ! l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
+;   â‡ª ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
+;   â‡ª ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
+;   â‡ª ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
 ; Typora
 ;   ^ mousewheel        Typora (AHK)     Decrease/increase font size
-;   ⇪ [                 Typora (AHK)     Toggle left sidebar
+;   â‡ª [                 Typora (AHK)     Toggle left sidebar
 ; VS Code
 ;   ^ mousewheel        VS Code (AHK)    Decrease/increase font size
-;   ⇪ [                 VS Code (AHK)    Toggle left sidebar
+;   â‡ª [                 VS Code (AHK)    Toggle left sidebar
 ; IntelliJ
-;   ⇪ [                 IntelliJ (AHK)   Toggle left sidebar
+;   â‡ª [                 IntelliJ (AHK)   Toggle left sidebar
 ; Visual Studio
-;   ⇪ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
+;   â‡ª [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
 ;
 ;
 ; Code Structure
 ; --------------
 ; autohotkey/
-; ├─ experiments/                Temporary things I'm experimenting with
-; │  ├─ trying-to-do-blah.ahk
-; │  └─ can-i-do-this.ahk
-; │
-; ├─ examples to keep/           Interesting stuff I want to keep but am not using
-; │  └─ example1.ahk
-; │
-; ├─ lib/                        Libraries of other people's work that I'm using
-; │  ├─ AutoCorrect.ahk
-; │  ├─ RunAsAdmin.ahk
-; │  └─ FindText.ahk             ** TODO- AM I GOING TO USE THIS???
-; │
-; ├─ Configure.bat               Batch file to configure by setting environment variables
-; ├─ Main Home.ahk               Main code for personal laptop, mostly hotkeys that call functions
-; ├─ Main Work.ahk               Main code for work laptop, mostly hotkeys that call functions
-; ├─ Shared.ahk                  Shared between personal and work laptops, mostly hotkeys that call functions
-; ├─ Functions.ahk               Majority of my code is here
-; ├─ Convert Case.ahk            Cycle through lower/upper/sentence/title case
-; ├─ Customize Windows.ahk       Code that customizes how Windows works
-; ├─ My Auto Correct.ahk         My wrapper over AutoCorrect.ahk that includes my words to correct
-; ├─ Mute VOIP Apps.ahk          Functions to mute Microsoft Teams, Slack, and Zoom calls/meetings
-; ├─ Slack.ahk                   Controlling Slack
-; └─ Utilities.ahk               Utility functions
+; â”œâ”€ experiments/                Temporary things I'm experimenting with
+; â”‚  â”œâ”€ trying-to-do-blah.ahk
+; â”‚  â””â”€ can-i-do-this.ahk
+; â”‚
+; â”œâ”€ examples to keep/           Interesting stuff I want to keep but am not using
+; â”‚  â””â”€ example1.ahk
+; â”‚
+; â”œâ”€ lib/                        Libraries of other people's work that I'm using
+; â”‚  â”œâ”€ AutoCorrect.ahk
+; â”‚  â”œâ”€ RunAsAdmin.ahk
+; â”‚  â””â”€ FindText.ahk             ** TODO- AM I GOING TO USE THIS???
+; â”‚
+; â”œâ”€ Configure.bat               Batch file to configure by setting environment variables
+; â”œâ”€ Main Home.ahk               Main code for personal laptop, mostly hotkeys that call functions
+; â”œâ”€ Main Work.ahk               Main code for work laptop, mostly hotkeys that call functions
+; â”œâ”€ Shared.ahk                  Shared between personal and work laptops, mostly hotkeys that call functions
+; â”œâ”€ Functions.ahk               Majority of my code is here
+; â”œâ”€ Convert Case.ahk            Cycle through lower/upper/sentence/title case
+; â”œâ”€ Customize Windows.ahk       Code that customizes how Windows works
+; â”œâ”€ My Auto Correct.ahk         My wrapper over AutoCorrect.ahk that includes my words to correct
+; â”œâ”€ Mute VOIP Apps.ahk          Functions to mute Microsoft Teams, Slack, and Zoom calls/meetings
+; â”œâ”€ Slack.ahk                   Controlling Slack
+; â””â”€ Utilities.ahk               Utility functions
 ;
 ;
 ;
@@ -171,20 +171,20 @@
 ;   - Moved Solution Explorer to left side, pinned
 ;   - ^!l shows it 
 ;   - +{Esc} makes it go away
-;   - CAN I GET IT WORKING WITH AHK??? ⇪ [
+;   - CAN I GET IT WORKING WITH AHK??? â‡ª [
 ;        - Can't tell by the active window. maybe I can loop through all the active windows in
 ;
 ;
 ;
 ;
-; ⇪ v                   Windows (AHK)    VS Code
-; ⇪ ^ v                 Open VS Code, create a new doc, paste selected text, then format it
+; â‡ª v                   Windows (AHK)    VS Code
+; â‡ª ^ v                 Open VS Code, create a new doc, paste selected text, then format it
 ;
 ;
 ; Customizing App Behavior
 ; ------------------------
 ; Slack:
-;   ⇪ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
+;   â‡ª ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
 ; VS Code
 ;   ~$^s                VS Code (AHK)    After save AHK file, reload current script
 ;
@@ -192,7 +192,7 @@
 ; standardize video keys for youtube and udemy
 ;
 ; LOW PRIORITY
-; ⇪ ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
+; â‡ª ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
 ;
 ;
 ; EVALUATE ALL OF THIS
@@ -209,9 +209,9 @@
 ;
 ; >> Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
 ;
-;   H ⌘ f          HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
+;   H âŒ˜ f          HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
 ;                           which also sets Slack statuses to heads-down.
-;   H ⌘ s          HS       Studying. Starts Do Not Disturb timer for 60 minutes,
+;   H âŒ˜ s          HS       Studying. Starts Do Not Disturb timer for 60 minutes,
 ;                           which also sets Slack statuses to books and opens udemy.com.
 ;
 ; (on login/unlock)  Windows (AHK)       Set Slack status based on nearby wifi networks
@@ -225,11 +225,11 @@
 ; H right        HS       Snap active window to right half/third/two-thirds of the screen
 ; H up           HS       Snap active window to top half/third/two-thirds of the screen
 ; H down         HS       Snap active window to top half/third/two-thirds of the screen
-; H return       HS       Toggle full screen
-; H ⌘ up         HS       Maximize window
-; H ⌘ down       HS       Minimize window
-; H ⌘ left       HS       Move active window to the previous screen
-; H ⌘ right      HS       Move active window to the next screen
+; H return HS       Toggle full screen
+; H âŒ˜ up         HS       Maximize window
+; H âŒ˜ down       HS       Minimize window
+; H âŒ˜ left       HS       Move active window to the previous screen
+; H âŒ˜ right      HS       Move active window to the next screen
 ; ============================================================================================
 ;
 ;
@@ -269,21 +269,21 @@
 ;   - CapsLock as a Windows modifier: https://www.howtogeek.com/446418/how-to-use-caps-lock-as-a-modifier-key-on-windows/
 ;                                     https://www.autohotkey.com/boards/viewtopic.php?t=70854
 ;--------------------------------------------------------------------------------------------------
-#Requires Autohotkey v1.1.33+
 
 
 
 
 ;--------------------------------------------------------------------------------------------------
 ; Emergency Reload
-;   ⇪ ^ ! Esc            Reload this script
+;   â‡ª ^ ! Esc            Reload this script
 ;
 ; I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
 ; for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
 ;--------------------------------------------------------------------------------------------------
-#If GetKeyState("Alt") and GetKeyState("Ctrl")
+#HotIf GetKeyState("Alt") and GetKeyState("Ctrl")
   CapsLock & Esc::
-    IfWinActive, ahk_exe parsecd.exe      ; When using personal laptop at work, tell personal laptop to reload
+  {
+    if WinActive("ahk_exe parsecd.exe")      ; When using personal laptop at work, tell personal laptop to reload
     {
       SendKeystrokesToPersonalLaptop("{Alt down}{Control down}{CapsLock down}{Esc}{CapsLock up}{Control up}{Alt up}")
     }
@@ -292,7 +292,8 @@
       Reload                              ; Reload AHK on either work or personal laptop
     }
     Return
-#If 
+  }
+#HotIf
 
 
 
@@ -323,13 +324,14 @@
 ;  ; url="https://www.youtube.com/watch?v=JAuCaFVS9FU" => "youtube.com"
 ;
 ;  ; This isn't very pretty, only handles prefix of "www"
-;  RegexMatch(url, InStr(url, "//www") ? "\.(.+?)\/" : "^\w+://([^/]+)", domain)
-;  Return domain1
+;  RegExMatch(url, InStr(url, "//www") ? "\.(.+?)\/" : "^\w+://([^/]+)", &domain)
+;  Return domain[1]
 ;}
 
 
 
 ;-----------------------------------------------------------------------------
+; TODO- This WHOL ETHING needs re-evaluated
 ;-- Return true if the current app or web site is for video, and that my key
 ;-- standardization should be used. The apps/websites are:
 ;--   * VLC
@@ -348,37 +350,42 @@
 ;   1. https://github.com/G33kDude/Chrome.ahk is one way to getting url from chrome, but requires a lot of
 ;      steps and starting chrome in debug mode, which I can do
 ;   2. This Chrome extension can be set to a hotkey to copy the current url to 
-;      the clipboard: https://chrome.google.com/webstore/detail/copy-url-to-clipboard/miancenhdlkbmjmhlginhaaepbdnlllc/related?hl=en
+;      the A_Clipboard: https://chrome.google.com/webstore/detail/copy-url-to-A_Clipboard/miancenhdlkbmjmhlginhaaepbdnlllc/related?hl=en
 ;-----------------------------------------------------------------------------
-isVideoAppOrSite()
-{
-  ; So Window title looks like this: "Peyton Manning reacts to Patrick Mahomes' INT - YouTube (www.youtube.com) - Google Chrome"
-  WinGetTitle, title, A
-  RegexMatch(title, "\((.*)\) - Google Chrome", fullDomain)
+;isVideoAppOrSite()
+;{
+;  ; So Window title looks like this: "Peyton Manning reacts to Patrick Mahomes' INT - YouTube (www.youtube.com) - Google Chrome"
+;  title := WinGetTitle("A")
+;  RegExMatch(title, "\((.*)\) - Google Chrome", &fullDomain)
 
-  domainWithoutPrefix1 := ""
-  if fullDomain
-  {
-    RegexMatch(fullDomain, "(\w+\.\w+)\) - Google Chrome$", domainWithoutPrefix)
-  }
+;   ;domain["WithoutPrefix1"] := ""
+;   if fullDomain[0]
+;   {
+;     RegExMatch(fullDomain[0], "(\w+\.\w+)\) - Google Chrome$", &domainWithoutPrefix)
+;   }
   
-  if (domainWithoutPrefix1 = "youtube.com" or domainWithoutPrefix1 = "udemy.com")
-  {
-    return True
-  }
-  else 
-  {
-    WinGet, id, List, ahk_exe vlc.exe
-    if id
-    {
-      return True
-    }
-    Else
-    {
-      return False
-    }
-  }
-}
+;   if (domain["WithoutPrefix1"] = "youtube.com" or domain["WithoutPrefix1"] = "udemy.com")
+;   {
+;     return True
+;   }
+;   else 
+;   {
+;     oid := WinGetList("ahk_exe vlc.exe",,,)
+;     aid := Array()
+;     id := oid.Length
+;     For v in oid
+;     {   aid.Push(v)
+;     }
+;     if aid.Length
+;     {
+;       return True
+;     }
+;     Else
+;     {
+;       return False
+;     }
+;   }
+; }
 
 ;-----------------------------------------------------------------------------
 ;-- Standardizing keys for video playback for video apps and web sites,
@@ -424,7 +431,7 @@ isVideoAppOrSite()
 ;    local result, url = hs.osascript.applescript('tell application "Google Chrome" to return URL of active tab of front window')
 ;    local domainName = getDomainNameFromUrl(url)
 ;
-;    searchKey = keyRemappingName .. ",com.google.Chrome," .. domainName 
+;    searchKey = keyRemappingName .. ",com.google.Chrome," .. domain["Name"] 
 ;  else
 ;    searchKey = keyRemappingName .. "," .. appBundleId
 ;  end
@@ -456,24 +463,24 @@ isVideoAppOrSite()
 
 ;--------------------------------------------------------------------------------------------------
 ; Price Watch
-;   ⇪ F12                On my personal laptop, load web pages for stuff I'm price watching
+;   â‡ª F12                On my personal laptop, load web pages for stuff I'm price watching
 ;--------------------------------------------------------------------------------------------------
-#If IsWorkLaptop
+#HotIf IsWorkLaptop
   CapsLock & F12::       SendKeystrokesToPersonalLaptop("{CapsLock down}{F12}{CapsLock up}")
-#If !IsWorkLaptop
+#HotIf !IsWorkLaptop
   CapsLock & F12::       PriceWatchWebsites()
-#If
+#HotIf
 
 
 ;--------------------------------------------------------------------------------------------------
 ; Convert case of selected text
-;   ⇪ RShift             Cycle selected text between lower/upper/sentence/title case
+;   â‡ª RShift             Cycle selected text between lower/upper/sentence/title case
 ;
 ; Since you cannot send RShift key to another window, I am using F17 here
 ;--------------------------------------------------------------------------------------------------
-#IfWinActive ahk_exe parsecd.exe          ; Work laptop when working on personal laptop
+#HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
   CapsLock & RShift::    SendKeystrokesToPersonalLaptop("{CapsLock down}{F17}{CapsLock up}")
-#If
+#HotIf
 CapsLock & RShift::      ConvertCase()    ; Work laptop reacts to this
 CapsLock & F17::         ConvertCase()    ; Personal laptop reacts to this
 
@@ -482,36 +489,36 @@ CapsLock & F17::         ConvertCase()    ; Personal laptop reacts to this
 ; Screen shot
 ;   PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
 ;---------------------------------------------------------------------------------------------------------------------
-#IfWinActive ahk_exe parsecd.exe          ; Work laptop when working on personal laptop
+#HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
   PrintScreen::          SendKeystrokesToPersonalLaptop("{LWin down}{Shift down}s{Shift up}{LWin up}")
-#If
-PrintScreen::            SendInput #+s
+#HotIf
+PrintScreen::SendInput("#+s")
 
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Typora
-;   ⇪ n                  Run or activate my notes in Typora on my work laptop
-;   ⇪ ! n                Run or activate my notes in Typora on my personal laptop
+;   â‡ª n                  Run or activate my notes in Typora on my work laptop
+;   â‡ª ! n                Run or activate my notes in Typora on my personal laptop
 ;
 ;   ^ mousewheel         Decrease/increase font size
-;   ⇪ [                  Toggle left sidebar
+;   â‡ª [                  Toggle left sidebar
 ;---------------------------------------------------------------------------------------------------------------------
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & n::         SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
 ;#If
 CapsLock & n::           RunOrActivateAppOrUrl("ahk_exe i)\\typora\.exe$", WindowsProgramFilesFolder . "\Typora\Typora.exe")
 
-#IfWinActive ahk_exe i)\\typora\.exe$ 
-  ^wheelup::             SendInput {Blind}^+{=}
-  ^wheeldown::           SendInput {Blind}^+{-}
-  Capslock & [::         SendInput ^+{l}
-#IfWinActive
+#HotIf WinActive("ahk_exe i)\\typora\.exe$", )
+  ^wheelup::  SendInput("{Blind}^+{=}")
+  ^wheeldown::  SendInput("{Blind}^+{-}")
+  Capslock & [::  SendInput("^+{l}")
+#HotIf
 
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Chrome
-;   ⇪ b                  Run or activate Chrome on my work laptop
-;   ⇪ ! b                Run or activate Chrome on my personal laptop
+;   â‡ª b                  Run or activate Chrome on my work laptop
+;   â‡ª ! b                Run or activate Chrome on my personal laptop
 ;---------------------------------------------------------------------------------------------------------------------
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
@@ -521,8 +528,8 @@ CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", WindowsProgram
 
 ;--------------------------------------------------------------------------------------------------
 ; Terminal/Cmder/bash
-;   ⇪ t                  Run or activate the terminal on my work laptop
-;   ⇪ ! t                Run or activate the terminal on my personal laptop
+;   â‡ª t                  Run or activate the terminal on my work laptop
+;   â‡ª ! t                Run or activate the terminal on my personal laptop
 ;--------------------------------------------------------------------------------------------------
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & t::         SendKeystrokesToPersonalLaptop("{CapsLock down}t{CapsLock up}")
@@ -532,38 +539,38 @@ CapsLock & t::           RunOrActivateAppOrUrl("Cmder", "C:\tools\Cmder\Cmder.ex
 
 ;--------------------------------------------------------------------------------------------------
 ; Visual Studio Code
-;   ⇪ v                  Open VS Code on my work laptop
-;   ⇪ ! v                Open VS Code on my personal laptop
+;   â‡ª v                  Open VS Code on my work laptop
+;   â‡ª ! v                Open VS Code on my personal laptop
 ;
 ;   ^ mousewheel         Decrease/increase font size
-;   ⇪ [                  Toggle left sidebar
+;   â‡ª [                  Toggle left sidebar
 ;
 ; TODO-
-;   ⇪ ^ v                Open VS Code, create a new doc, paste selected text, then format it
+;   â‡ª ^ v                Open VS Code, create a new doc, paste selected text, then format it
 ;--------------------------------------------------------------------------------------------------
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & v::         SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
 ;#If
 CapsLock & v::           RunOrActivateAppOrUrl("ahk_exe i)\\code\.exe$", WindowsProgramFilesFolder . "\Microsoft VS Code\Code.exe")
 
-#IfWinActive ahk_exe i)\\code\.exe$ 
-  ^wheelup::             SendInput {Blind}^{=}
-  ^wheeldown::           SendInput {Blind}^{-}
-  CapsLock & [::         SendInput ^b
-#IfWinActive
+#HotIf WinActive("ahk_exe i)\\code\.exe$", )
+  ^wheelup::  SendInput("{Blind}^{=}")
+  ^wheeldown::  SendInput("{Blind}^{-}")
+  CapsLock & [::  SendInput("^b")
+#HotIf
 
 
 
 ;--------------------------------------------------------------------------------------------------
-; Include all libraries, utilities, and other AutoHotKey scripts
+; Include all libraries, utilities, and other AutoHotKey scrisss
 ;
 ; I have to put this at the bottom of my script, or else it interferes with other code in this script
 ;--------------------------------------------------------------------------------------------------
-#Include %A_ScriptDir%\Shared.ahk
-#Include %A_ScriptDir%\Functions.ahk
-#Include %A_ScriptDir%\Utilities.ahk
-#Include %A_ScriptDir%\Customize Windows.ahk
-#Include %A_ScriptDir%\My Auto Correct.ahk
-#Include %A_ScriptDir%\Convert Case.ahk
+;#Include A_ScriptDir "\Shared_v2new.ahk"
+;#Include A_ScriptDir "\Functions_v2new.ahk"
+;#Include A_ScriptDir "\Utilities_v2new.ahk"
+;#Include A_ScriptDir "\Customize Windows_v2new.ahk"
+;#Include A_ScriptDir "\My Auto Correct_v2new.ahk"
+;#Include A_ScriptDir "\Convert Case_v2new.ahk"
 
-#Include %A_ScriptDir%\lib\RunAsAdmin.ahk
+;#Include A_ScriptDir "\lib\RunAsAdmin_v2new.ahk"

@@ -28,3 +28,5 @@ REM SETX AHK_SOURCE_CODE_SCHEMA_URL "https://xxxxxxxxxx"
 REM My Slack security tokens, pipe-delimited, work is first
 REM SETX SLACK_TOKENS "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
+REM The peer id of my Parsec instance
+REM SETX PARSEC_PEER_ID "xxxxxxxxxxxxxxxxxxxxxxxxxxx"

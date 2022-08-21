@@ -1,4 +1,4 @@
-
+﻿
 ; https://github.com/brianekummer/hammerspoon/blob/master/my-slack.lua
 
 ;***** TO DO
@@ -13,6 +13,10 @@
 
 
 
+;****** DEPENDENCIES
+;   - Utilities.AmNearWifiNetwork()
+
+
 ;   1. Parse SLACK_TOKEN. Work is always FIRST
 ;   2. Make SlackStatusUpdate_GetSlackStatus do multiple accounts
 ;   3. Make SlackStatusUpdate_GetSlackStatusEmoji() do multiple accounts
@@ -25,11 +29,6 @@
 ;   SlackStatusUpdate_Initialize
 ;   SlackStatusUpdate_SetSlackStatusBasedOnNetwork() {
 ;---------------------------------------------------------------------------------------------------------------------
-#NoEnv
-#Persistent
-#Requires Autohotkey v1.1.33+
-
-
 
 
 ;---------------------------------------------------------------------------------------------------------------------
@@ -46,21 +45,26 @@ Global SlackStatusUpdate_SlackStatuses
 ;---------------------------------------------------------------------------------------------------------------------
 SlackStatusUpdate_Initialize() 
 {
-  ; Variables are read from environment variables, see "Slack Status Update Config.bat" for more details
-  EnvGet, slackTokens, SLACK_TOKENS
-  EnvGet, SlackStatusUpdate_OfficeNetworks, SLACK_OFFICE_NETWORKS
-  SlackStatusUpdate_MySlackTokens := StrSplit(slackTokens, "|")
+  Global SlackStatusUpdate_MySlackTokens
+  Global SlackStatusUpdate_OfficeNetworks
+  Global SlackStatusUpdate_SlackStatuses
 
-  slackStatusMeeting := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_MEETING", "In a meeting|:spiral_calendar_pad:", 0)
-  slackStatusWorkingInOffice := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_WORKING_OFFICE", "In the office|:cityscape:", 0)
-  slackStatusWorkingRemotely := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_WORKING_REMOTELY", "Working remotely|:house_with_garden:", 0)
-  slackStatusVacation := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_VACATION", "Vacationing|:palm_tree:", 0)
-  slackStatusLunch := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_LUNCH", "At lunch|:hamburger:", 0)
-  slackStatusDinner := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_DINNER", "At dinner|:poultry_leg:", 0)
-  slackStatusBeRightBack := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_BRB", "Be Right Back|:brb:", 0)
-  slackStatusPlaying := SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_PLAYING", "Playing|:8bit:", 0)
-  slackStatusNone := {"text": "", "emoji": "", "expiration": 0}
-  global SlackStatusUpdate_SlackStatuses := {"meeting": slackStatusMeeting, "workingInOffice": slackStatusWorkingInOffice, "workingRemotely": slackStatusWorkingRemotely, "vacation": slackStatusVacation, "lunch": slackStatusLunch, "dinner": slackStatusDinner, "brb": slackStatusBeRightBack, "none": slackStatusNone, "playing": slackStatusPlaying}
+  ; Variables are read from environment variables, see "Slack Status Update Config.bat" for more details
+  slackTokens := EnvGet("SLACK_TOKENS")
+  SlackStatusUpdate_MySlackTokens := StrSplit(slackTokens, "|")
+  SlackStatusUpdate_OfficeNetworks := EnvGet("SLACK_OFFICE_NETWORKS")
+
+  global SlackStatusUpdate_SlackStatuses := Map(
+    "none", SlackStatusUpdate_BuildSlackStatus("", "|", 0),
+    "meeting", SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_MEETING", "In a meeting|:spiral_calendar_pad:", 0), 
+    "workingInOffice", SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_WORKING_OFFICE", "In the office|:cityscape:", 0), 
+    "workingRemotely", SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_WORKING_REMOTELY", "Working remotely|:house_with_garden:", 0),
+    "vacation", SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_VACATION", "Vacationing|:palm_tree:", 0), 
+    "lunch", SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_LUNCH", "At lunch|:hamburger:", 0), 
+    "dinner", SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_DINNER", "At dinner|:poultry_leg:", 0), 
+    "brb", SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_BRB", "Be Right Back|:brb:", 0), 
+    "playing", SlackStatusUpdate_BuildSlackStatus("SLACK_STATUS_PLAYING", "Playing|:8bit:", 0)
+  )
 }
 
 
@@ -78,12 +82,12 @@ SlackStatusUpdate_SetSlackStatusBasedOnNetwork()
   mySlackStatusEmoji := SlackStatusUpdate_GetSlackStatusEmoji()
 	While (mySlackStatusEmoji = "???") 
 	{
-	  Sleep, 30000
+	  Sleep(30000)
     mySlackStatusEmoji := SlackStatusUpdate_GetSlackStatusEmoji() 
 	}
-	
-  slackMeetingEmoji := SlackStatusUpdate_SlackStatuses["meeting"]["emoji"]
-  slackVacationEmoji := SlackStatusUpdate_SlackStatuses["vacation"]["emoji"]
+
+  slackMeetingEmoji := SlackStatusUpdate_SlackStatuses["meeting"].emoji
+  slackVacationEmoji := SlackStatusUpdate_SlackStatuses["vacation"].emoji
 
 	If (mySlackStatusEmoji = slackMeetingEmoji) 
 	{
@@ -99,26 +103,34 @@ SlackStatusUpdate_SetSlackStatusBasedOnNetwork()
 		done := False
 		Loop
 		{
-			If (Dllcall("Sensapi.dll\IsNetworkAlive", "UintP", lpdwFlags)) 
+      If (ConnectedToInternet())
 			{
 			  ; I'm connected to a network
 			  done := True
-			  If (AmNearOfficeWifiNetwork()) 
-				  SlackStatusUpdate_SetSlackStatus(SlackStatusUpdate_SlackStatuses["workingInOffice"])
+			  ;If (AmNearOfficeWifiNetwork())
+			  If (AmNearWifiNetwork(SlackStatusUpdate_OfficeNetworks))
+        {
+          SlackStatusUpdate_SetSlackStatus(SlackStatusUpdate_SlackStatuses["workingInOffice"])
+        }
 				Else
+        {
 				  SlackStatusUpdate_SetSlackStatus(SlackStatusUpdate_SlackStatuses["workingRemotely"])
+        }
 			}
 			Else
 			{
 				; Wait for 30 seconds and check again
-				Sleep, 30000
+				Sleep(30000)
 			}
 		}
 		Until done
 	}
 }	
 
-
+ConnectedToInternet(flag := 0x40) { 
+  ;https://www.autohotkey.com/board/topic/80587-how-to-find-internet-connection-status/
+  Return DllCall("Wininet.dll\InternetGetConnectedState", "Str", flag, "Int", 0) 
+}
 
 ;---------------------------------------------------------------------------------------------------------------------
 ; Private - Build a slack status object by reading the environment variable envVarName. If this variable is blank or 
@@ -128,15 +140,15 @@ SlackStatusUpdate_SetSlackStatusBasedOnNetwork()
 ;---------------------------------------------------------------------------------------------------------------------
 SlackStatusUpdate_BuildSlackStatus(envVarName, defaultValue, statusExpiration)
 {
-  EnvGet, slackStatus, %envVarName%
+  slackStatus := EnvGet(envVarName)
 	
   If(slackStatus = "") 
-	  slackStatus = %defaultValue%
+	  slackStatus := defaultValue
 
 	parts := StrSplit(slackStatus, "|")
  	slackStatus := RegExMatch(parts[1], "^:.*:$")
-	  ? {"text": parts[2], "emoji": parts[1], "expiration": statusExpiration}
-	  : {"text": parts[1], "emoji": parts[2], "expiration": statusExpiration}
+	  ? { text: parts[2], emoji: parts[1], expiration: statusExpiration}
+	  : { text: parts[1], emoji: parts[2], expiration: statusExpiration}
 	
 	Return slackStatus
 }
@@ -148,48 +160,11 @@ SlackStatusUpdate_BuildSlackStatus(envVarName, defaultValue, statusExpiration)
 ;---------------------------------------------------------------------------------------------------------------------
 SlackStatusUpdate_SetSlackStatusViaKeyboard(slackStatus)
 {
-  slackText := slackStatus["text"]
-  slackEmoji := slackStatus["emoji"]
-
-  SendInput /status %slackEmoji% %slackText%{enter}
+  SendInput("/status " slackStatus.text " " slackStatus.emoji "{enter}")
 }
 
 
 
-;---------------------------------------------------------------------------------------------------------------------
-; Private - Am I near an office wifi network? Return true if any of the available wifi networks match the regular
-;           expression in SlackStatusUpdate_OfficeNetworks.
-;             - Command NETSH WLAN SHOW NETWORKS to show all the available wifi networks, which has output like this:
-;                 Interface name : Wi-Fi
-;                 There are 13 networks currently visible.
-;                 
-;                 SSID 1 : xfinitywifi
-;                 Network type            : Infrastructure
-;                 Authentication          : Open
-;                 Encryption              : None
-;                 
-;                 ...
-;---------------------------------------------------------------------------------------------------------------------
-AmNearOfficeWifiNetwork()
-{
-	atWork := False
-
-	cmd = %comspec% /c netsh wlan show networks
-	allNetworks := SlackStatusUpdate_RunWaitHidden(cmd)
-	
-  officeNetworkPattern = i)%SlackStatusUpdate_OfficeNetworks%
-	pos=1
-  While pos := RegExMatch(allNetworks, "i)\Rssid.+?:\s(.*)\R", oneNetwork, pos+StrLen(oneNetwork)) 
-	{
-	  ; oneNetwork is the line like "SSID x : network_ssid", so parse out the network's SSID
-	  networkSSID := RegExReplace(oneNetwork, "\R.*?:\s(\V+)\R", "$1")
-
-	  If RegExMatch(networkSSID, officeNetworkPattern)
-	    atWork := True
-  }	
-
-	Return %atWork%
-}	
 
 
 
@@ -200,34 +175,44 @@ AmNearOfficeWifiNetwork()
 ;           I wrote this and then realized I didn't need it. It's good code, so I'm keeping it here in case I need
 ;           it later.
 ;---------------------------------------------------------------------------------------------------------------------
-SlackStatusUpdate_GetSlackStatus(ByRef statusText, ByRef statusEmoji, ByRef statusExpiration) 
-{
-  Try 
-  {
-    webRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
-    webRequest.Open("GET", "https://slack.com/api/users.profile.get?token="SlackStatusUpdate_MySlackTokens)
-    webRequest.Send()
-	results := webRequest.ResponseText
+; SlackStatusUpdate_GetSlackStatus(&statusText, &statusEmoji, &statusExpiration) 
+; {
+;   Try 
+;   {
+;     webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
+;     ;webRequest.Open("GET", "https://slack.com/api/users.profile.get?token="SlackStatusUpdate_MySlackTokens)
+;     webRequest.Open("GET", "https://slack.com/api/users.profile.get?token=%SlackStatusUpdate_MySlackTokens%")
+;     webRequest.Send()
+;   	results := webRequest.ResponseText
 		
-	; The JSON returned by Slack will look something like this: 
-	;   ..."status_text":"Working remotely","status_emoji":":house_with_garden:","status_expiration":1535890000... 
-	;   or
-    ;   ..."status:text":"","status_emoji":"","status_expiration:":0...
-    RegExMatch(results, """status_text""\s*:\s*\""(.+?)\s*""", stText)
-    RegExMatch(results, """status_emoji""\s*:\s*\""(.+?)\s*""", stEmoji)
-    RegExMatch(results, """status_expiration""\s*:\s*(\d+)?", stExpiration)
+; 	  ; The JSON returned by Slack will look something like this: 
+; 	  ;   ..."status_text":"Working remotely","status_emoji":":house_with_garden:","status_expiration":1535890000... 
+; 	  ;   or
+;     ;   ..."status:text":"","status_emoji":"","status_expiration:":0...
 
-    statusText = %stText1%
-	statusEmoji = %stEmoji1%
-    statusExpiration = %stExpiration1%
-  }
-	Catch 
-	{
-    statusText = ???
-	  statusEmoji = ???
-    statusExpiration = ???
-	}
-}
+;     ; OLD WORKING CODE
+;     ;V1: RegExMatch(results, """status_text""\s*:\s*\""(.+?)\s*""", stText)
+;     ;RegExMatch(results, '\"status_text\"\s*:\s*\"(.+?)\s*\"', stText)
+;     ;V1: RegExMatch(results, """status_emoji""\s*:\s*\""(.+?)\s*""", stEmoji)
+;     ;RegExMatch(results, '\"status_emoji\"\s*:\s*\"(.+?)\s*\"', stEmoji)
+;     ;V1: RegExMatch(results, """status_expiration""\s*:\s*(\d+)?", stExpiration)
+;     ;RegExMatch(results, '\"status_expiration\"\s*:\s*(\d+)?', stExpiration)
+;     ;statusText := stText1
+; 	  ;statusEmoji := stEmoji1
+;     ;statusExpiration := stExpiration1
+
+;     ; NEW UNTESTED CODE
+;     RegExMatch(results, '\"status_text\"\s*:\s*\"(.+?)\s*\"', statusText)
+;     RegExMatch(results, '\"status_emoji\"\s*:\s*\"(.+?)\s*\"', statusEmoji)
+;     RegExMatch(results, '\"status_expiration\"\s*:\s*(\d+)?', statusExpiration)
+;   }
+; 	Catch 
+; 	{
+;     statusText := "???"
+; 	  statusEmoji := "???"
+;     statusExpiration := "???"
+; 	}
+; }
 
 
 
@@ -241,27 +226,24 @@ SlackStatusUpdate_GetSlackStatusEmoji()
 {
   Try 
   {
-    SlackTokens := StrSplit(SlackStatusUpdate_MySlackToken , "|")
-
-    url := "https://slack.com/api/users.profile.get?token="SlackTokens[1]
-
-	webRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
-	webRequest.Open("GET", "https://slack.com/api/users.profile.get?token="SlackTokens[1])
+	  webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
+    webRequest.Open("GET", "https://slack.com/api/users.profile.get")
+    webRequest.SetRequestHeader("Authorization", "Bearer " SlackStatusUpdate_MySlackTokens[1])
     webRequest.Send()
-	results := webRequest.ResponseText
+	  results := webRequest.ResponseText
 
-	; The JSON returned by Slack will look something like this: 
-	;   ..."status_emoji":":house_with_garden:",... 
-	;   or
+	  ; The JSON returned by Slack will look something like this: 
+	  ;   ..."status_emoji":":house_with_garden:",... 
+	  ;   or
     ;   ..."status_emoji":"",...
-	statusEmoji := SubStr(results, InStr(results, "status_emoji"))
-	statusEmoji := SubStr(statusEmoji, 1, InStr(statusEmoji, ","))
-	statusEmoji := RegExReplace(statusEmoji, "i)(status_emoji|""|,)")
-	statusEmoji := RegExReplace(statusEmoji, "i)::", ":")
+    statusEmoji := SubStr(results, (InStr(results, "status_emoji"))<1 ? (InStr(results, "status_emoji"))-1 : (InStr(results, "status_emoji")))
+	  statusEmoji := SubStr(statusEmoji, 1, InStr(statusEmoji, ","))
+	  statusEmoji := RegExReplace(statusEmoji, 'i)(status_emoji|\"|,)')
+	  statusEmoji := RegExReplace(statusEmoji, "i)::", ":")
   }
   Catch 
   {
-    statusEmoji = ???
+    statusEmoji := "???"
   }
   Return statusEmoji
 }
@@ -282,10 +264,18 @@ SlackStatusUpdate_SetSlackStatusAndPresence(slackStatusKey, presence := "") {
 
 ; TODO - add expiration
 SlackStatusUpdate_SetHomeSlackStatus(slackStatusKey) {
+  ; Not necessary, but keeps AHK #warn happy
+  ;If !IsSet(slackStatusUpdate_MySlackTokens)
+  ;  SlackStatusUpdate_Initialize()
+
   SlackStatusUpdate_SetSlackStatus(SlackStatusUpdate_SlackStatuses[slackStatusKey], [SlackStatusUpdate_MySlackTokens[2]])
 }
-SlackStatusUpdate_SetWorkSlackStatus(statusName) {
-  SlackStatusUpdate_SetSlackStatus(SlackStatusUpdate_SlackStatuses[slackStatusKey], [SlackStatusUpdate_MySlackTokens[1]])
+SlackStatusUpdate_SetWorkSlackStatus(slackStatusKey) {
+  ; Not necessary, but keeps AHK #warn happy
+  ;If !IsSet(slackStatusUpdate_MySlackTokens)
+  ;  SlackStatusUpdate_Initialize()
+
+  SlackStatusUpdate_SetSlackStatus(SlackStatusUpdate_SlackStatuses.GetOwnPropDesc(slackStatusKey).Value, [SlackStatusUpdate_MySlackTokens[1]])
 }
 
 
@@ -298,14 +288,14 @@ SlackStatusUpdate_SetSlackStatus(slackStatus, slackTokens := "")
     slackTokens := SlackStatusUpdate_MySlackTokens
   }
 
-  webRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
-  data := "profile={'status_text': '"slackStatus["text"]"', 'status_emoji': '"slackStatus["emoji"]"', 'status_expiration': "slackStatus["expiration"]"}"
+  webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
+  data := "profile={'status_text': '" slackStatus.text "', 'status_emoji': '" slackStatus.emoji "', 'status_expiration': " slackStatus.expiration "}"
 
   For i, thisToken in slackTokens
   {
     webRequest.Open("POST", "https://slack.com/api/users.profile.set")
     webRequest.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-    webRequest.SetRequestHeader("Authorization", "Bearer "thisToken)
+    webRequest.SetRequestHeader("Authorization", "Bearer " thisToken)
     webRequest.Send(data)
   }
 }
@@ -324,13 +314,13 @@ SlackStatusUpdate_SetPresence(presence, slackTokens := "")
     slackTokens := SlackStatusUpdate_MySlackTokens
   }
 
-  webRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+  webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
 
   For i, thisToken in slackTokens
   {
-    webRequest.Open("POST", "https://slack.com/api/users.setPresence?presence="presence)
+    webRequest.Open("POST", "https://slack.com/api/users.setPresence?presence=" presence)
     webRequest.SetRequestHeader("Content-Type", "application/application/json")
-    webRequest.SetRequestHeader("Authorization", "Bearer "thisToken)
+    webRequest.SetRequestHeader("Authorization", "Bearer " thisToken)
     webRequest.Send("")
   }
 }
@@ -351,8 +341,8 @@ SlackStatusUpdate_SetPresence(presence, slackTokens := "")
 ;---------------------------------------------------------------------------------------------------------------------
 SlackStatusUpdate_RunWaitOne(command)
 {
-  shell := ComObjCreate("WScript.Shell")      ; WshShell object: http://msdn.microsoft.com/en-us/library/aew9yb99
-  exec := shell.Exec(ComSpec " /C " command)  ; Execute a single command via cmd.exe
+  shell := ComObject("WScript.Shell")      ; WshShell object: http://msdn.microsoft.com/en-us/library/aew9yb99
+  exec := shell.Exec(A_ComSpec " /C " command)  ; Execute a single command via cmd.exe
   Return exec.StdOut.ReadAll()                ; Read and return the command's output 
 }
 
@@ -363,16 +353,16 @@ SlackStatusUpdate_RunWaitOne(command)
 ;---------------------------------------------------------------------------------------------------------------------
 SlackStatusUpdate_RunWaitHidden(cmd)
 {
-	Sleep, 250                ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
-  clipSaved := ClipboardAll	; Save the entire clipboard
-  Clipboard = 
+	Sleep(250)                ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
+  clipSaved := ClipboardAll()	; Save the entire clipboard
+  A_Clipboard := ""
 
-	Runwait %cmd% | clip,,hide
-  output := Clipboard
+	RunWait(cmd " | clip", , "hide")
+  output := A_Clipboard
 	
-	Sleep, 250                ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
-  Clipboard := clipSaved	  ; Restore the original clipboard. Note the use of Clipboard (not ClipboardAll).
-  clipSaved =			          ; Free the memory in case the clipboard was very large
+	Sleep(250)                ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
+  A_Clipboard := clipSaved	  ; Restore the original clipboard. Note the use of Clipboard (not ClipboardAll).
+  clipSaved := ""			          ; Free the memory in case the clipboard was very large
 
 	Return output
 }
