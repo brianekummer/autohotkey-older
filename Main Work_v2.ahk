@@ -12,7 +12,8 @@
 ;
 ; Modifiers
 ; ---------
-; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      â‡ª = CapsLock/Hyper
+; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = Hyper 
+;
 ;
 ;
 ; Windows Provided
@@ -29,63 +30,63 @@
 ;
 ; Shortcuts
 ; ---------
-; â‡ª ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
-; â‡ª b                   Windows (AHK)    Browser
-; â‡ª c                   Windows (AHK)    Calendar
-; â‡ª i                   Windows (AHK)    Inbox
-; â‡ª l                   Windows (AHK)    IntelliJ
-; â‡ª j                   Windows (AHK)    JIRA- current project board
-; â‡ª ^ j                 Windows (AHK)    JIRA- open selected story number
-; â‡ª m                   Windows (AHK)    Music/Spotify
-; â‡ª n                   Windows (AHK)    Notes (Typora)
-; â‡ª t                   Windows (AHK)    Terminal/Cmder/bash
-; â‡ª v                   Windows (AHK)    Visual Studio Code
+; ✦ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
+; ✦ b                   Windows (AHK)    Browser
+; ✦ c                   Windows (AHK)    Calendar
+; ✦ i                   Windows (AHK)    Inbox
+; ✦ l                   Windows (AHK)    IntelliJ
+; ✦ j                   Windows (AHK)    JIRA- current project board
+; ✦ ^ j                 Windows (AHK)    JIRA- open selected story number
+; ✦ m                   Windows (AHK)    Music/Spotify
+; ✦ n                   Windows (AHK)    Notes (Typora)
+; ✦ t                   Windows (AHK)    Terminal/Cmder/bash
+; ✦ v                   Windows (AHK)    Visual Studio Code
 ; PrintScreen           Windows (AHK)    Windows screenshot tool
 ;
 ;
 ; Personal Shortcuts
 ; ------------------
-; â‡ª p                   Windows (AHK)    Personal computer (Parsec)
+; ✦ p                   Windows (AHK)    Personal computer (Parsec)
 ;                                        Problem is that sometimes pewrsonal computer is locked and need to enter pin.
 ;                                        I want the pin, so can't automate this. So simply a hotkey to connect to that
 ;                                        computer.
-; ~~â‡ª F12                 Windows (AHK)    Browser - Open websites of stuff I'm price watching~~
-; ~~â‡ª ! b                 Windows (AHK)    Browser~~
-; ~~â‡ª ! n                 Windows (AHK)    Notes (Typora)~~
-; ~~â‡ª ! t                 Windows (AHK)    Terminal/Cmder/bash~~
-; ~~â‡ª ! v                 Windows (AHK)    Visual Studio Code~~
+; ~~✦ F12                 Windows (AHK)    Browser - Open websites of stuff I'm price watching~~
+; ~~✦ ! b                 Windows (AHK)    Browser~~
+; ~~✦ ! n                 Windows (AHK)    Notes (Typora)~~
+; ~~✦ ! t                 Windows (AHK)    Terminal/Cmder/bash~~
+; ~~✦ ! v                 Windows (AHK)    Visual Studio Code~~
 ;
 ;
 ; Other Stuff
 ; -----------
-; â‡ª RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
-; â‡ª u                   Windows (AHK)    Generate a random UUID (lowercase)
-; â‡ª + u                 Windows (AHK)    Generate a random UUID (uppercase)
+; ✦ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
+; ✦ u                   Windows (AHK)    Generate a random UUID (lowercase)
+; ✦ + u                 Windows (AHK)    Generate a random UUID (uppercase)
 ;
 ;
 ; Media Controls
 ; --------------
-; â‡ª WheelUp/WheelDown   Windows (AHK)    Volume up/down
-; â‡ª LButton             Windows (AHK)    Play/pause
-; â‡ª RButton             Windows (AHK)    Music app (Spotify)
-; â‡ª XButton1            Windows (AHK)    Previous track
-; â‡ª XButton2            Windows (AHK)    Next track
+; ✦ WheelUp/WheelDown   Windows (AHK)    Volume up/down
+; ✦ LButton             Windows (AHK)    Play/pause
+; ✦ RButton             Windows (AHK)    Music app (Spotify)
+; ✦ XButton1            Windows (AHK)    Previous track
+; ✦ XButton2            Windows (AHK)    Next track
 ; Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
 ;
 ;
 ; Home Automation
 ; ---------------
 ; (keys listed are numeric keypad)
-; â‡ª +                   Windows (AHK)     Air cleaner: toggle on/off
-; â‡ª Enter               Windows (AHK)             Fan: toggle on/off
+; ✦ +                   Windows (AHK)     Air cleaner: toggle on/off
+; ✦ Enter               Windows (AHK)             Fan: toggle on/off
 ;
-; â‡ª 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
-; â‡ª 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
-; â‡ª 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
+; ✦ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
+; ✦ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
+; ✦ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
 ;
-; â‡ª ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
-; â‡ª ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
-; â‡ª ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
+; ✦ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
+; ✦ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
+; ✦ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
 ;
 ;
 ; Customizing Windows Behavior
@@ -101,22 +102,22 @@
 ; Slack:
 ;   ^ mousewheel        Slack (AHK)      Decrease/increase font size
 ;   ^ k                 Slack (AHK)      Insert hyperlink
-;   â‡ª [                 Slack (AHK)      Toggle left sidebar
-;   â‡ª # b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
-;   â‡ª # l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
-;   â‡ª # m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
-;   â‡ª # p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
-;   â‡ª # w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
+;   ✦ [                 Slack (AHK)      Toggle left sidebar
+;   ✦ # b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
+;   ✦ # l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
+;   ✦ # m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
+;   ✦ # p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
+;   ✦ # w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
 ; Typora
 ;   ^ mousewheel        Typora (AHK)     Decrease/increase font size
-;   â‡ª [                 Typora (AHK)     Toggle left sidebar
+;   ✦ [                 Typora (AHK)     Toggle left sidebar
 ; VS Code
 ;   ^ mousewheel        VS Code (AHK)    Decrease/increase font size
-;   â‡ª [                 VS Code (AHK)    Toggle left sidebar
+;   ✦ [                 VS Code (AHK)    Toggle left sidebar
 ; IntelliJ
-;   â‡ª [                 IntelliJ (AHK)   Toggle left sidebar
+;   ✦ [                 IntelliJ (AHK)   Toggle left sidebar
 ; Visual Studio
-;   â‡ª [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
+;   ✦ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
 ;
 ;
 ; Code Structure
@@ -173,7 +174,7 @@
 ;   - Moved Solution Explorer to left side, pinned
 ;   - ^!l shows it 
 ;   - +{Esc} makes it go away
-;   - CAN I GET IT WORKING WITH AHK??? â‡ª [
+;   - CAN I GET IT WORKING WITH AHK??? ✦ [
 ;        - Can't tell by the active window. maybe I can loop through all the active windows in
 ;
 ;
@@ -184,7 +185,7 @@
 ; Customizing App Behavior
 ; ------------------------
 ; Slack:
-;   â‡ª ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
+;   ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
 ; VS Code
 ;   ~$^s                VS Code (AHK)    After save AHK file, reload current script
 ;
@@ -192,7 +193,7 @@
 ; standardize video keys for youtube and udemy
 ;
 ; LOW PRIORITY
-; â‡ª ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
+; ✦ ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
 ;
 ;
 ; EVALUATE ALL OF THIS
@@ -355,7 +356,7 @@ Volume_Mute::            ToggleMuteVOIPApps()
 
 /*
   When looking at my personal laptop
-    â‡ª [                  On my personal laptop, toggle left sidebar
+    ✦ [                  On my personal laptop, toggle left sidebar
 */
 #HotIf WinActive("ahk_exe parsecd.exe", )
   CapsLock & [::         SendKeystrokesToPersonalLaptop("{CapsLock down}[{CapsLock up}")
@@ -364,20 +365,20 @@ Volume_Mute::            ToggleMuteVOIPApps()
 
 /*
   Slack
-    â‡ª k                  Open Slack
-    â‡ª ^ k                Open Slack and go to the "jump to" window
-    â‡ª [                  Toggle left sidebar
+    ✦ k                  Open Slack
+    ✦ ^ k                Open Slack and go to the "jump to" window
+    ✦ [                  Toggle left sidebar
     ^ mousewheel         Decrease/increase font size
     ^ k                  Insert hyperlink (overrides Slack opening "jump to" window)
 
     Statuses
-      â‡ª # b              Status - Be Right Back. Sets Slack statuses to brb.
-      â‡ª # c              Status - Cleared. Clears Slack status.
-      â‡ª # e              Status - Eating. Sets Slack statuses to lunch/dinner.
+      ✦ # b              Status - Be Right Back. Sets Slack statuses to brb.
+      ✦ # c              Status - Cleared. Clears Slack status.
+      ✦ # e              Status - Eating. Sets Slack statuses to lunch/dinner.
                           Also locks my laptop and turns off my office lights if I'm at home.
-      â‡ª # m              Status - In a meeting. Sets Slack statuses to mtg.
-      â‡ª # p              Status - Playing. Sets home Slack status to 8bit.
-      â‡ª # w              Status - Working. Clears Slack statuses.
+      ✦ # m              Status - In a meeting. Sets Slack statuses to mtg.
+      ✦ # p              Status - Playing. Sets home Slack status to 8bit.
+      ✦ # w              Status - Working. Clears Slack statuses.
 */
 CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))    
 
@@ -432,7 +433,7 @@ SlackStatus_Working()
 
 /*
   Calendar
-    â‡ª c                  Run or activate Outlook and switch to the calendar, using an Outlook
+    ✦ c                  Run or activate Outlook and switch to the calendar, using an Outlook
                          shortcut to switch to the calendar
 */
 CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
@@ -440,7 +441,7 @@ CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
 
 /*
   Inbox
-    â‡ª i                  Run or activate Outlook and switch to the inbox, using an Outlook shortcut
+    ✦ i                  Run or activate Outlook and switch to the inbox, using an Outlook shortcut
                          to switch to the inbox
 */
 CapsLock & i::           ActivateOrStartMicrosoftOutlook("^+I")
@@ -448,8 +449,8 @@ CapsLock & i::           ActivateOrStartMicrosoftOutlook("^+I")
 
 /*
   JIRA
-    â‡ª j                  Opens the current board
-    â‡ª ^ j                Opens the selected story number
+    ✦ j                  Opens the current board
+    ✦ ^ j                Opens the selected story number
                            * If the highlighted text looks like a JIRA story number (e.g. 
                              PROJECT-1234), then open that story
                            * If the Git Bash window has text that looks like a JIRA story number, 
@@ -461,7 +462,7 @@ CapsLock & j::           JIRA()
 
 /*
   Music/Spotify
-    â‡ª m                  Run or activate Spotify
+    ✦ m                  Run or activate Spotify
 */
 CapsLock & m::           RunOrActivateSpotify()
 #HotIf WinActive("ahk_exe i)\\spotify\.exe$", )
@@ -472,15 +473,15 @@ CapsLock & m::           RunOrActivateSpotify()
 
 /*
   Personal computer
-    â‡ª p                  Connect to personal computer
+    ✦ p                  Connect to personal computer
 */
 CapsLock & p::           ConnectToPersonalComputer()
 
 
 /*
   Source code
-    â‡ª s                  Source code/BitBucket
-    â‡ª ^ s                Source code/BitBucket- schemas
+    ✦ s                  Source code/BitBucket
+    ✦ ^ s                Source code/BitBucket- schemas
 */
 CapsLock & s:: 
 {
@@ -494,10 +495,10 @@ CapsLock & s::
 
 /*
   Visual Studio
-    â‡ª [                  Toggle left sidebar
+    ✦ [                  Toggle left sidebar
                          Use Shift+Esc to exit, or click outside
                          I could not find a way to determine if the Solution Explorer was open or 
-                         not, to determine if I should do â‡ª[ or +{Esc}
+                         not, to determine if I should do ✦[ or +{Esc}
 */
 #HotIf WinActive("ahk_exe i)\\devenv\.exe$", )
   CapsLock & [::          SendInput("^!l")
@@ -506,8 +507,8 @@ CapsLock & s::
 
 /*
   IntelliJ
-    â‡ª l                  Start IntelliJ
-    â‡ª [                  Toggle left sidebar
+    ✦ l                  Start IntelliJ
+    ✦ [                  Toggle left sidebar
 */
 CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe")
 #HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
@@ -518,21 +519,21 @@ CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", Windo
 /*
   Home automation
     (keys listed are on the numeric keypad)
-    â‡ª +                   Air cleaner: toggle on/off
-    â‡ª Enter                       Fan: toggle on/off
+    ✦ +                   Air cleaner: toggle on/off
+    ✦ Enter                       Fan: toggle on/off
 
-    â‡ª 7|8|9                 Top light: brightness down|toggle on/off|brightness up
-    â‡ª ^ 7|9                 Top light: brightness 1%|brightness 100%
+    ✦ 7|8|9                 Top light: brightness down|toggle on/off|brightness up
+    ✦ ^ 7|9                 Top light: brightness 1%|brightness 100%
 
-    â‡ª 4|5|6              Middle light: brightness down|toggle on/off|brightness up
-    â‡ª ^ 4|6              Middle light: brightness 1%|brightness 100%
+    ✦ 4|5|6              Middle light: brightness down|toggle on/off|brightness up
+    ✦ ^ 4|6              Middle light: brightness 1%|brightness 100%
 
-    â‡ª 1|2|3              Bottom light: brightness down|toggle on/off|brightness up
-    â‡ª ^ 1|3              Bottom light: brightness 1%|brightness 100%
+    ✦ 1|2|3              Bottom light: brightness down|toggle on/off|brightness up
+    ✦ ^ 1|3              Bottom light: brightness 1%|brightness 100%
 
 
   DISABLED
-   â‡ª ^ +                 Air cleaner: cycle between fan speeds
+   ✦ ^ +                 Air cleaner: cycle between fan speeds
                            THIS IS VALID FOR VESYNC AIR CLEANER, NOT WYZE PLUG
 */
 CapsLock & NumpadAdd::   HomeAutomationCommand("officeac  toggle")     
@@ -559,8 +560,8 @@ CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (G
 
 /*
   Generate a UUID/GUID
-    â‡ª u                  Generate random UUID (lowercase)
-    â‡ª + u                Generate random UUID (uppercase)
+    ✦ u                  Generate random UUID (lowercase)
+    ✦ + u                Generate random UUID (uppercase)
 */
 CapsLock & u::             GenerateGUID(GetKeyState("Shift"))
 

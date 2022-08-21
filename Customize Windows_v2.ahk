@@ -76,11 +76,11 @@ CapsLock:: return
 
 /*
   Mouse media controls
-    â‡ª mouse wheel        Volume down/up
-    â‡ª LButton            Play/pause
-    â‡ª RButton            Music app (Spotify)
-    â‡ª XButton1           Previous track
-    â‡ª XButton2           Next track
+    ✦ mouse wheel        Volume down/up
+    ✦ LButton            Play/pause
+    ✦ RButton            Music app (Spotify)
+    ✦ XButton1           Previous track
+    ✦ XButton2           Next track
 */
 #HotIf IsWorkLaptop
   CapsLock & wheelup::     SendMediaKey("{Blind}{Volume_Up 1}")

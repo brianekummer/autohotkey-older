@@ -12,7 +12,7 @@
 
   Modifiers
   ---------
-  ^ = Ctrl     ! = Alt     + = Shift     # = Windows      â‡ª = CapsLock/Hyper
+  ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
 
 
   Windows Provided
@@ -29,31 +29,31 @@
 
   Shortcuts
   ---------
-  â‡ª ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
-  â‡ª b                   Windows (AHK)    Browser
-  â‡ª c                   Windows (AHK)    Calendar
-  â‡ª i                   Windows (AHK)    Inbox
-  â‡ª j                   Windows (AHK)    JIRA- current project board
-  â‡ª ^ j                 Windows (AHK)    JIRA- open selected story number
-  â‡ª m                   Windows (AHK)    Music/Spotify
-  â‡ª t                   Windows (AHK)    Terminal/Cmder/bash
+  ✦ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
+  ✦ b                   Windows (AHK)    Browser
+  ✦ c                   Windows (AHK)    Calendar
+  ✦ i                   Windows (AHK)    Inbox
+  ✦ j                   Windows (AHK)    JIRA- current project board
+  ✦ ^ j                 Windows (AHK)    JIRA- open selected story number
+  ✦ m                   Windows (AHK)    Music/Spotify
+  ✦ t                   Windows (AHK)    Terminal/Cmder/bash
   PrintScreen           Windows (AHK)    Windows screenshot tool
 
 
   Other Stuff
   -----------
-  â‡ª RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
-  â‡ª u                   Windows (AHK)    Generate a random UUID (lowercase)
-  â‡ª + u                 Windows (AHK)    Generate a random UUID (uppercase)
+  ✦ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
+  ✦ u                   Windows (AHK)    Generate a random UUID (lowercase)
+  ✦ + u                 Windows (AHK)    Generate a random UUID (uppercase)
 
 
   Media Controls
   --------------
-  â‡ª WheelUp/WheelDown   Windows (AHK)    Volume up/down
-  â‡ª LButton             Windows (AHK)    Play/pause
-  â‡ª RButton             Windows (AHK)    Music app (Spotify)
-  â‡ª XButton1            Windows (AHK)    Previous track
-  â‡ª XButton2            Windows (AHK)    Next track
+  ✦ WheelUp/WheelDown   Windows (AHK)    Volume up/down
+  ✦ LButton             Windows (AHK)    Play/pause
+  ✦ RButton             Windows (AHK)    Music app (Spotify)
+  ✦ XButton1            Windows (AHK)    Previous track
+  ✦ XButton2            Windows (AHK)    Next track
   Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
 
 
@@ -65,16 +65,16 @@
   Home Automation
   ---------------
   (keys listed are numeric keypad)
-  â‡ª +                   Windows (AHK)     Air cleaner: toggle on/off
-  â‡ª Enter               Windows (AHK)             Fan: toggle on/off
+  ✦ +                   Windows (AHK)     Air cleaner: toggle on/off
+  ✦ Enter               Windows (AHK)             Fan: toggle on/off
 
-  â‡ª 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
-  â‡ª 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
-  â‡ª 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
+  ✦ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
+  ✦ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
+  ✦ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
 
-  â‡ª ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
-  â‡ª ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
-  â‡ª ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
+  ✦ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
+  ✦ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
+  ✦ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
 
 
   Customizing Windows Behavior
@@ -90,23 +90,23 @@
   Slack:
     ^ mousewheel        Slack (AHK)      Decrease/increase font size
     ^ k                 Slack (AHK)      Insert hyperlink
-    â‡ª [                 Slack (AHK)      Toggle left sidebar
-    â‡ª ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
-    â‡ª ! c               Slack (AHK)      Status - Clear. Clears my Slack statuses.
-    â‡ª ! l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
-    â‡ª ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
-    â‡ª ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
-    â‡ª ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
+    ✦ [                 Slack (AHK)      Toggle left sidebar
+    ✦ ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
+    ✦ ! c               Slack (AHK)      Status - Clear. Clears my Slack statuses.
+    ✦ ! l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
+    ✦ ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
+    ✦ ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
+    ✦ ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
   Typora
     ^ mousewheel        Typora (AHK)     Decrease/increase font size
-    â‡ª [                 Typora (AHK)     Toggle left sidebar
+    ✦ [                 Typora (AHK)     Toggle left sidebar
   VS Code
     ^ mousewheel        VS Code (AHK)    Decrease/increase font size
-    â‡ª [                 VS Code (AHK)    Toggle left sidebar
+    ✦ [                 VS Code (AHK)    Toggle left sidebar
   IntelliJ
-    â‡ª [                 IntelliJ (AHK)   Toggle left sidebar
+    ✦ [                 IntelliJ (AHK)   Toggle left sidebar
   Visual Studio
-    â‡ª [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
+    ✦ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
 
 
   Code Structure
@@ -159,20 +159,20 @@
     - Moved Solution Explorer to left side, pinned
     - ^!l shows it 
     - +{Esc} makes it go away
-    - CAN I GET IT WORKING WITH AHK??? â‡ª [
+    - CAN I GET IT WORKING WITH AHK??? ✦ [
          - Can't tell by the active window. maybe I can loop through all the active windows in
 
 
 
 
-  â‡ª v                   Windows (AHK)    VS Code
-  â‡ª ^ v                 Open VS Code, create a new doc, paste selected text, then format it
+  ✦ v                   Windows (AHK)    VS Code
+  ✦ ^ v                 Open VS Code, create a new doc, paste selected text, then format it
 
 
   Customizing App Behavior
   ------------------------
   Slack:
-    â‡ª ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
+    ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
   VS Code
     ~$^s                VS Code (AHK)    After save AHK file, reload current script
   
@@ -180,7 +180,7 @@
   standardize video keys for youtube and udemy
 
   LOW PRIORITY
-  â‡ª ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
+  ✦ ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
 
 
   EVALUATE ALL OF THIS
@@ -306,7 +306,7 @@ return
 
 /*
   Emergency Reload
-    â‡ª ^ ! Esc            Reload this script
+    ✦ ^ ! Esc            Reload this script
 
   I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
   for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
@@ -318,7 +318,7 @@ return
 
 /*
   Price Watch
-    â‡ª F12                Load stuff I'm watching
+    ✦ F12                Load stuff I'm watching
 
   Note that sometimes I have to escape special characters like %
 */
@@ -341,7 +341,7 @@ PrintScreen::SendInput("#+s")
 /*
   Typora
     ^ mousewheel         Decrease/increase font size
-    â‡ª [                  Toggle left sidebar
+    ✦ [                  Toggle left sidebar
 */
 #HotIf WinActive("ahk_exe i)\\typora\.exe$", )
   ^wheelup::             SendInput("{Blind}^+{=}")
@@ -352,21 +352,21 @@ PrintScreen::SendInput("#+s")
 
 /*
   Chrome
-    â‡ª b                  Run or activate Chrome
+    ✦ b                  Run or activate Chrome
 */
 CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
 
 
 /*
   Calendar
-    â‡ª c                  Run or activate Outlook and switch to the calendar, using an Outlook
+    ✦ c                  Run or activate Outlook and switch to the calendar, using an Outlook
                            shortcut to switch to the calendar
 CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
 
 
 /*
   Terminal/Cmder/bash
-    â‡ª t                  Run or activate the terminal
+    ✦ t                  Run or activate the terminal
 */
 ;--------------------------------------------------------------------------------------------------
 CapsLock & t::           RunOrActivateAppOrUrl("Cmder", "C:\tools\Cmder\Cmder.exe")
@@ -375,11 +375,11 @@ CapsLock & t::           RunOrActivateAppOrUrl("Cmder", "C:\tools\Cmder\Cmder.ex
 /*
   Visual Studio Code
     ^ mousewheel         Decrease/increase font size
-    â‡ª [                  Toggle left sidebar
-    â‡ª v                  Open VS Code
+    ✦ [                  Toggle left sidebar
+    ✦ v                  Open VS Code
 
   TODO-
-    â‡ª ^ v                Open VS Code, create a new doc, paste selected text, then format it
+    ✦ ^ v                Open VS Code, create a new doc, paste selected text, then format it
 */
 #HotIf WinActive("ahk_exe i)\\code\.exe$", )
   ^wheelup::             SendInput("{Blind}^{=}")

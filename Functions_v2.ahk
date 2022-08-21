@@ -17,8 +17,8 @@ PriceWatchWebsites()
 
 /*
   JIRA
-    â‡ª j                  Opens the current board
-    â‡ª ^ j                Opens the selected story number
+    ✦ j                  Opens the current board
+    ✦ ^ j                Opens the selected story number
                            * If the highlighted text looks like a JIRA story number (e.g. 
                              PROJECT-1234), then open that story
                            * If the Git Bash window has text that looks like a JIRA story number, 
