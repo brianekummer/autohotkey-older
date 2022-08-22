@@ -28,6 +28,7 @@
     - Remove duplicated utils and list Utilities.ahk as a dependency
 - Look for hard-coded strings that should be pulled into env vars
 - Can Jira stuff be consolidated? Do I need global vars for stuff from env vars, or can I do static vars in JIRA() function?
+    - Is a class helpful here? Create a global Jira object?
 - Redo comments- content, formatting, move some into this readme
 - Update Configure.bat
 - Backup env vars to Google Drive

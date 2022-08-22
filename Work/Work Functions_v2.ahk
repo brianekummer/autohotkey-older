@@ -62,97 +62,12 @@ SlackStatus_Working()
 */
 OpenSourceCode(ctrlPressed)
 {
-  ;MsgBox(Configuration["Work"]["SourceSchemaUrl"])
   if (ctrlPressed)
     RunOrActivateAppOrUrl("eventschema", Configuration.Work.SourceSchemaUrl, 10, True, False)
   else
     RunOrActivateAppOrUrl("Overview", Configuration.Work.SourceCodeUrl, 10, True, False)
 
   return
-}
-
-
-/*
-  JIRA
-    ✦ j                  Opens the current board
-    ✦ ^ j                Opens the selected story number
-                           * If the highlighted text looks like a JIRA story number (e.g. 
-                             PROJECT-1234), then open that story
-                           * If the Git Bash window has text that looks like a JIRA story number, 
-                             then open that story
-                           * Last resort is to open the current board
-*/
-JIRA()
-{
-  pos := 0
-
-  if (GetKeyState("Ctrl"))
-  {
-    regexStoryNumberWithoutProject := "\b\d{1,5}\b"
-    regexStoryNumberWithProject := "i)\b(" Configuration.Work.JiraMyProjectKeys ")([-_ ]|( - ))?\d{1,5}\b"
-
-    selectedText := GetSelectedTextUsingClipboard()
-    if (StrLen(selectedText) > 0)
-    {
-      ; Search the selected text for something like PROJECT-1234
-      pos := RegExMatch(selectedText, regexStoryNumberWithProject, &matches)
-      if (pos = 0)
-      { 
-        ; Search for just a number, and if found, add the default project name
-        pos := RegExMatch(selectedText, regexStoryNumberWithoutProject, &matches)
-        if (pos > 0)
-          storyNumber := Configuration.Work.JiraDefaultProjectKey "-" matches[]
-      }  
-    }
-    
-    if (pos = 0)
-    { 
-      ; Search for a Cmder/ConEmu terminal with a title that contains a JIRA story number
-      try {
-        pos := RegExMatch(
-          WinGetTitle("ahk_exe i)\\conemu64\.exe$ ahk_class VirtualConsoleClass"),
-          regexStoryNumberWithProject, 
-          &matches)
-      } catch {
-      }
-    }
-
-    if (pos = 0)
-    { 
-      ; Search for a Mintty (comes with Git) terminal with a title that contains a JIRA story number
-      try {
-        pos := RegExMatch(
-          WinGetTitle("ahk_exe i)\\mintty\.exe$ ahk_class mintty"),
-          regexStoryNumberWithProject, 
-          &matches)
-      } catch {
-      }
-    }  
-
-    if (pos > 0)
-    {
-      if (!IsSet(storyNumber))
-      {
-        ; Handle if there is an underscore or space instead of a hyphen, or no hyphen
-        storyNumber := RegExReplace(matches[], "[\s_]", "")
-        If (InStr(storyNumber, "-") = 0)
-          storyNumber := RegExReplace(storyNumber, "(\d+)", "-$1")
-      }
-      
-      title := "\[" storyNumber "\].*Jira"
-      url := Configuration.Work.JiraUrl "/browse/" storyNumber
-      RunOrActivateAppOrUrl(title, url, 5, True, False)
-      return
-    }
-  }
-
-  if (pos = 0)
-  {
-    ; Could not find any JIRA story number, so open the default JIRA board
-    title := "Agile Board - Jira"
-    url := Configuration.Work.JiraUrl "/secure/RapidBoard.jspa?rapidView=" Configuration.Work.JiraDefaultRapidKey "&projectKey=" Configuration.Work.JiraDefaultProjectKey "&sprint=" Configuration.Work.JiraDefaultSprint
-    RunOrActivateAppOrUrl(title, url, 5, True, False)
-  }
 }
 
 

@@ -22,10 +22,11 @@ RunAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False)
 /*
 
 */
-RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False, asAdminUser := true)
+RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 0, maximize := False, asAdminUser := true)
 {
   if (!WinExist(appTitle))
   {
+    timeToWait := (timeToWait = 0) ? 10 : timeToWait
     if asAdminUser
       Run(whatToRun)
     else
@@ -34,6 +35,7 @@ RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False, a
   }
   else 
   {
+    timeToWait := (timeToWait = 0) ? 5 : timeToWait
     WinActivate()
   }
 

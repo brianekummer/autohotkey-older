@@ -57,17 +57,18 @@ Configuration.Work := {
   UserEmailAddress: EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN"),
 
   ; These come from my Windows environment variables- see "Configure.bat" for details
-  JiraUrl: EnvGet("AHK_JIRA_URL"),
-  JiraMyProjectKeys: EnvGet("AHK_JIRA_MY_PROJECT_KEYS"),
-  JiraDefaultProjectKey: EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY"),
-  JiraDefaultRapidKey: EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY"),
-  JiraDefaultSprint: EnvGet("AHK_JIRA_DEFAULT_SPRINT"),
+  Jira: {
+    BaseUrl: EnvGet("AHK_JIRA_URL"),
+    MyProjectKeys: EnvGet("AHK_JIRA_MY_PROJECT_KEYS"),
+    DefaultProjectKey: EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY"),
+    DefaultRapidKey: EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY"),
+    DefaultSprint: EnvGet("AHK_JIRA_DEFAULT_SPRINT")
+  },
   SourceCodeUrl: EnvGet("AHK_SOURCE_CODE_URL"),
   SourceSchemaUrl: EnvGet("AHK_SOURCE_CODE_SCHEMA_URL"),
   ParsecPeerId: EnvGet("AHK_PARSEC_PEER_ID"),
   OfficeNetworks: EnvGet("AHK_OFFICE_NETWORKS")
 }
-
 
 
 /*
@@ -151,16 +152,16 @@ CapsLock & i::           ActivateOrStartMicrosoftOutlook("^+I")
 
 
 /*
-  JIRA
+  Jira
     ✦ j                  Opens the current board
     ✦ ^ j                Opens the selected story number
-                           * If the highlighted text looks like a JIRA story number (e.g. 
+                           * If the highlighted text looks like a Jira story number (e.g. 
                              PROJECT-1234), then open that story
-                           * If the Git Bash window has text that looks like a JIRA story number, 
+                           * If the Git Bash window has text that looks like a Jira story number, 
                              then open that story
                            * Last resort is to open the current board
 */
-CapsLock & j::           JIRA()
+CapsLock & j::           Jira()
 
 
 /*
@@ -273,6 +274,7 @@ CapsLock & u::            GenerateGUID(GetKeyState("Shift"))
   I have to put this at the bottom of my script, or else it interferes with other code in this script
 */
 #Include "%A_ScriptDir%\Work\Work Functions_v2.ahk"
+#Include "%A_ScriptDir%\Work\Jira_v2.ahk"
 #Include "%A_ScriptDir%\Work\Mute VOIP Apps_v2.ahk"
 #Include "%A_ScriptDir%\Work\Slack_v2.ahk"
 
