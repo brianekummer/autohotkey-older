@@ -1,5 +1,10 @@
 ﻿/*
-; My AutoHotKey Automations - Shared Between Personal and Work
+; My AutoHotkey Automations - Shared Between Personal and Work
+
+
+REQUIREMENTS FOR CODE IN COMMON FOLDER
+- All code must compile/be-happy on both machines, not try to access env vars that don'ty exist on one machine, etc
+
 ;
 ;
 ; There is often interaction between the work laptop and the personal laptop, so both bits of code
@@ -244,7 +249,7 @@
 ;   - Using regex in "#IfWinActive ahk_exe i)\\xxxx\.exe$" requires "SetTitleMatchMode RegEx"
 ;   - This script must be run as an admin or else any app run as an admin (i.e. Visual Studio,
 ;     Visual Studio Code, etc.) will intercept the keystrokes before this script.
-;   - Definition of AutoHotKey keys: http://www.autohotkey.com/docs/KeyList.htm
+;   - Definition of AutoHotkey keys: http://www.autohotkey.com/docs/KeyList.htm
 ;   - This looks helpful: http://www.daviddeley.com/autohotkey/xprxmp/autohotkey_expression_examples.htm
 ;
 ;
@@ -294,6 +299,116 @@
 
 
 
+
+
+/*
+  Price Watch
+    ✦ F12                Load stuff I'm watching
+
+  Note that sometimes I have to escape special characters like %
+*/
+#HotIf IsWorkLaptop
+  CapsLock & F12::       SendKeystrokesToPersonalLaptop("{CapsLock down}{F12}{CapsLock up}")
+#HotIf !IsWorkLaptop
+  CapsLock & F12::       PriceWatchWebsites()
+#HotIf
+
+
+/*
+  Convert case of selected text
+    ✦ RShift             Cycle selected text between lower/upper/sentence/title case
+
+; Since you cannot send RShift key to another window, I am using F17 here
+*/
+#HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
+  CapsLock & RShift::    SendKeystrokesToPersonalLaptop("{CapsLock down}{F17}{CapsLock up}")
+#HotIf
+CapsLock & RShift::      ConvertCase()    ; Work laptop reacts to this
+CapsLock & F17::         ConvertCase()    ; Personal laptop reacts to this
+
+
+/*
+  Screen shot
+    PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
+*/
+#HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
+  PrintScreen::          SendKeystrokesToPersonalLaptop("{LWin down}{Shift down}s{Shift up}{LWin up}")
+#HotIf
+PrintScreen::SendInput("#+s")
+
+
+/*
+  Typora
+    ✦ n                  Run or activate my notes in Typora on my work laptop
+    ✦ ! n                Run or activate my notes in Typora on my personal laptop
+
+    ^ mousewheel         Decrease/increase font size
+    ✦ [                  Toggle left sidebar
+*/
+;#If IsWorkLaptop && GetKeyState("Alt")
+;  CapsLock & n::         SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
+;#If
+CapsLock & n::           RunOrActivateAppOrUrl("ahk_exe i)\\typora\.exe$", WindowsProgramFilesFolder "\Typora\Typora.exe")
+
+#HotIf WinActive("ahk_exe i)\\typora\.exe$", )
+  ^wheelup::                        SendInput("{Blind}^+{=}")
+  ^wheeldown::                      SendInput("{Blind}^+{-}")
+  Capslock & [::                    SendInput("^+{l}")
+#HotIf
+
+
+/*
+  Chrome
+    ✦ b                  Run or activate Chrome on my work laptop
+    ✦ ! b                Run or activate Chrome on my personal laptop
+*/
+;#If IsWorkLaptop && GetKeyState("Alt")
+;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
+;#If
+CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe", 3, True, False)
+
+
+/*
+  Terminal/Cmder/bash
+    ✦ t                  Run or activate the terminal on my work laptop
+    ✦ ! t                Run or activate the terminal on my personal laptop
+*/
+;#If IsWorkLaptop && GetKeyState("Alt")
+;  CapsLock & t::         SendKeystrokesToPersonalLaptop("{CapsLock down}t{CapsLock up}")
+;#If
+CapsLock & t::           RunOrActivateAppOrUrl("Cmder", "C:\tools\Cmder\Cmder.exe")
+
+
+/*
+  Visual Studio Code
+    ✦ v                  Open VS Code on my work laptop
+    ✦ ! v                Open VS Code on my personal laptop
+
+    ^ mousewheel         Decrease/increase font size
+    ✦ [                  Toggle left sidebar
+
+  TODO-
+    ✦ ^ v                Open VS Code, create a new doc, paste selected text, then format it
+*/
+;#If IsWorkLaptop && GetKeyState("Alt")
+;  CapsLock & v::         SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
+;#If
+CapsLock & v::           RunOrActivateAppOrUrl("ahk_exe i)\\code\.exe$", WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
+
+#HotIf WinActive("ahk_exe i)\\code\.exe$", )
+  ^wheelup::                 SendInput("{Blind}^{=}")
+  ^wheeldown::               SendInput("{Blind}^{-}")
+  CapsLock & [::             SendInput("^b")
+#HotIf
+
+
+
+
+
+
+/*
+  EXPERIMENTAL CODE
+*/
 
 
 
@@ -525,119 +640,8 @@ end
 
 
 
-
 /*
-  Price Watch
-    ✦ F12                Load stuff I'm watching
-
-  Note that sometimes I have to escape special characters like %
-*/
-#HotIf IsWorkLaptop
-  CapsLock & F12::       SendKeystrokesToPersonalLaptop("{CapsLock down}{F12}{CapsLock up}")
-#HotIf !IsWorkLaptop
-  CapsLock & F12::       PriceWatchWebsites()
-#HotIf
-
-
-/*
-  Convert case of selected text
-    ✦ RShift             Cycle selected text between lower/upper/sentence/title case
-
-; Since you cannot send RShift key to another window, I am using F17 here
-*/
-#HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
-  CapsLock & RShift::    SendKeystrokesToPersonalLaptop("{CapsLock down}{F17}{CapsLock up}")
-#HotIf
-CapsLock & RShift::      ConvertCase()    ; Work laptop reacts to this
-CapsLock & F17::         ConvertCase()    ; Personal laptop reacts to this
-
-
-/*
-  Screen shot
-    PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
-*/
-#HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
-  PrintScreen::          SendKeystrokesToPersonalLaptop("{LWin down}{Shift down}s{Shift up}{LWin up}")
-#HotIf
-PrintScreen::SendInput("#+s")
-
-
-/*
-  Typora
-    ✦ n                  Run or activate my notes in Typora on my work laptop
-    ✦ ! n                Run or activate my notes in Typora on my personal laptop
-
-    ^ mousewheel         Decrease/increase font size
-    ✦ [                  Toggle left sidebar
-*/
-;#If IsWorkLaptop && GetKeyState("Alt")
-;  CapsLock & n::         SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
-;#If
-CapsLock & n::           RunOrActivateAppOrUrl("ahk_exe i)\\typora\.exe$", WindowsProgramFilesFolder "\Typora\Typora.exe")
-
-#HotIf WinActive("ahk_exe i)\\typora\.exe$", )
-  ^wheelup::                        SendInput("{Blind}^+{=}")
-  ^wheeldown::                      SendInput("{Blind}^+{-}")
-  Capslock & [::                    SendInput("^+{l}")
-#HotIf
-
-
-/*
-  Chrome
-    ✦ b                  Run or activate Chrome on my work laptop
-    ✦ ! b                Run or activate Chrome on my personal laptop
-*/
-;#If IsWorkLaptop && GetKeyState("Alt")
-;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
-;#If
-CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe", 3, True, False)
-
-
-/*
-  Terminal/Cmder/bash
-    ✦ t                  Run or activate the terminal on my work laptop
-    ✦ ! t                Run or activate the terminal on my personal laptop
-*/
-;#If IsWorkLaptop && GetKeyState("Alt")
-;  CapsLock & t::         SendKeystrokesToPersonalLaptop("{CapsLock down}t{CapsLock up}")
-;#If
-CapsLock & t::           RunOrActivateAppOrUrl("Cmder", "C:\tools\Cmder\Cmder.exe")
-
-
-/*
-  Visual Studio Code
-    ✦ v                  Open VS Code on my work laptop
-    ✦ ! v                Open VS Code on my personal laptop
-
-    ^ mousewheel         Decrease/increase font size
-    ✦ [                  Toggle left sidebar
-
-  TODO-
-    ✦ ^ v                Open VS Code, create a new doc, paste selected text, then format it
-*/
-;#If IsWorkLaptop && GetKeyState("Alt")
-;  CapsLock & v::         SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
-;#If
-CapsLock & v::           RunOrActivateAppOrUrl("ahk_exe i)\\code\.exe$", WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
-
-#HotIf WinActive("ahk_exe i)\\code\.exe$", )
-  ^wheelup::                 SendInput("{Blind}^{=}")
-  ^wheeldown::               SendInput("{Blind}^{-}")
-  CapsLock & [::             SendInput("^b")
-#HotIf
-
-
-
-/*
-  Include all libraries, utilities, and other AutoHotKey scripts
+  Include all libraries, utilities, and other AutoHotkey scripts
 
   I have to put this at the bottom of my script, or else it interferes with other code in this script
 */
-;#Include "%A_ScriptDir%\Shared_v2new.ahk"
-;#Include "%A_ScriptDir%\Functions_v2new.ahk"
-;#Include "%A_ScriptDir%\Utilities_v2new.ahk"
-;#Include "%A_ScriptDir%\Customize Windows_v2new.ahk"
-;#Include "%A_ScriptDir%\My Auto Correct_v2new.ahk"
-;#Include "%A_ScriptDir%\Convert Case_v2new.ahk"
-
-;#Include "%A_ScriptDir%\lib\RunAsAdmin_v2new.ahk"

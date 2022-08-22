@@ -271,7 +271,7 @@ SlackStatusUpdate_SetPresence(presence, slackTokens := "")
 
 
 /*
-  Private - Run a DOS command. This code taken from AutoHotKey website: https://autohotkey.com/docs/commands/Run.htm
+  Private - Run a DOS command. This code taken from AutoHotkey website: https://autohotkey.com/docs/commands/Run.htm
 */
 SlackStatusUpdate_RunWaitOne(command)
 {

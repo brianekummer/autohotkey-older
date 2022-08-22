@@ -10,7 +10,7 @@
     - Moves cursor to start of text, highlights text, leaving cursor at rightmost end of highlighted text
     - Tooltip to say what new case is
     - Timer to reset cycle back to lowercase after 30 seconds
-    - For converting to title case, instead of using AutoHotKey's StringUpper/StringLower with the title option (which
+    - For converting to title case, instead of using AutoHotkey's StringUpper/StringLower with the title option (which
       capitalizes EVERY word, including articles, prepositions, etc), I'm using code from this thread that is more 
       accurate: https://www.autohotkey.com/boards/viewtopic.php?t=19036
     - I tried using my GetSelectedTextUsingClipboard() method but it was unreliable and much slower when used here.

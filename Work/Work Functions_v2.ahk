@@ -161,10 +161,13 @@ HomeAutomationCommand(command)
 
 
 /*
-  Generate a GUID
+  Create a random GUID
 */
 GenerateGUID(uppercase) 
 {
-  newGUID := CreateGUID()
+  newGUID := ComObject("Scriptlet.TypeLib").Guid
+	newGUID := StrReplace(NewGUID, "{")
+	newGUID := StrReplace(NewGUID, "}")
+ 
   SendInput(uppercase ? StrUpper(newGUID) : StrLower(newGUID))
 }

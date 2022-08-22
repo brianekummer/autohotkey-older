@@ -1,5 +1,5 @@
 ﻿/*
-  My AutoHotKey Automations - Home
+  My AutoHotkey Automations - Home
  
  
   Keep in Mind While Developing This
@@ -231,7 +231,7 @@
     - Using regex in "#IfWinActive ahk_exe i)\\xxxx\.exe$" requires "SetTitleMatchMode RegEx"
     - This script must be run as an admin or else any app run as an admin (i.e. Visual Studio,
       Visual Studio Code, etc.) will intercept the keystrokes before this script.
-    - Definition of AutoHotKey keys: http://www.autohotkey.com/docs/KeyList.htm
+    - Definition of AutoHotkey keys: http://www.autohotkey.com/docs/KeyList.htm
     - This looks helpful: http://www.daviddeley.com/autohotkey/xprxmp/autohotkey_expression_examples.htm
 
 
@@ -259,7 +259,7 @@
 
 
 /*
-  AutoHotKey configuration options
+  AutoHotkey configuration options
 */
 #SingleInstance FORCE            ; Skip invocation dialog box and silently replace previously executing instance of this script
 Persistent
@@ -293,7 +293,7 @@ MyDocumentsFolder := WindowsUserProfile . "\Documents\"
 global MyPersonalFolder
 global MyPersonalDocumentsFolder
 MyPersonalFolder := EnvGet("PERSONAL_FILES")
-MyPersonalDocumentsFolder := MyPersonalFolder . "\Documents\"
+MyPersonalDocumentsFolder := MyPersonalFolder "\Documents\"
 
 
 /*
@@ -304,100 +304,18 @@ return
 
 
 
-/*
-  Emergency Reload
-    ✦ ^ ! Esc            Reload this script
-
-  I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
-  for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
-*/
-#HotIf GetKeyState("Alt") && GetKeyState("Ctrl")
-  CapsLock & Esc::         Reload
-#HotIf
-
 
 /*
-  Price Watch
-    ✦ F12                Load stuff I'm watching
-
-  Note that sometimes I have to escape special characters like %
-*/
-CapsLock & F12::
-{
-  Run("`"https://www.amazon.com/s?k=penoval+chromebook`"", , "Max")
-  Run("`"https://www.amazon.com/Computer-International-BW-16D1X-U-Powerful-Blu-ray/dp/B071VP89X1`"", , "Max")
-  return
-}
-
-
-/*
-  Screen shot
-    PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
-*/
-PrintScreen::SendInput("#+s")
-
-
-
-/*
-  Typora
-    ^ mousewheel         Decrease/increase font size
-    ✦ [                  Toggle left sidebar
-*/
-#HotIf WinActive("ahk_exe i)\\typora\.exe$", )
-  ^wheelup::             SendInput("{Blind}^+{=}")
-  ^wheeldown::           SendInput("{Blind}^+{-}")
-  Capslock & [::         SendInput("^+{l}")
-#HotIf
-
-
-/*
-  Chrome
-    ✦ b                  Run or activate Chrome
-*/
-CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
-
-
-/*
-  Calendar
-    ✦ c                  Run or activate Outlook and switch to the calendar, using an Outlook
-                           shortcut to switch to the calendar
-CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
-
-
-/*
-  Terminal/Cmder/bash
-    ✦ t                  Run or activate the terminal
-*/
-;--------------------------------------------------------------------------------------------------
-CapsLock & t::           RunOrActivateAppOrUrl("Cmder", "C:\tools\Cmder\Cmder.exe")
-
-
-/*
-  Visual Studio Code
-    ^ mousewheel         Decrease/increase font size
-    ✦ [                  Toggle left sidebar
-    ✦ v                  Open VS Code
-
-  TODO-
-    ✦ ^ v                Open VS Code, create a new doc, paste selected text, then format it
-*/
-#HotIf WinActive("ahk_exe i)\\code\.exe$", )
-  ^wheelup::             SendInput("{Blind}^{=}")
-  ^wheeldown::           SendInput("{Blind}^{-}")
-  CapsLock & [::         SendInput("^b")
-#HotIf
-
-
-
-/*
-  Include all libraries, utilities, and other AutoHotKey scripts
+  Include all libraries, utilities, and other AutoHotkey scripts
 
   I have to put this at the bottom of my script, or else it interferes with other code in this script
 */
-#Include "%A_ScriptDir%\Functions_v2.ahk"
-#Include "%A_ScriptDir%\Utilities_v2.ahk"
-#Include "%A_ScriptDir%\Customize Windows_v2.ahk"
-#Include "%A_ScriptDir%\My Auto Correct_v2.ahk"
-#Include "%A_ScriptDir%\Convert Case_v2.ahk"
+#Include "%A_ScriptDir%\Home\Home Functions_v2.ahk"
 
-#Include "%A_ScriptDir%\lib\RunAsAdmin_v2.ahk"
+#Include "%A_ScriptDir%\Common\Common_v2.ahk"
+#Include "%A_ScriptDir%\Common\Convert Case_v2.ahk"
+#Include "%A_ScriptDir%\Common\Customize Windows_v2.ahk"
+#Include "%A_ScriptDir%\Common\My Auto Correct_v2.ahk"
+#Include "%A_ScriptDir%\Common\Utilities_v2.ahk"
+
+#Include "%A_ScriptDir%\Lib\RunAsAdmin_v2.ahk"

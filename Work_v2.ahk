@@ -1,5 +1,5 @@
 ﻿/*
-; My AutoHotKey Automations - Work
+; My AutoHotkey Automations - Work
 ;
 ;
 ; Keep in Mind While Developing This
@@ -249,7 +249,7 @@
 ;   - Using regex in "#IfWinActive ahk_exe i)\\xxxx\.exe$" requires "SetTitleMatchMode RegEx"
 ;   - This script must be run as an admin or else any app run as an admin (i.e. Visual Studio,
 ;     Visual Studio Code, etc.) will intercept the keystrokes before this script.
-;   - Definition of AutoHotKey keys: http://www.autohotkey.com/docs/KeyList.htm
+;   - Definition of AutoHotkey keys: http://www.autohotkey.com/docs/KeyList.htm
 ;   - This looks helpful: http://www.daviddeley.com/autohotkey/xprxmp/autohotkey_expression_examples.htm
 ;
 ;
@@ -278,7 +278,7 @@
 
 
 /*
-  AutoHotKey configuration options
+  AutoHotkey configuration options
 */
 #SingleInstance FORCE            ; Skip invocation dialog box and silently replace previously executing instance of this script
 Persistent
@@ -536,12 +536,13 @@ CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", Windo
    ✦ ^ +                 Air cleaner: cycle between fan speeds
                            THIS IS VALID FOR VESYNC AIR CLEANER, NOT WYZE PLUG
 */
-CapsLock & NumpadAdd::   HomeAutomationCommand("officeac  toggle")     
-CapsLock & NumpadEnter:: HomeAutomationCommand("officefan toggle")
+CapsLock & NumpadAdd::   HomeAutomationCommand("officeac         toggle")     
+CapsLock & NumpadEnter:: HomeAutomationCommand("officefan        toggle")
 
 ; Because ^NumLock produces key code of Pause, must do hot keys differently for minimum brightness for officelite
 CapsLock & NumLock::     HomeAutomationCommand("officelite       brightness -")
 CapsLock & Pause::       HomeAutomationCommand("officelite       brightness 1")
+
 CapsLock & NumpadDiv::   HomeAutomationCommand("officelite       toggle")
 CapsLock & NumpadMult::  HomeAutomationCommand("officelite       brightness " (GetKeyState("Ctrl") ? "100" : "+"))
 
@@ -563,24 +564,24 @@ CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (G
     ✦ u                  Generate random UUID (lowercase)
     ✦ + u                Generate random UUID (uppercase)
 */
-CapsLock & u::             GenerateGUID(GetKeyState("Shift"))
+CapsLock & u::            GenerateGUID(GetKeyState("Shift"))
 
 
 
 
 /*
-  Include all libraries, utilities, and other AutoHotKey scripts
+  Include all libraries, utilities, and other AutoHotkey scripts
 
   I have to put this at the bottom of my script, or else it interferes with other code in this script
 */
-#Include "%A_ScriptDir%\Shared_v2.ahk"
-#Include "%A_ScriptDir%\Functions_v2.ahk"
-#Include "%A_ScriptDir%\Utilities_v2.ahk"
-#Include "%A_ScriptDir%\Customize Windows_v2.ahk"
-#Include "%A_ScriptDir%\My Auto Correct_v2.ahk"
-#Include "%A_ScriptDir%\Convert Case_v2.ahk"
+#Include "%A_ScriptDir%\Work\Work Functions_v2.ahk"
+#Include "%A_ScriptDir%\Work\Mute VOIP Apps_v2.ahk"
+#Include "%A_ScriptDir%\Work\Slack_v2.ahk"
 
-#Include "%A_ScriptDir%\Slack_v2.ahk"
-#Include "%A_ScriptDir%\Mute VOIP Apps_v2.ahk"
+#Include "%A_ScriptDir%\Common\Common_v2.ahk"
+#Include "%A_ScriptDir%\Common\Convert Case_v2.ahk"
+#Include "%A_ScriptDir%\Common\Customize Windows_v2.ahk"
+#Include "%A_ScriptDir%\Common\My Auto Correct_v2.ahk"
+#Include "%A_ScriptDir%\Common\Utilities_v2.ahk"
 
-#Include "%A_ScriptDir%\lib\RunAsAdmin_v2.ahk"
+#Include "%A_ScriptDir%\Lib\RunAsAdmin_v2.ahk"

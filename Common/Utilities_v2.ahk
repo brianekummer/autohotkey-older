@@ -76,7 +76,7 @@ GetSelectedTextUsingClipboard()
 
 
 /*
-  Run a DOS command. This code taken from AutoHotKey website: https://autohotkey.com/docs/commands/Run.htm
+  Run a DOS command. This code taken from AutoHotkey website: https://autohotkey.com/docs/commands/Run.htm
 */
 RunWaitOne(command)
 {
@@ -157,18 +157,6 @@ ShellRun(prms*)
    
   ; IShellDispatch2.ShellExecute
   shell.ShellExecute(prms*)
-}
-
-
-/*
-  Create a random GUID
-*/
-CreateGUID()
-{
-  newGUID := ComObject("Scriptlet.TypeLib").Guid
-	newGUID := StrReplace(NewGUID, "{")
-	newGUID := StrReplace(NewGUID, "}")
-  return newGUID
 }
 
 
