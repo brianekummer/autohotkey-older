@@ -2,189 +2,10 @@
   My AutoHotkey Automations - Home
  
  
-  Keep in Mind While Developing This
-  ----------------------------------
-    - Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
-    - Popup menus are useful- can I use them elsewhere?
-    - Are timed tooltips useful somewhere?
-    - Are classes useful anywhere?
-
-
   Modifiers
   ---------
   ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
 
-
-  Windows Provided
-  ----------------
-  # -                   Windows          Windows Magnifier -
-  # =                   Windows          Windows Magnifier +
-  # a                   Windows          Windows Action Center
-  # d                   Windows          Windows desktop
-  # e                   Windows          Windows Explorer
-  # l                   Windows          Lock workstation
-  # p                   Windows          Project (duplicate, extend, etc)
-  # up                  Windows          Maximize active window
-
-
-  Shortcuts
-  ---------
-  ✦ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
-  ✦ b                   Windows (AHK)    Browser
-  ✦ c                   Windows (AHK)    Calendar
-  ✦ i                   Windows (AHK)    Inbox
-  ✦ j                   Windows (AHK)    JIRA- current project board
-  ✦ ^ j                 Windows (AHK)    JIRA- open selected story number
-  ✦ m                   Windows (AHK)    Music/Spotify
-  ✦ t                   Windows (AHK)    Terminal/Cmder/bash
-  PrintScreen           Windows (AHK)    Windows screenshot tool
-
-
-  Other Stuff
-  -----------
-  ✦ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
-  ✦ u                   Windows (AHK)    Generate a random UUID (lowercase)
-  ✦ + u                 Windows (AHK)    Generate a random UUID (uppercase)
-
-
-  Media Controls
-  --------------
-  ✦ WheelUp/WheelDown   Windows (AHK)    Volume up/down
-  ✦ LButton             Windows (AHK)    Play/pause
-  ✦ RButton             Windows (AHK)    Music app (Spotify)
-  ✦ XButton1            Windows (AHK)    Previous track
-  ✦ XButton2            Windows (AHK)    Next track
-  Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
-
-
-  ?????
- ^#pause::Run("nircmd setdefaultsounddevice `"Headphones`"", , "Hide")      ; ^numlock = ^pause
- ^#numpadsub::Run("nircmd setdefaultsounddevice `"Headset`"", , "Hide")
-
-
-  Home Automation
-  ---------------
-  (keys listed are numeric keypad)
-  ✦ +                   Windows (AHK)     Air cleaner: toggle on/off
-  ✦ Enter               Windows (AHK)             Fan: toggle on/off
-
-  ✦ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
-  ✦ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
-  ✦ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
-
-  ✦ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
-  ✦ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
-  ✦ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
-
-
-  Customizing Windows Behavior
-  ---------------------------
-  # Down                Windows (AHK)    Minimize active window (instead of unmaximize, then minimize)
-  XButton1              Windows (AHK)    Minimize current application
-  XButton2              Windows (AHK)    Minimize app or close window/tab or close app
-  (auto-correct)        Windows (AHK)    Auto correct/capitalize lots of words, including first names
-
-
-  Customizing App Behavior
-  ------------------------
-  Slack:
-    ^ mousewheel        Slack (AHK)      Decrease/increase font size
-    ^ k                 Slack (AHK)      Insert hyperlink
-    ✦ [                 Slack (AHK)      Toggle left sidebar
-    ✦ ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
-    ✦ ! c               Slack (AHK)      Status - Clear. Clears my Slack statuses.
-    ✦ ! l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
-    ✦ ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
-    ✦ ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
-    ✦ ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
-  Typora
-    ^ mousewheel        Typora (AHK)     Decrease/increase font size
-    ✦ [                 Typora (AHK)     Toggle left sidebar
-  VS Code
-    ^ mousewheel        VS Code (AHK)    Decrease/increase font size
-    ✦ [                 VS Code (AHK)    Toggle left sidebar
-  IntelliJ
-    ✦ [                 IntelliJ (AHK)   Toggle left sidebar
-  Visual Studio
-    ✦ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
-
-
-  Code Structure
-  --------------
-  autohotkey/
-  â”œâ”€ experiments/                Temporary things I'm experimenting with
-  â”‚  â”œâ”€ trying-to-do-blah.ahk
-  â”‚  â””â”€ can-i-do-this.ahk
-  â”‚
-  â”œâ”€ examples to keep/           Interesting stuff I want to keep but am not using
-  â”‚  â””â”€ example1.ahk
-  â”‚
-  â”œâ”€ lib/                        Libraries of other people's work that I'm using
-  â”‚  â”œâ”€ AutoCorrect.ahk
-  â”‚  â”œâ”€ RunAsAdmin.ahk
-  â”‚  â””â”€ FindText.ahk             ** TODO- AM I GOING TO USE THIS???
-  â”‚
-  â”œâ”€ Configure.bat               Batch file to configure by setting environment variables
-  â”œâ”€ Main.ahk                    Main code, mostly hotkeys that call functions
-  â”œâ”€ Functions.ahk               Majority of my code is here
-  â”œâ”€ Convert Case.ahk            Cycle through lower/upper/sentence/title case
-  â”œâ”€ Customize Windows.ahk       Code that customizes how Windows works
-  â”œâ”€ My Auto Correct.ahk         My wrapper over AutoCorrect.ahk that includes my words to correct
-  â”œâ”€ Slack.ahk                   Controlling Slack
-  â””â”€ Utilities.ahk               Utility functions
-
-
-  ============================================================================================
-  TO DO ITEMS
-  ============================================================================================
-  HIGH PRIORITY
-  MUTE                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams)
-             Look at how Hammerspoon plugin works?
-             - when in Teams meeting, window title is "... | Microsoft Teams"
-             - Also, if use Play/Pause media button also, then can use this from my headset-- don't
-               even have to touch the keyboard
-          https://github.com/stajp/Teams_mute_AHK
-          https://github.com/tdalon/ahk/blob/main/Lib/Teams.ahk
-          predictably, using nircmd does NOT cause Teams mute icon to toggle
-          https://greiginsydney.com/make-microsoft-teams-shortcuts-global/
-
-          THESE TWO LOOK LIKE **ONLY** OPTION
-          This 
-          https://stackoverflow.com/questions/66567191/how-to-get-the-microsoft-teams-active-meeting-window-with-autohotkey
-          is slightly stripped down version of this
-          https://github.com/tdalon/ahk/blob/main/Lib/Teams.ahk
-
-
-  VISUAL STUDIO
-    - Moved Solution Explorer to left side, pinned
-    - ^!l shows it 
-    - +{Esc} makes it go away
-    - CAN I GET IT WORKING WITH AHK??? ✦ [
-         - Can't tell by the active window. maybe I can loop through all the active windows in
-
-
-
-
-  ✦ v                   Windows (AHK)    VS Code
-  ✦ ^ v                 Open VS Code, create a new doc, paste selected text, then format it
-
-
-  Customizing App Behavior
-  ------------------------
-  Slack:
-    ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
-  VS Code
-    ~$^s                VS Code (AHK)    After save AHK file, reload current script
-  
-
-  standardize video keys for youtube and udemy
-
-  LOW PRIORITY
-  ✦ ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
-
-
-  EVALUATE ALL OF THIS
-  ALL OF THIS IS TEMPORARY STUFF THAT WILL BE EVALUATED
 
   DEPENDENCIES
   ------------
@@ -194,33 +15,6 @@
   * Chrome extension "Dark Reader"
   * VS Code extension "theme-switcher" by latusinski to toggle between light
    and dark mode
-
->> Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
-
-    H âŒ˜ f          HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
-                            which also sets Slack statuses to heads-down.
-    H âŒ˜ s          HS       Studying. Starts Do Not Disturb timer for 60 minutes,
-                            which also sets Slack statuses to books and opens udemy.com.
-
-  (on login/unlock)  Windows (AHK)       Set Slack status based on nearby wifi networks
-  #numpadsub         Windows (AHK)       TEMP - price checks
-  #space             Windows (AHK)       Toggle dark mode for active application
-
-  GRAMMARLY? I CODED IT BEFORE, SO SHOULD LOOK INTO IF IT STILL WORKS !!
-
-  Window management
-  H left         HS       Snap active window to left half/third/two-thirds of the screen
-  H right        HS       Snap active window to right half/third/two-thirds of the screen
-  H up           HS       Snap active window to top half/third/two-thirds of the screen
-  H down         HS       Snap active window to top half/third/two-thirds of the screen
-  H return HS       Toggle full screen
-  H âŒ˜ up         HS       Maximize window
-  H âŒ˜ down       HS       Minimize window
-  H âŒ˜ left       HS       Move active window to the previous screen
-  H âŒ˜ right      HS       Move active window to the next screen
-  
-
-
 
 
 
@@ -240,21 +34,6 @@
     - IntelliJ
         - Enabled option: Editor > General > Change font size (Zoom) with Ctrl+MouseWheel
     - nircmd, for "setdefaultsounddevice" to switch between headphones and headset
-
-
-  Decisions
-  ---------
-    - For Chrome extensions
-        - I decided not to use "Add URL to Window Title" because there is no whitelist option, and
-          having URL on every toolbar is ugly. Adding the input field id and name is cool and could
-          be useful for multi-page logins (like timesheet) but that is not REQUIRED for what I need 
-          (yet). https://github.com/erichgoldman/add-url-to-window-title
-
-
-  Credits
-  -------
-    - CapsLock as a Windows modifier: https://www.howtogeek.com/446418/how-to-use-caps-lock-as-a-modifier-key-on-windows/
-                                      https://www.autohotkey.com/boards/viewtopic.php?t=70854
 */
 
 
@@ -274,27 +53,8 @@ RunAsAdmin()
 /*
   Global variables
 */
-global WindowsLocalAppDataFolder
-global WindowsProgramFilesX86Folder
-global WindowsProgramFilesFolder
-global WindowsUserName
-global WindowsUserDomain
-global WindowsUserProfile
-global MyDocumentsFolder
-WindowsLocalAppDataFolder := EnvGet("LOCALAPPDATA")
-WindowsProgramFilesX86Folder := EnvGet("PROGRAMFILES(X86)")
-WindowsProgramFilesFolder := EnvGet("PROGRAMFILES")
-WindowsUserName := EnvGet("USERNAME")
-WindowsUserDomain := EnvGet("USERDOMAIN")
-WindowsUserProfile := EnvGet("USERPROFILE")
-MyDocumentsFolder := WindowsUserProfile . "\Documents\"
-
-; These come from my Windows environment variables. See "Configure.bat" for details
-global MyPersonalFolder
-global MyPersonalDocumentsFolder
-MyPersonalFolder := EnvGet("PERSONAL_FILES")
-MyPersonalDocumentsFolder := MyPersonalFolder "\Documents\"
-
+InitializeCommonGlobalVariables()
+Configuration.IsWorkLaptop := False
 
 /*
   This code executes when the script starts

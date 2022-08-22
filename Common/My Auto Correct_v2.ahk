@@ -12,7 +12,7 @@
 ;::i::I              ; Don't want to always capitalize i (e.g. "-i")
 ;::iqtc::IQTC
 ;::pto::PTO
-::~~::≈              ; Approximation. I use ~~ in markdown in Typora
+;::~~::≈              ; Approximation. I use ~~ in markdown in Typora
 
 ::nancy::Nancy
 ::manoj::Manoj

@@ -2,202 +2,9 @@
 ; My AutoHotkey Automations - Work
 ;
 ;
-; Keep in Mind While Developing This
-; ----------------------------------
-;   - Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
-;   - Popup menus are useful- can I use them elsewhere?
-;   - Are timed tooltips useful somewhere?
-;   - Are classes useful anywhere?
-;
-;
 ; Modifiers
 ; ---------
 ; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = Hyper 
-;
-;
-;
-; Windows Provided
-; ----------------
-; # -                   Windows          Windows Magnifier -
-; # =                   Windows          Windows Magnifier +
-; # a                   Windows          Windows Action Center
-; # d                   Windows          Windows desktop
-; # e                   Windows          Windows Explorer
-; # l                   Windows          Lock workstation
-; # p                   Windows          Project (duplicate, extend, etc)
-; # up                  Windows          Maximize active window
-;
-;
-; Shortcuts
-; ---------
-; ✦ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
-; ✦ b                   Windows (AHK)    Browser
-; ✦ c                   Windows (AHK)    Calendar
-; ✦ i                   Windows (AHK)    Inbox
-; ✦ l                   Windows (AHK)    IntelliJ
-; ✦ j                   Windows (AHK)    JIRA- current project board
-; ✦ ^ j                 Windows (AHK)    JIRA- open selected story number
-; ✦ m                   Windows (AHK)    Music/Spotify
-; ✦ n                   Windows (AHK)    Notes (Typora)
-; ✦ t                   Windows (AHK)    Terminal/Cmder/bash
-; ✦ v                   Windows (AHK)    Visual Studio Code
-; PrintScreen           Windows (AHK)    Windows screenshot tool
-;
-;
-; Personal Shortcuts
-; ------------------
-; ✦ p                   Windows (AHK)    Personal computer (Parsec)
-;                                        Problem is that sometimes pewrsonal computer is locked and need to enter pin.
-;                                        I want the pin, so can't automate this. So simply a hotkey to connect to that
-;                                        computer.
-; ~~✦ F12                 Windows (AHK)    Browser - Open websites of stuff I'm price watching~~
-; ~~✦ ! b                 Windows (AHK)    Browser~~
-; ~~✦ ! n                 Windows (AHK)    Notes (Typora)~~
-; ~~✦ ! t                 Windows (AHK)    Terminal/Cmder/bash~~
-; ~~✦ ! v                 Windows (AHK)    Visual Studio Code~~
-;
-;
-; Other Stuff
-; -----------
-; ✦ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
-; ✦ u                   Windows (AHK)    Generate a random UUID (lowercase)
-; ✦ + u                 Windows (AHK)    Generate a random UUID (uppercase)
-;
-;
-; Media Controls
-; --------------
-; ✦ WheelUp/WheelDown   Windows (AHK)    Volume up/down
-; ✦ LButton             Windows (AHK)    Play/pause
-; ✦ RButton             Windows (AHK)    Music app (Spotify)
-; ✦ XButton1            Windows (AHK)    Previous track
-; ✦ XButton2            Windows (AHK)    Next track
-; Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
-;
-;
-; Home Automation
-; ---------------
-; (keys listed are numeric keypad)
-; ✦ +                   Windows (AHK)     Air cleaner: toggle on/off
-; ✦ Enter               Windows (AHK)             Fan: toggle on/off
-;
-; ✦ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
-; ✦ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
-; ✦ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
-;
-; ✦ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
-; ✦ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
-; ✦ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
-;
-;
-; Customizing Windows Behavior
-; ---------------------------
-; # Down                Windows (AHK)    Minimize active window (instead of unmaximize, then minimize)
-; XButton1              Windows (AHK)    Minimize current application
-; XButton2              Windows (AHK)    Minimize app or close window/tab or close app
-; (auto-correct)        Windows (AHK)    Auto correct/capitalize lots of words, including first names
-;
-;
-; Customizing App Behavior
-; ------------------------
-; Slack:
-;   ^ mousewheel        Slack (AHK)      Decrease/increase font size
-;   ^ k                 Slack (AHK)      Insert hyperlink
-;   ✦ [                 Slack (AHK)      Toggle left sidebar
-;   ✦ # b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
-;   ✦ # l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
-;   ✦ # m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
-;   ✦ # p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
-;   ✦ # w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
-; Typora
-;   ^ mousewheel        Typora (AHK)     Decrease/increase font size
-;   ✦ [                 Typora (AHK)     Toggle left sidebar
-; VS Code
-;   ^ mousewheel        VS Code (AHK)    Decrease/increase font size
-;   ✦ [                 VS Code (AHK)    Toggle left sidebar
-; IntelliJ
-;   ✦ [                 IntelliJ (AHK)   Toggle left sidebar
-; Visual Studio
-;   ✦ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
-;
-;
-; Code Structure
-; --------------
-; autohotkey/
-; â”œâ”€ experiments/                Temporary things I'm experimenting with
-; â”‚  â”œâ”€ trying-to-do-blah.ahk
-; â”‚  â””â”€ can-i-do-this.ahk
-; â”‚
-; â”œâ”€ examples to keep/           Interesting stuff I want to keep but am not using
-; â”‚  â””â”€ example1.ahk
-; â”‚
-; â”œâ”€ lib/                        Libraries of other people's work that I'm using
-; â”‚  â”œâ”€ AutoCorrect.ahk
-; â”‚  â”œâ”€ RunAsAdmin.ahk
-; â”‚  â””â”€ FindText.ahk             ** TODO- AM I GOING TO USE THIS???
-; â”‚
-; â”œâ”€ Configure.bat               Batch file to configure by setting environment variables
-; â”œâ”€ Main.ahk                    Main code, mostly hotkeys that call functions
-; â”œâ”€ Functions.ahk               Majority of my code is here
-; â”œâ”€ Convert Case.ahk            Cycle through lower/upper/sentence/title case
-; â”œâ”€ Customize Windows.ahk       Code that customizes how Windows works
-; â”œâ”€ My Auto Correct.ahk         My wrapper over AutoCorrect.ahk that includes my words to correct
-; â”œâ”€ Slack.ahk                   Controlling Slack
-; â””â”€ Utilities.ahk               Utility functions
-;
-;
-;
-; ============================================================================================
-; TO DO ITEMS
-; ============================================================================================
-; HIGH PRIORITY
-; MUTE                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams)
-;             Look at how Hammerspoon plugin works?
-;             - when in Teams meeting, window title is "... | Microsoft Teams"
-;             - Also, if use Play/Pause media button also, then can use this from my headset-- don't
-;               even have to touch the keyboard
-;          https://github.com/stajp/Teams_mute_AHK
-;          https://github.com/tdalon/ahk/blob/main/Lib/Teams.ahk
-;          predictably, using nircmd does NOT cause Teams mute icon to toggle
-;          https://greiginsydney.com/make-microsoft-teams-shortcuts-global/
-;
-;         THESE TWO LOOK LIKE **ONLY** OPTION
-;         This 
-;         https://stackoverflow.com/questions/66567191/how-to-get-the-microsoft-teams-active-meeting-window-with-autohotkey
-;         is slightly stripped down version of this
-;         https://github.com/tdalon/ahk/blob/main/Lib/Teams.ahk
-;
-;
-; Why does CapsLock sometimes get stuck? Is that a big enough reason to abandon it?
-;
-;
-; VISUAL STUDIO
-;   - Moved Solution Explorer to left side, pinned
-;   - ^!l shows it 
-;   - +{Esc} makes it go away
-;   - CAN I GET IT WORKING WITH AHK??? ✦ [
-;        - Can't tell by the active window. maybe I can loop through all the active windows in
-;
-;
-;
-;
-;
-;
-; Customizing App Behavior
-; ------------------------
-; Slack:
-;   ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
-; VS Code
-;   ~$^s                VS Code (AHK)    After save AHK file, reload current script
-;
-;
-; standardize video keys for youtube and udemy
-;
-; LOW PRIORITY
-; ✦ ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
-;
-;
-; EVALUATE ALL OF THIS
-; ALL OF THIS IS TEMPORARY STUFF THAT WILL BE EVALUATED
 ;
 ; DEPENDENCIES
 ; ------------
@@ -207,40 +14,6 @@
 ; * Chrome extension "Dark Reader"
 ; * VS Code extension "theme-switcher" by latusinski to toggle between light
 ;  and dark mode
-;
-; >> Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
-;
-;   H âŒ˜ f          HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
-;                           which also sets Slack statuses to heads-down.
-;   H âŒ˜ s          HS       Studying. Starts Do Not Disturb timer for 60 minutes,
-;                           which also sets Slack statuses to books and opens udemy.com.
-;
-; (on login/unlock)  Windows (AHK)       Set Slack status based on nearby wifi networks
-; #numpadsub         Windows (AHK)       TEMP - price checks
-; #space             Windows (AHK)       Toggle dark mode for active application
-;
-; GRAMMARLY? I CODED IT BEFORE, SO SHOULD LOOK INTO IF IT STILL WORKS !!
-;
-; Window management
-; H left         HS       Snap active window to left half/third/two-thirds of the screen
-; H right        HS       Snap active window to right half/third/two-thirds of the screen
-; H up           HS       Snap active window to top half/third/two-thirds of the screen
-; H down         HS       Snap active window to top half/third/two-thirds of the screen
-; H return HS       Toggle full screen
-; H âŒ˜ up         HS       Maximize window
-; H âŒ˜ down       HS       Minimize window
-; H âŒ˜ left       HS       Move active window to the previous screen
-; H âŒ˜ right      HS       Move active window to the next screen
-; ============================================================================================
-;
-;
-; TODO-
-;  For home automation, try having work computer SSH into my personal laptop to do the home
-;  automation, which will remove the environmental variables on my work laptop that have my 
-;  Wyze and VeSync usernames and passwords
-;
-;
-;
 ;
 ; Notes
 ; -----
@@ -258,21 +31,6 @@
 ;   - IntelliJ
 ;       - Enabled option: Editor > General > Change font size (Zoom) with Ctrl+MouseWheel
 ;   - nircmd, for "setdefaultsounddevice" to switch between headphones and headset
-;
-;
-; Decisions
-; ---------
-;   - For Chrome extensions
-;       - I decided not to use "Add URL to Window Title" because there is no whitelist option, and
-;         having URL on every toolbar is ugly. Adding the input field id and name is cool and could
-;         be useful for multi-page logins (like timesheet) but that is not REQUIRED for what I need 
-;         (yet). https://github.com/erichgoldman/add-url-to-window-title
-;
-;
-; Credits
-; -------
-;   - CapsLock as a Windows modifier: https://www.howtogeek.com/446418/how-to-use-caps-lock-as-a-modifier-key-on-windows/
-;                                     https://www.autohotkey.com/boards/viewtopic.php?t=70854
 */
 
 
@@ -293,48 +51,23 @@ RunAsAdmin()
 /*
   Global variables
 */
-global WindowsLocalAppDataFolder
-global WindowsProgramFilesX86Folder
-global WindowsProgramFilesFolder
-global WindowsUserName
-global WindowsUserDomain
-global WindowsUserProfile
-global MyDocumentsFolder
-global UserEmailAddress
-global IsWorkLaptop
-WindowsLocalAppDataFolder := EnvGet("LOCALAPPDATA")
-WindowsProgramFilesX86Folder := EnvGet("PROGRAMFILES(X86)")
-WindowsProgramFilesFolder := EnvGet("PROGRAMFILES")
-WindowsUserName := EnvGet("USERNAME")
-WindowsUserDomain := EnvGet("USERDOMAIN")
-WindowsUserProfile := EnvGet("USERPROFILE")
-MyPersonalFolder := EnvGet("PERSONAL_FILES")
-UserEmailAddress := EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN")
-IsWorkLaptop := true
+InitializeCommonGlobalVariables()
+Configuration.IsWorkLaptop := True
+Configuration.Work := {
+  UserEmailAddress: EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN"),
 
-; These come from my Windows environment variables. See "Configure.bat" for details
-global MyPersonalFolder
-global MyPersonalDocumentsFolder
-global JiraUrl
-global JiraMyProjectKeys
-global JiraDefaultProjectKey
-global JiraDefaultRapidKey
-global JiraDefaultSprint
-global SourceCodeUrl
-global SourceSchemaUrl
-global SlackStatusUpdate_OfficeNetworks
-global ParsecPeerId
-MyPersonalFolder := EnvGet("PERSONAL_FILES")
-MyPersonalDocumentsFolder := MyPersonalFolder . "\Documents\"
-JiraUrl := EnvGet("AHK_JIRA_URL")
-JiraMyProjectKeys := EnvGet("AHK_JIRA_MY_PROJECT_KEYS")
-JiraDefaultProjectKey := EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY")
-JiraDefaultRapidKey := EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY")
-JiraDefaultSprint := EnvGet("AHK_JIRA_DEFAULT_SPRINT")
-SourceCodeUrl := EnvGet("AHK_SOURCE_CODE_URL")
-SourceSchemaUrl := EnvGet("AHK_SOURCE_CODE_SCHEMA_URL")
-SlackStatusUpdate_OfficeNetworks := EnvGet("SLACK_OFFICE_NETWORKS")
-ParsecPeerId := EnvGet("PARSEC_PEER_ID")
+  ; These come from my Windows environment variables- see "Configure.bat" for details
+  JiraUrl: EnvGet("AHK_JIRA_URL"),
+  JiraMyProjectKeys: EnvGet("AHK_JIRA_MY_PROJECT_KEYS"),
+  JiraDefaultProjectKey: EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY"),
+  JiraDefaultRapidKey: EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY"),
+  JiraDefaultSprint: EnvGet("AHK_JIRA_DEFAULT_SPRINT"),
+  SourceCodeUrl: EnvGet("AHK_SOURCE_CODE_URL"),
+  SourceSchemaUrl: EnvGet("AHK_SOURCE_CODE_SCHEMA_URL"),
+  ParsecPeerId: EnvGet("AHK_PARSEC_PEER_ID"),
+  OfficeNetworks: EnvGet("AHK_OFFICE_NETWORKS")
+}
+
 
 
 /*
@@ -372,13 +105,14 @@ Volume_Mute::            ToggleMuteVOIPApps()
     ^ k                  Insert hyperlink (overrides Slack opening "jump to" window)
 
     Statuses
-      ✦ # b              Status - Be Right Back. Sets Slack statuses to brb.
-      ✦ # c              Status - Cleared. Clears Slack status.
-      ✦ # e              Status - Eating. Sets Slack statuses to lunch/dinner.
+      These use to use #/Win instead of !/Alt, but that broke by upgrading to AHK v2
+      ✦ ! b              Status - Be Right Back. Sets Slack statuses to brb.
+      ✦ ! c              Status - Cleared. Clears Slack status.
+      ✦ ! e              Status - Eating. Sets Slack statuses to lunch/dinner.
                           Also locks my laptop and turns off my office lights if I'm at home.
-      ✦ # m              Status - In a meeting. Sets Slack statuses to mtg.
-      ✦ # p              Status - Playing. Sets home Slack status to 8bit.
-      ✦ # w              Status - Working. Clears Slack statuses.
+      ✦ ! m              Status - In a meeting. Sets Slack statuses to mtg.
+      ✦ ! p              Status - Playing. Sets home Slack status to 8bit.
+      ✦ ! w              Status - Working. Clears Slack statuses.
 */
 CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))    
 
@@ -389,8 +123,6 @@ CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))
   ^k::                   SendInput("^+{u}")
 #HotIf
 
-; Since upgrading to AHK v2, Windows key was opening the Start menu. So I switched to using
-; the Alt key.
 #HotIf GetKeyState("Alt")
   CapsLock & b::         SlackStatusUpdate_SetSlackStatusAndPresence("brb", "away")
   CapsLock & c::         SlackStatusUpdate_SetSlackStatusAndPresence("none", "auto")
@@ -400,35 +132,6 @@ CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))
   CapsLock & w::         SlackStatus_Working()
 #HotIf
 
-OpenSlack(shortcut := "")
-{
-  RunOrActivateAppOrUrl("ahk_exe slack.exe", WindowsLocalAppDataFolder "\Slack\Slack.exe", 3, True)
-  if (shortcut != "")
-    SendInput(shortcut)
-  return
-}
-
-SlackStatus_Eating()
-{
-  if (A_Hour < 15)   ; Before 3:00 pm
-    SlackStatusUpdate_SetSlackStatusAndPresence("lunch", "away")
-  else
-    SlackStatusUpdate_SetSlackStatusAndPresence("dinner", "away")
-
-  if AmNearWifiNetwork("(kummer)")
-    HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
-  DllCall("user32.dll\LockWorkStation")
-  return
-}
-
-SlackStatus_Working()
-{
-  if AmNearWifiNetwork(SlackStatusUpdate_OfficeNetworks)
-    SlackStatusUpdate_SetSlackStatusAndPresence("workingInOffice", "auto")
-  else
-    SlackStatusUpdate_SetSlackStatusAndPresence("workingRemotely", "auto")
-  return
-}
 
 
 /*
@@ -483,14 +186,9 @@ CapsLock & p::           ConnectToPersonalComputer()
     ✦ s                  Source code/BitBucket
     ✦ ^ s                Source code/BitBucket- schemas
 */
-CapsLock & s:: 
-{
-  if GetKeyState("Ctrl")
-    RunOrActivateAppOrUrl("eventschema", SourceSchemaUrl, 3, True, False)
-  else
-    RunOrActivateAppOrUrl("overview", SourceCodeUrl, 3, True, False)
-  return
-}
+CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
+
+
 
 
 /*
@@ -510,7 +208,7 @@ CapsLock & s::
     ✦ l                  Start IntelliJ
     ✦ [                  Toggle left sidebar
 */
-CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe")
+CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe")
 #HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
   CapsLock & [::         SendInput("!1")
 #HotIf

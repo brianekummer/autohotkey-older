@@ -1,207 +1,23 @@
 ﻿/*
-; My AutoHotkey Automations - Shared Between Personal and Work
+  My AutoHotkey Automations - Common Between Work and Home
+
+  THIS IS FOR HOTKEYS, ETC. FUNCTIONS SHOULD BE IN Common Functions_v2.ahk
+
+
 
 
 REQUIREMENTS FOR CODE IN COMMON FOLDER
 - All code must compile/be-happy on both machines, not try to access env vars that don'ty exist on one machine, etc
 
-;
-;
-; There is often interaction between the work laptop and the personal laptop, so both bits of code
-; are here, to simplify seeing how these interact. For example, when I press CapsLock+F12 to open
-; the webpages I am price watching, the work laptop needs to send CapsLock+F12 to the personal 
-; laptop, and the personal laptop has to react to that.
-;
-;
-; Keep in Mind While Developing This
-; ----------------------------------
-;   - Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
-;   - Popup menus are useful- can I use them elsewhere?
-;   - Are timed tooltips useful somewhere?
-;   - Are classes useful anywhere?
-;
-;
+
 ; Modifiers
 ; ---------
 ; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
 ;
 ;
-; Windows Provided
-; ----------------
-; # -                   Windows          Windows Magnifier -
-; # =                   Windows          Windows Magnifier +
-; # a                   Windows          Windows Action Center
-; # d                   Windows          Windows desktop
-; # e                   Windows          Windows Explorer
-; # l                   Windows          Lock workstation
-; # p                   Windows          Project (duplicate, extend, etc)
-; # up                  Windows          Maximize active window
-;
-;
-; Shortcuts
-; ---------
-; ✦ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
-; ✦ b                   Windows (AHK)    Browser
-; ✦ c                   Windows (AHK)    Calendar
-; ✦ i                   Windows (AHK)    Inbox
-; ✦ j                   Windows (AHK)    JIRA- current project board
-; ✦ ^ j                 Windows (AHK)    JIRA- open selected story number
-; ✦ m                   Windows (AHK)    Music/Spotify
-; ✦ t                   Windows (AHK)    Terminal/Cmder/bash
-; PrintScreen           Windows (AHK)    Windows screenshot tool
-;
-;
-; Other Stuff
-; -----------
-; ✦ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
-; ✦ u                   Windows (AHK)    Generate a random UUID (lowercase)
-; ✦ + u                 Windows (AHK)    Generate a random UUID (uppercase)
-;
-;
-; Media Controls
-; --------------
-; ✦ WheelUp/WheelDown   Windows (AHK)    Volume up/down
-; ✦ LButton             Windows (AHK)    Play/pause
-; ✦ RButton             Windows (AHK)    Music app (Spotify)
-; ✦ XButton1            Windows (AHK)    Previous track
-; ✦ XButton2            Windows (AHK)    Next track
-; Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
-;
-;
-; ?????
-;^#pause::Run("nircmd setdefaultsounddevice `"Headphones`"", , "Hide")      ; ^numlock = ^pause
-;^#numpadsub::Run("nircmd setdefaultsounddevice `"Headset`"", , "Hide")
-;
-;
-; Home Automation
-; ---------------
-; (keys listed are numeric keypad)
-; ✦ +                   Windows (AHK)     Air cleaner: toggle on/off
-; ✦ Enter               Windows (AHK)             Fan: toggle on/off
-;
-; ✦ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
-; ✦ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
-; ✦ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
-;
-; ✦ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
-; ✦ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
-; ✦ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
-;
-;
-; Customizing Windows Behavior
-; ---------------------------
-; # Down                Windows (AHK)    Minimize active window (instead of unmaximize, then minimize)
-; XButton1              Windows (AHK)    Minimize current application
-; XButton2              Windows (AHK)    Minimize app or close window/tab or close app
-; (auto-correct)        Windows (AHK)    Auto correct/capitalize lots of words, including first names
-;
-;
-; Customizing App Behavior
-; ------------------------
-; Slack:
-;   ^ mousewheel        Slack (AHK)      Decrease/increase font size
-;   ^ k                 Slack (AHK)      Insert hyperlink
-;   ✦ [                 Slack (AHK)      Toggle left sidebar
-;   ✦ ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
-;   ✦ ! l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
-;   ✦ ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
-;   ✦ ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
-;   ✦ ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
-; Typora
-;   ^ mousewheel        Typora (AHK)     Decrease/increase font size
-;   ✦ [                 Typora (AHK)     Toggle left sidebar
-; VS Code
-;   ^ mousewheel        VS Code (AHK)    Decrease/increase font size
-;   ✦ [                 VS Code (AHK)    Toggle left sidebar
-; IntelliJ
-;   ✦ [                 IntelliJ (AHK)   Toggle left sidebar
-; Visual Studio
-;   ✦ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
-;
-;
-; Code Structure
-; --------------
-; autohotkey/
-; â”œâ”€ experiments/                Temporary things I'm experimenting with
-; â”‚  â”œâ”€ trying-to-do-blah.ahk
-; â”‚  â””â”€ can-i-do-this.ahk
-; â”‚
-; â”œâ”€ examples to keep/           Interesting stuff I want to keep but am not using
-; â”‚  â””â”€ example1.ahk
-; â”‚
-; â”œâ”€ lib/                        Libraries of other people's work that I'm using
-; â”‚  â”œâ”€ AutoCorrect.ahk
-; â”‚  â”œâ”€ RunAsAdmin.ahk
-; â”‚  â””â”€ FindText.ahk             ** TODO- AM I GOING TO USE THIS???
-; â”‚
-; â”œâ”€ Configure.bat               Batch file to configure by setting environment variables
-; â”œâ”€ Main Home.ahk               Main code for personal laptop, mostly hotkeys that call functions
-; â”œâ”€ Main Work.ahk               Main code for work laptop, mostly hotkeys that call functions
-; â”œâ”€ Shared.ahk                  Shared between personal and work laptops, mostly hotkeys that call functions
-; â”œâ”€ Functions.ahk               Majority of my code is here
-; â”œâ”€ Convert Case.ahk            Cycle through lower/upper/sentence/title case
-; â”œâ”€ Customize Windows.ahk       Code that customizes how Windows works
-; â”œâ”€ My Auto Correct.ahk         My wrapper over AutoCorrect.ahk that includes my words to correct
-; â”œâ”€ Mute VOIP Apps.ahk          Functions to mute Microsoft Teams, Slack, and Zoom calls/meetings
-; â”œâ”€ Slack.ahk                   Controlling Slack
-; â””â”€ Utilities.ahk               Utility functions
-;
-;
-;
 ; ============================================================================================
 ; TO DO ITEMS
 ; ============================================================================================
-; HIGH PRIORITY
-; MUTE                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams)
-;             Look at how Hammerspoon plugin works?
-;             - when in Teams meeting, window title is "... | Microsoft Teams"
-;             - Also, if use Play/Pause media button also, then can use this from my headset-- don't
-;               even have to touch the keyboard
-;          https://github.com/stajp/Teams_mute_AHK
-;          https://github.com/tdalon/ahk/blob/main/Lib/Teams.ahk
-;          predictably, using nircmd does NOT cause Teams mute icon to toggle
-;          https://greiginsydney.com/make-microsoft-teams-shortcuts-global/
-;
-;         THESE TWO LOOK LIKE **ONLY** OPTION
-;         This 
-;         https://stackoverflow.com/questions/66567191/how-to-get-the-microsoft-teams-active-meeting-window-with-autohotkey
-;         is slightly stripped down version of this
-;         https://github.com/tdalon/ahk/blob/main/Lib/Teams.ahk
-;
-;
-; Why does CapsLock sometimes get stuck? Is that a big enough reason to abandon it?
-;
-;
-; VISUAL STUDIO
-;   - Moved Solution Explorer to left side, pinned
-;   - ^!l shows it 
-;   - +{Esc} makes it go away
-;   - CAN I GET IT WORKING WITH AHK??? ✦ [
-;        - Can't tell by the active window. maybe I can loop through all the active windows in
-;
-;
-;
-;
-; ✦ v                   Windows (AHK)    VS Code
-; ✦ ^ v                 Open VS Code, create a new doc, paste selected text, then format it
-;
-;
-; Customizing App Behavior
-; ------------------------
-; Slack:
-;   ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
-; VS Code
-;   ~$^s                VS Code (AHK)    After save AHK file, reload current script
-;
-;
-; standardize video keys for youtube and udemy
-;
-; LOW PRIORITY
-; ✦ ^ v                 Windows (AHK)    VS Code- smart (create new doc, paste selected text, format it)
-;
-;
-; EVALUATE ALL OF THIS
-; ALL OF THIS IS TEMPORARY STUFF THAT WILL BE EVALUATED
 ;
 ; DEPENDENCIES
 ; ------------
@@ -223,18 +39,6 @@ REQUIREMENTS FOR CODE IN COMMON FOLDER
 ; #numpadsub         Windows (AHK)       TEMP - price checks
 ; #space             Windows (AHK)       Toggle dark mode for active application
 ;
-; GRAMMARLY? I CODED IT BEFORE, SO SHOULD LOOK INTO IF IT STILL WORKS !!
-;
-; Window management
-; H left         HS       Snap active window to left half/third/two-thirds of the screen
-; H right        HS       Snap active window to right half/third/two-thirds of the screen
-; H up           HS       Snap active window to top half/third/two-thirds of the screen
-; H down         HS       Snap active window to top half/third/two-thirds of the screen
-; H return HS       Toggle full screen
-; H âŒ˜ up         HS       Maximize window
-; H âŒ˜ down       HS       Minimize window
-; H âŒ˜ left       HS       Move active window to the previous screen
-; H âŒ˜ right      HS       Move active window to the next screen
 ; ============================================================================================
 ;
 ;
@@ -259,20 +63,6 @@ REQUIREMENTS FOR CODE IN COMMON FOLDER
 ;       - Enabled option: Editor > General > Change font size (Zoom) with Ctrl+MouseWheel
 ;   - nircmd, for "setdefaultsounddevice" to switch between headphones and headset
 ;
-;
-; Decisions
-; ---------
-;   - For Chrome extensions
-;       - I decided not to use "Add URL to Window Title" because there is no whitelist option, and
-;         having URL on every toolbar is ugly. Adding the input field id and name is cool and could
-;         be useful for multi-page logins (like timesheet) but that is not REQUIRED for what I need 
-;         (yet). https://github.com/erichgoldman/add-url-to-window-title
-;
-;
-; Credits
-; -------
-;   - CapsLock as a Windows modifier: https://www.howtogeek.com/446418/how-to-use-caps-lock-as-a-modifier-key-on-windows/
-;                                     https://www.autohotkey.com/boards/viewtopic.php?t=70854
 */
 
 
@@ -297,19 +87,15 @@ REQUIREMENTS FOR CODE IN COMMON FOLDER
 #HotIf
 
 
-
-
-
-
 /*
   Price Watch
     ✦ F12                Load stuff I'm watching
 
   Note that sometimes I have to escape special characters like %
 */
-#HotIf IsWorkLaptop
+#HotIf Configuration.IsWorkLaptop
   CapsLock & F12::       SendKeystrokesToPersonalLaptop("{CapsLock down}{F12}{CapsLock up}")
-#HotIf !IsWorkLaptop
+#HotIf !Configuration.IsWorkLaptop
   CapsLock & F12::       PriceWatchWebsites()
 #HotIf
 
@@ -348,7 +134,7 @@ PrintScreen::SendInput("#+s")
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & n::         SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
 ;#If
-CapsLock & n::           RunOrActivateAppOrUrl("ahk_exe i)\\typora\.exe$", WindowsProgramFilesFolder "\Typora\Typora.exe")
+CapsLock & n::           RunOrActivateAppOrUrl("ahk_exe i)\\typora\.exe$", Configuration.WindowsProgramFilesFolder "\Typora\Typora.exe")
 
 #HotIf WinActive("ahk_exe i)\\typora\.exe$", )
   ^wheelup::                        SendInput("{Blind}^+{=}")
@@ -365,7 +151,7 @@ CapsLock & n::           RunOrActivateAppOrUrl("ahk_exe i)\\typora\.exe$", Windo
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
 ;#If
-CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe", 3, True, False)
+CapsLock & b::           RunOrActivateAppOrUrl("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe", 3, True, False)
 
 
 /*
@@ -393,7 +179,7 @@ CapsLock & t::           RunOrActivateAppOrUrl("Cmder", "C:\tools\Cmder\Cmder.ex
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & v::         SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
 ;#If
-CapsLock & v::           RunOrActivateAppOrUrl("ahk_exe i)\\code\.exe$", WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
+CapsLock & v::           RunOrActivateAppOrUrl("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
 
 #HotIf WinActive("ahk_exe i)\\code\.exe$", )
   ^wheelup::                 SendInput("{Blind}^{=}")
@@ -406,11 +192,16 @@ CapsLock & v::           RunOrActivateAppOrUrl("ahk_exe i)\\code\.exe$", Windows
 
 
 
+
+
+
+
+
+
+
 /*
   EXPERIMENTAL CODE
 */
-
-
 
 /*
   Standardizing keys for video playback for video apps and web sites,
@@ -479,10 +270,6 @@ executeActionInVideo = function(keyRemappingName)
 end
 
 
-
-
-
-
 ;--------------------------------------------------------------------------------------------------
 ; Standardize the keys for video playback (speed and skipping forward and 
 ; backward) in video apps and web sites like Youtube and Udemy
@@ -512,7 +299,6 @@ end
 ;  RegExMatch(url, InStr(url, "//www") ? "\.(.+?)\/" : "^\w+://([^/]+)", &domain)
 ;  Return domain[1]
 ;}
-
 
 
 ;-----------------------------------------------------------------------------
@@ -640,8 +426,11 @@ end
 
 
 
+
+
 /*
   Include all libraries, utilities, and other AutoHotkey scripts
 
   I have to put this at the bottom of my script, or else it interferes with other code in this script
 */
+#Include "%A_ScriptDir%\Common\Common Functions_v2.ahk"

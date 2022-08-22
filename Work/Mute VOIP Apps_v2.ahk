@@ -101,7 +101,7 @@ GetTeamsMeetingWindowId() {
   ; null title made this very confusing. This code is MUCH simpler.
   oid := WinGetList("ahk_exe Teams.exe",,,)
   aid := Array()
-  id := oid.Length
+  ;id := oid.Length   ; TODO- uncomment if this is actually necessary
   For v in oid
     aid.Push(v)
   

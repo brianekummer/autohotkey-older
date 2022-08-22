@@ -16,6 +16,63 @@ PriceWatchWebsites()
 
 
 /*
+
+*/
+OpenSlack(shortcut := "")
+{
+  RunOrActivateAppOrUrl("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder "\Slack\Slack.exe", 3, True)
+  if (shortcut != "")
+    SendInput(shortcut)
+  return
+}
+
+
+/*
+
+*/
+SlackStatus_Eating()
+{
+  if (A_Hour < 15)   ; Before 3:00 pm
+    SlackStatusUpdate_SetSlackStatusAndPresence("lunch", "away")
+  else
+    SlackStatusUpdate_SetSlackStatusAndPresence("dinner", "away")
+
+  if AmNearWifiNetwork("(kummer)")   ; TODO- move to env var
+    HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
+  DllCall("user32.dll\LockWorkStation")
+  return
+}
+
+
+/*
+
+*/
+SlackStatus_Working()
+{
+  if AmNearWifiNetwork(Configuration.Work.OfficeNetworks)
+    SlackStatusUpdate_SetSlackStatusAndPresence("workingInOffice", "auto")
+  else
+    SlackStatusUpdate_SetSlackStatusAndPresence("workingRemotely", "auto")
+  return
+}
+
+
+/*
+
+*/
+OpenSourceCode(ctrlPressed)
+{
+  ;MsgBox(Configuration["Work"]["SourceSchemaUrl"])
+  if (ctrlPressed)
+    RunOrActivateAppOrUrl("eventschema", Configuration.Work.SourceSchemaUrl, 10, True, False)
+  else
+    RunOrActivateAppOrUrl("Overview", Configuration.Work.SourceCodeUrl, 10, True, False)
+
+  return
+}
+
+
+/*
   JIRA
     ✦ j                  Opens the current board
     ✦ ^ j                Opens the selected story number
@@ -27,13 +84,12 @@ PriceWatchWebsites()
 */
 JIRA()
 {
-  global JiraUrl
   pos := 0
 
   if (GetKeyState("Ctrl"))
   {
     regexStoryNumberWithoutProject := "\b\d{1,5}\b"
-    regexStoryNumberWithProject := "i)\b(" JiraMyProjectKeys ")([-_ ]|( - ))?\d{1,5}\b"
+    regexStoryNumberWithProject := "i)\b(" Configuration.Work.JiraMyProjectKeys ")([-_ ]|( - ))?\d{1,5}\b"
 
     selectedText := GetSelectedTextUsingClipboard()
     if (StrLen(selectedText) > 0)
@@ -45,7 +101,7 @@ JIRA()
         ; Search for just a number, and if found, add the default project name
         pos := RegExMatch(selectedText, regexStoryNumberWithoutProject, &matches)
         if (pos > 0)
-          storyNumber := JiraDefaultProjectKey "-" matches[]
+          storyNumber := Configuration.Work.JiraDefaultProjectKey "-" matches[]
       }  
     }
     
@@ -84,7 +140,7 @@ JIRA()
       }
       
       title := "\[" storyNumber "\].*Jira"
-      url := JiraUrl "/browse/" storyNumber
+      url := Configuration.Work.JiraUrl "/browse/" storyNumber
       RunOrActivateAppOrUrl(title, url, 5, True, False)
       return
     }
@@ -94,7 +150,7 @@ JIRA()
   {
     ; Could not find any JIRA story number, so open the default JIRA board
     title := "Agile Board - Jira"
-    url := JiraUrl "/secure/RapidBoard.jspa?rapidView=" JiraDefaultRapidKey "&projectKey=" JiraDefaultProjectKey "&sprint=" JiraDefaultSprint
+    url := Configuration.Work.JiraUrl "/secure/RapidBoard.jspa?rapidView=" Configuration.Work.JiraDefaultRapidKey "&projectKey=" Configuration.Work.JiraDefaultProjectKey "&sprint=" Configuration.Work.JiraDefaultSprint
     RunOrActivateAppOrUrl(title, url, 5, True, False)
   }
 }
@@ -109,7 +165,7 @@ JIRA()
 */
 RunOrActivateSpotify()
 {
-  RunOrActivateAppOrUrl("ahk_exe Spotify.exe", WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
+  RunOrActivateAppOrUrl("ahk_exe Spotify.exe", Configuration.WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
 }
 
 
@@ -120,13 +176,10 @@ RunOrActivateSpotify()
 */
 ActivateOrStartMicrosoftOutlook(shortcut := "")
 {
-  global UserEmailAddress
-	global WindowsProgramFilesX86Folder
-	
-  outlookTitle := "i)" UserEmailAddress "\s-\sOutlook"
+  outlookTitle := "i)" Configuration.Work.UserEmailAddress "\s-\sOutlook"
   if (!WinExist(outlookTitle))
   {
-    outlookExe := WindowsProgramFilesFolder "\Microsoft Office\root\Office16\OUTLOOK.EXE"
+    outlookExe := Configuration.WindowsProgramFilesFolder "\Microsoft Office\root\Office16\OUTLOOK.EXE"
 	  ShellRun(outlookExe)
 	  WinWaitActive("outlookTitle", , 5)
   }
@@ -146,9 +199,9 @@ HomeAutomationCommand(command)
   ; of times instead of having to wait for each one.
 
   ; This works. It's synchronous, so don't love it, but at least it does not display a DOS box.
-  scriptName := MyPersonalFolder "\Code\git\home-automation\home_automation.py"
-  workingFolder := MyPersonalFolder "\Code\git\home-automation"
-  Run A_ComSpec ' /c " "python" "' scriptName '" ' command ' >"C:\Temp\Brian.log" " ', workingFolder, "Hide"
+  scriptName := Configuration.MyPersonalFolder "\Code\git\home-automation\home_automation.py"
+  workingFolder := Configuration.MyPersonalFolder "\Code\git\home-automation"
+  Run A_ComSpec ' /c " "python" "' scriptName '" ' command ' >"C:\Temp\Brian.log" " ', workingFolder, "Hide"      ; TODO- remove logging
 
   ; This does not work
   ;ShellRun("C:\Python39\python.exe c:\users\brian-kummer\Personal\Code\git\home-automation\home_automation.py %command%")

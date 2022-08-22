@@ -35,7 +35,6 @@
   Define global variables 
 */
 global SlackStatusUpdate_MySlackTokens
-global SlackStatusUpdate_OfficeNetworks
 global SlackStatusUpdate_SlackStatuses
 
 
@@ -45,13 +44,11 @@ global SlackStatusUpdate_SlackStatuses
 SlackStatusUpdate_Initialize() 
 {
   global SlackStatusUpdate_MySlackTokens
-  global SlackStatusUpdate_OfficeNetworks
   global SlackStatusUpdate_SlackStatuses
 
   ; Variables are read from environment variables, see "Slack Status Update Config.bat" for more details
   slackTokens := EnvGet("SLACK_TOKENS")
   SlackStatusUpdate_MySlackTokens := StrSplit(slackTokens, "|")
-  SlackStatusUpdate_OfficeNetworks := EnvGet("SLACK_OFFICE_NETWORKS")
 
   global SlackStatusUpdate_SlackStatuses := Map(
     "none", SlackStatusUpdate_BuildSlackStatus("", "|", 0),
@@ -105,7 +102,7 @@ SlackStatusUpdate_SetSlackStatusBasedOnNetwork()
 			{
 			  ; I'm connected to a network
 			  done := True
-			  if (AmNearWifiNetwork(SlackStatusUpdate_OfficeNetworks))
+			  if (AmNearWifiNetwork(Configuration.Work.OfficeNetworks))
           SlackStatusUpdate_SetSlackStatus(SlackStatusUpdate_SlackStatuses["workingInOffice"])
 				else
 				  SlackStatusUpdate_SetSlackStatus(SlackStatusUpdate_SlackStatuses["workingRemotely"])

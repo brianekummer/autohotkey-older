@@ -1,5 +1,7 @@
 ﻿/*
   Customizing Windows
+
+  I don't like some of Window's behavior, and there are improvements I want to make
 */
 
 
@@ -82,7 +84,7 @@ CapsLock:: return
     ✦ XButton1           Previous track
     ✦ XButton2           Next track
 */
-#HotIf IsWorkLaptop
+#HotIf Configuration.IsWorkLaptop
   CapsLock & wheelup::     SendMediaKey("{Blind}{Volume_Up 1}")
   CapsLock & wheeldown::   SendMediaKey("{Blind}{Volume_Down 1}")
   CapsLock & LButton::     SendMediaKey("{Blind}{Media_Play_Pause}")
