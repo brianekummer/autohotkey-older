@@ -22,7 +22,7 @@ SlackStatus_Eating(lunchIsBeforeHour)
 {
   MySlack.SetStatusEating(lunchIsBeforeHour)
 
-  if AmNearWifiNetwork("(kummer)")   ; TODO- move to env var
+  if AmNearWifiNetwork(Configuration.Work.HomeWifiNetworks)
     HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
 
   DllCall("user32.dll\LockWorkStation")
@@ -84,9 +84,9 @@ HomeAutomationCommand(command)
   ; of times instead of having to wait for each one.
 
   ; This works. It's synchronous, so don't love it, but at least it does not display a DOS box.
-  scriptName := Configuration.MyPersonalFolder "\Code\git\home-automation\home_automation.py"
   workingFolder := Configuration.MyPersonalFolder "\Code\git\home-automation"
-  Run A_ComSpec ' /c " "python" "' scriptName '" ' command ' >"C:\Temp\Brian.log" " ', workingFolder, "Hide"      ; TODO- remove logging
+  scriptName := workingFolder "\home_automation.py"
+  Run A_ComSpec ' /c " "python" "' scriptName '" ' command ' " ', workingFolder, "Hide"
 
   ; This does not work
   ;ShellRun("C:\Python39\python.exe c:\users\brian-kummer\Personal\Code\git\home-automation\home_automation.py %command%")

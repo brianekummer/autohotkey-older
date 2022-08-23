@@ -45,17 +45,24 @@ class Jira
           storyNumber := RegExReplace(storyNumber, "(\d+)", "-$1")
 
         ; Open the story
-        title := "\[" storyNumber "\].*Jira"
-        url := this.BaseUrl "/browse/" storyNumber
-        RunOrActivateApp(title, url)
+        RunOrActivateApp("\[" storyNumber "\].*Jira", this.BuildStoryUrl(storyNumber))
         return
       }
     }
 
     ; Either did not try to find a Jira story number, or did not, so open the default Jira board
-    title := "Agile Board - Jira"
-    url := this.BaseUrl "/secure/RapidBoard.jspa?rapidView=" this.DefaultRapidKey "&projectKey=" this.DefaultProjectKey "&sprint=" this.DefaultSprint
-    RunOrActivateApp(title, url)
+    RunOrActivateApp("Agile Board - Jira", this.BuildSprintBoardUrl())
+  }
+
+
+  BuildStoryUrl(storyNumber)
+  {
+    return this.BaseUrl "/browse/" storyNumber
+  }
+
+
+  BuildSprintBoardUrl(){
+    return  url := this.BaseUrl "/secure/RapidBoard.jspa?rapidView=" this.DefaultRapidKey "&projectKey=" this.DefaultProjectKey "&sprint=" this.DefaultSprint
   }
 
 

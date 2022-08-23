@@ -70,11 +70,16 @@ Configuration.Work := {
   SourceCodeUrl: EnvGet("AHK_SOURCE_CODE_URL"),
   SourceSchemaUrl: EnvGet("AHK_SOURCE_CODE_SCHEMA_URL"),
   ParsecPeerId: EnvGet("AHK_PARSEC_PEER_ID"),
-  OfficeNetworks: EnvGet("AHK_OFFICE_NETWORKS")
+  OfficeWifiNetworks: EnvGet("AHK_OFFICE_WIFI_NETWORKS"),
+  HomeWifiNetworks: EnvGet("AHK_HOME_WIFI_NETWORKS")
 }
 
 MySlack.SetStatusBasedOnNetwork()
 return
+
+
+AppsKey::    Msgbox(Configuration.WindowsAppDataFolder)
+
 
 
 /*

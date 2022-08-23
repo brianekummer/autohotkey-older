@@ -7,6 +7,7 @@
 InitializeCommonGlobalVariables()
 {
   global Configuration := {
+    WindowsAppDataFolder: EnvGet("APPDATA"),
     WindowsLocalAppDataFolder: EnvGet("LOCALAPPDATA"),
     WindowsProgramFilesX86Folder: EnvGet("PROGRAMFILES(X86)"),
     WindowsProgramFilesFolder: EnvGet("PROGRAMFILES"),
@@ -30,20 +31,11 @@ InitializeCommonGlobalVariables()
 
 ConnectToPersonalComputer()
 {
-  ;Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=26LSLjCqFjpJh97tr7jOy4SF2ql
-  ;WinWaitActive, ahk_exe parsecd.exe,, 5
-  ;If ErrorLevel
-  ;{
-  ;  MsgBox, WinWait timed out.
-  ;  Return
-  ;}
-
   ; TODO- This appears to work if Parsec is not running, but fails if it is already open
   if (!WinExist("ahk_exe parsecd.exe"))
   {
     ;msgbox Parsec is NOT running
-    ;Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=2CONfBq8o5QTpLLAXgsolEDVqBJ
-    Run("`"C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk`" peer_id=" Configuration.Work.ParsecPeerId)
+    Run('"' Configuration.WindowsAppDataFolder '\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
     
     ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
     if (ErrorLevel)
@@ -78,7 +70,7 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
     ;   2. I could not get RunOrActivateApp() to work with the parameter I'm passing to parsecd, so I just replicated the
     ;      relevant parts of that function here
 
-    ;Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=26LSLjCqFjpJh97tr7jOy4SF2ql
+    ;Run('"' Configuration.WindowsAppDataFolder '\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
     ;WinWaitActive, ahk_exe parsecd.exe,, 5
     ;If ErrorLevel
     ;{
@@ -90,7 +82,7 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
     if (!WinExist("ahk_exe parsecd.exe"))
     {
       MsgBox("Parsec is NOT running")
-      Run("`"C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk`" peer_id=26LSLjCqFjpJh97tr7jOy4SF2ql")
+      Run('"' Configuration.WindowsAppDataFolder '\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
       ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
       if (ErrorLevel)
       {
@@ -110,7 +102,7 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
     WinMaximize()   ; Use the window found by WinExist|WinWaitActive
   }
   
-  ; Wait for "brianekummer#8283717" or "Connect to your computers or a friend's computer in low latency desktop mode" to disappear
+  ; Wait for "brianekummer#xxxxxxx" or "Connect to your computers or a friend's computer in low latency desktop mode" to disappear
   ; Also beware having to log into computer w/pin code
   ;   - I changed NUC to be same pic all the time- find "I forgot my pin"
   ;Sleep 500    ; If Parsec is connected, this is enough time. If not connected, it is not

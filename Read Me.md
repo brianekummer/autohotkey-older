@@ -23,9 +23,6 @@
     - https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbUlRcUV1anMtMU9NaEN1d3VCNHhSb1YxZVV6UXxBQ3Jtc0tsbFJtRGV3OXVYUHozR2lFbTR6elhoOC1kTlBvX0tSZUdrYm90b090S3FNUFpfY2NqTUl6R2R3d3Z5UHMtTmJyeU1DUDdjZmp5Y2F0Q1VIQWVxNGRYeTdNSHlfeXRGZGlIOUNENFFWZERUeWZrM1FLOA&q=https%3A%2F%2Fthe-Automator.com%2FV2&v=6rQCns7o3BA
     - https://jacks-autohotkey-blog.com/autohotkey-topics-and-series/a-peek-at-the-coming-autohotkey-v2-0/
     -https://www.youtube.com/watch?v=zpF1D7eMHXs
-- Look for hard-coded strings that should be pulled into env vars
-- Can Jira stuff be consolidated? Do I need global vars for stuff from env vars, or can I do static vars in JIRA() function?
-    - Is a class helpful here? Create a global Jira object?
 - Redo comments- content, formatting, move some into this readme
 - Update Configure.bat
 - Backup env vars to Google Drive
