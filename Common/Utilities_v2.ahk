@@ -6,27 +6,15 @@
 */
 
 
-/*
-
-*/
-RunAppOrUrl(appTitle, whatToRun, timeToWait := 3, maximize := False)
+RunAppAsAdmin(appTitle, whatToRun, maximizeWindow := True, timeToWait := 10)
 {
-  Run(whatToRun)
-  ErrorLevel := WinWaitActive(appTitle, , timeToWait) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
-
-  if (maximize)
-    WinMaximize()
+  RunApp(appTitle, whatToRun, maximizeWindow, True, timeToWait)
 }
 
-
-/*
-
-*/
-RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 0, maximize := False, asAdminUser := true)
+RunApp(appTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10)
 {
   if (!WinExist(appTitle))
   {
-    timeToWait := (timeToWait = 0) ? 10 : timeToWait
     if asAdminUser
       Run(whatToRun)
     else
@@ -35,14 +23,12 @@ RunOrActivateAppOrUrl(appTitle, whatToRun, timeToWait := 0, maximize := False, a
   }
   else 
   {
-    timeToWait := (timeToWait = 0) ? 5 : timeToWait
     WinActivate()
   }
 
-  if (maximize)
+  WinShow()
+  if (maximizeWindow)
     WinMaximize()
-  else
-    WinShow()
 }
 
 
@@ -172,7 +158,7 @@ ShellRun(prms*)
 /*
   Two issues addressed here:
     1. Running D:\Portable Apps\Parsec\parsecd.exe didn't work, so I'm running the shortcut
-    2. I could not get RunOrActivateAppOrUrl() to work with the parameter I'm passing to parsecd, so I just replicated the
+    2. I could not get RunApp() to work with the parameter I'm passing to parsecd, so I just replicated the
        relevant parts of that function here
 
 */

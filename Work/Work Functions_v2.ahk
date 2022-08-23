@@ -16,11 +16,11 @@ PriceWatchWebsites()
 
 
 /*
-
+  todo- dOES THIS MOVE INTO THE sLACK PROJECT?
 */
 OpenSlack(shortcut := "")
 {
-  RunOrActivateAppOrUrl("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder "\Slack\Slack.exe", 3, True)
+  RunApp("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder "\Slack\Slack.exe")
   if (shortcut != "")
     SendInput(shortcut)
   return
@@ -30,9 +30,10 @@ OpenSlack(shortcut := "")
 /*
 
 */
-SlackStatus_Eating()
+SlackStatus_Eating(lunchIsBeforeHour)
 {
-  if (A_Hour < 15)   ; Before 3:00 pm
+  ; MOVE THIS IF Statement into Slack project
+  if (A_Hour < lunchIsBeforeHour)
     SlackStatusUpdate_SetSlackStatusAndPresence("lunch", "away")
   else
     SlackStatusUpdate_SetSlackStatusAndPresence("dinner", "away")
@@ -45,7 +46,7 @@ SlackStatus_Eating()
 
 
 /*
-
+  todo- MOVE INTO SLACK PROJECT
 */
 SlackStatus_Working()
 {
@@ -63,9 +64,9 @@ SlackStatus_Working()
 OpenSourceCode(ctrlPressed)
 {
   if (ctrlPressed)
-    RunOrActivateAppOrUrl("eventschema", Configuration.Work.SourceSchemaUrl, 10, True, False)
+    RunApp("eventschema", Configuration.Work.SourceSchemaUrl)
   else
-    RunOrActivateAppOrUrl("Overview", Configuration.Work.SourceCodeUrl, 10, True, False)
+    RunApp("Overview", Configuration.Work.SourceCodeUrl)
 
   return
 }
@@ -80,7 +81,7 @@ OpenSourceCode(ctrlPressed)
 */
 RunOrActivateSpotify()
 {
-  RunOrActivateAppOrUrl("ahk_exe Spotify.exe", Configuration.WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
+  RunApp("ahk_exe Spotify.exe", Configuration.WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
 }
 
 
@@ -131,11 +132,11 @@ HomeAutomationCommand(command)
 /*
   Create a random GUID
 */
-GenerateGUID(uppercase) 
+CreateRandomGUID(uppercase) 
 {
   newGUID := ComObject("Scriptlet.TypeLib").Guid
 	newGUID := StrReplace(NewGUID, "{")
 	newGUID := StrReplace(NewGUID, "}")
  
-  SendInput(uppercase ? StrUpper(newGUID) : StrLower(newGUID))
+  return uppercase ? StrUpper(newGUID) : StrLower(newGUID)
 }

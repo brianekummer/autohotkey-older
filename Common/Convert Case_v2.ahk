@@ -28,39 +28,30 @@ ConvertCase()
   Errorlevel := !ClipWait()
   A_Clipboard := StrReplace(A_Clipboard, "`r`n", "`n")  ; Fix for SendInput sending Windows linebreaks
 
-  if (cycleNumber = "")
-    cycleNumber := 1
+  switch cycleNumber
+  {
+    case 1:   
+      A_Clipboard := StrLower(A_Clipboard)
+      ToolTip("Lowercase")
+    case 2:  
+      A_Clipboard := StrUpper(A_Clipboard)
+      ToolTip("Uppercase")
+    case 3:    
+      A_Clipboard := StrLower(A_Clipboard)
+      A_Clipboard := RegExReplace(A_Clipboard, "(((^|([.!?]+\s+))[a-z])| i | i')", "$u1")
+      ToolTip("Sentence Case")
+    case 4:    
+      str := Format("{:T}", A_Clipboard)
+      static tCase := "(?:A(?:nd?|s|t)?|B(?:ut|y)|For|In|Nor|O(?:f|n|r)|Per|T(?:he|o))"
+      Loop 3	   ; Must run at least twice to overcome potential misses from using '\K'
+        str := RegExReplace(str, "s)[^\.\?\!]\h+\K\b" tCase "\b(?![\.\?\!])", "$L0")
+      A_Clipboard := str
+      ToolTip("Title Case")
+    default:
+      MsgBox("Error, cycleNumber is " cycleNumber)
+      cycleNumber := 1
+  }
 
-	if (cycleNumber = 1)
-	{
-  	A_Clipboard := StrLower(A_Clipboard)
-    ToolTip("Lowercase")
-	}
-	else if (cycleNumber = 2)
-	{
-		A_Clipboard := StrUpper(A_Clipboard)
-    ToolTip("Uppercase")
-	}
-	else if (cycleNumber = 3)
-	{
-		A_Clipboard := StrLower(A_Clipboard)
-		A_Clipboard := RegExReplace(A_Clipboard, "(((^|([.!?]+\s+))[a-z])| i | i')", "$u1")
-    ToolTip("Sentence Case")
-	}
-	else if (cycleNumber = 4)
-	{
-		str := Format("{:T}", A_Clipboard)
-		static tCase := "(?:A(?:nd?|s|t)?|B(?:ut|y)|For|In|Nor|O(?:f|n|r)|Per|T(?:he|o))"
-		Loop 3	   ; Must run at least twice to overcome potential misses from using '\K'
-			str := RegExReplace(str, "s)[^\.\?\!]\h+\K\b" tCase "\b(?![\.\?\!])", "$L0")
-		A_Clipboard := str
-    ToolTip("Title Case")
-	}
-	else
-	{
-		MsgBox("Error, cycleNumber is " cycleNumber)
-		cycleNumber := 1
-	}
   SetTimer(RemoveToolTip, -3000)
 
   Len := Strlen(A_Clipboard)

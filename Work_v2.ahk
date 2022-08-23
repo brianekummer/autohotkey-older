@@ -49,21 +49,22 @@ RunAsAdmin()
 
 
 /*
+  Include classes here, because they must be included before the auto-execute section
+*/
+#Include "%A_ScriptDir%\Work\Jira_v2.ahk"
+
+
+/*
   Global variables
 */
 InitializeCommonGlobalVariables()
+global MyJira := Jira()
+
 Configuration.IsWorkLaptop := True
 Configuration.Work := {
   UserEmailAddress: EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN"),
 
   ; These come from my Windows environment variables- see "Configure.bat" for details
-  Jira: {
-    BaseUrl: EnvGet("AHK_JIRA_URL"),
-    MyProjectKeys: EnvGet("AHK_JIRA_MY_PROJECT_KEYS"),
-    DefaultProjectKey: EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY"),
-    DefaultRapidKey: EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY"),
-    DefaultSprint: EnvGet("AHK_JIRA_DEFAULT_SPRINT")
-  },
   SourceCodeUrl: EnvGet("AHK_SOURCE_CODE_URL"),
   SourceSchemaUrl: EnvGet("AHK_SOURCE_CODE_SCHEMA_URL"),
   ParsecPeerId: EnvGet("AHK_PARSEC_PEER_ID"),
@@ -127,7 +128,7 @@ CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))
 #HotIf GetKeyState("Alt")
   CapsLock & b::         SlackStatusUpdate_SetSlackStatusAndPresence("brb", "away")
   CapsLock & c::         SlackStatusUpdate_SetSlackStatusAndPresence("none", "auto")
-  CapsLock & e::         SlackStatus_Eating()
+  CapsLock & e::         SlackStatus_Eating(15)    ; Lunch is before 3:00pm/15:00
   CapsLock & m::         SlackStatusUpdate_SetSlackStatusAndPresence("meeting", "auto")
   CapsLock & p::         SlackStatusUpdate_SetHomeSlackStatus("playing")
   CapsLock & w::         SlackStatus_Working()
@@ -153,15 +154,15 @@ CapsLock & i::           ActivateOrStartMicrosoftOutlook("^+I")
 
 /*
   Jira
-    ✦ j                  Opens the current board
-    ✦ ^ j                Opens the selected story number
+    ✦ j                  Opens the current sprint board
+    ✦ ^ j                Search for a specific story number to openr
                            * If the highlighted text looks like a Jira story number (e.g. 
                              PROJECT-1234), then open that story
                            * If the Git Bash window has text that looks like a Jira story number, 
                              then open that story
-                           * Last resort is to open the current board
+                           * Last resort is to open the current sprint board
 */
-CapsLock & j::           Jira()
+CapsLock & j::           MyJira.OpenJira()
 
 
 /*
@@ -209,7 +210,7 @@ CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
     ✦ l                  Start IntelliJ
     ✦ [                  Toggle left sidebar
 */
-CapsLock & l::           RunOrActivateAppOrUrl("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe")
+CapsLock & l::           RunAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
 #HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
   CapsLock & [::         SendInput("!1")
 #HotIf
@@ -263,9 +264,30 @@ CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (G
     ✦ u                  Generate random UUID (lowercase)
     ✦ + u                Generate random UUID (uppercase)
 */
-CapsLock & u::            GenerateGUID(GetKeyState("Shift"))
+CapsLock & u::            SendInput(CreateRandomGUID(GetKeyState("Shift")))
 
 
+
+
+
+/*
+class Jira
+{
+  __New() {
+    this.BaseUrl := EnvGet("AHK_JIRA_URL")
+    this.MyProjectKeys := EnvGet("AHK_JIRA_MY_PROJECT_KEYS")
+    this.DefaultProjectKey := EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY")
+    this.DefaultRapidKey := EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY")
+    this.DefaultSprint := EnvGet("AHK_JIRA_DEFAULT_SPRINT")
+  }
+  
+
+  OpenJira(selectedText)
+  {
+    msgbox("opening Jira. SelectedText is " selectedText ", base url is " this.BaseUrl)
+  }
+}
+*/
 
 
 /*
@@ -274,7 +296,6 @@ CapsLock & u::            GenerateGUID(GetKeyState("Shift"))
   I have to put this at the bottom of my script, or else it interferes with other code in this script
 */
 #Include "%A_ScriptDir%\Work\Work Functions_v2.ahk"
-#Include "%A_ScriptDir%\Work\Jira_v2.ahk"
 #Include "%A_ScriptDir%\Work\Mute VOIP Apps_v2.ahk"
 #Include "%A_ScriptDir%\Work\Slack_v2.ahk"
 

@@ -76,7 +76,7 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
   {
     ; Two issues addressed here:
     ;   1. Running D:\Portable Apps\Parsec\parsecd.exe didn't work, so I'm running the shortcut
-    ;   2. I could not get RunOrActivateAppOrUrl() to work with the parameter I'm passing to parsecd, so I just replicated the
+    ;   2. I could not get RunApp() to work with the parameter I'm passing to parsecd, so I just replicated the
     ;      relevant parts of that function here
 
     ;Run, "C:\Users\brian-kummer\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=26LSLjCqFjpJh97tr7jOy4SF2ql
