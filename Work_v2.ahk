@@ -52,13 +52,15 @@ RunAsAdmin()
   Include classes here, because they must be included before the auto-execute section
 */
 #Include "%A_ScriptDir%\Work\Jira_v2.ahk"
+#Include "%A_ScriptDir%\Work\Slack_v2.ahk"
 
 
 /*
-  Global variables
+  This code executes when the script starts, so declare global variables and do initializations here
 */
 InitializeCommonGlobalVariables()
-global MyJira := Jira()
+global MyJira := Jira()      ; Requires several Windows environmental variables
+global MySlack := Slack()    ; Requires several Windows environmental variables
 
 Configuration.IsWorkLaptop := True
 Configuration.Work := {
@@ -71,14 +73,7 @@ Configuration.Work := {
   OfficeNetworks: EnvGet("AHK_OFFICE_NETWORKS")
 }
 
-
-/*
-  This code executes when the script starts
-*/
-; Configure Slack status updates based on the network. *REQUIRES* several Windows environment variables - see 
-; "Slack.ahk" for details
-SlackStatusUpdate_Initialize()
-SlackStatusUpdate_SetSlackStatusBasedOnNetwork()
+MySlack.SetStatusBasedOnNetwork()
 return
 
 
@@ -116,7 +111,7 @@ Volume_Mute::            ToggleMuteVOIPApps()
       ✦ ! p              Status - Playing. Sets home Slack status to 8bit.
       ✦ ! w              Status - Working. Clears Slack statuses.
 */
-CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))    
+CapsLock & k::           MySlack.OpenSlackApp((GetKeyState("Ctrl") ? "^k" : ""))    
 
 #HotIf WinActive("ahk_exe i)\\slack\.exe$", )
   ^wheelup::             SendInput("^{=}")
@@ -126,12 +121,12 @@ CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))
 #HotIf
 
 #HotIf GetKeyState("Alt")
-  CapsLock & b::         SlackStatusUpdate_SetSlackStatusAndPresence("brb", "away")
-  CapsLock & c::         SlackStatusUpdate_SetSlackStatusAndPresence("none", "auto")
+  CapsLock & b::         MySlack.SetStatusAndPresence("brb", "away")
+  CapsLock & c::         MySlack.SetStatusAndPresence("none", "auto")
   CapsLock & e::         SlackStatus_Eating(15)    ; Lunch is before 3:00pm/15:00
-  CapsLock & m::         SlackStatusUpdate_SetSlackStatusAndPresence("meeting", "auto")
-  CapsLock & p::         SlackStatusUpdate_SetHomeSlackStatus("playing")
-  CapsLock & w::         SlackStatus_Working()
+  CapsLock & m::         MySlack.SetStatusAndPresence("meeting", "auto")
+  CapsLock & p::         MySlack.SetSlackHomeStatus("playing")
+  CapsLock & w::         MySlack.SetStatusWorking()
 #HotIf
 
 
@@ -141,7 +136,7 @@ CapsLock & k::           OpenSlack((GetKeyState("Ctrl") ? "^k" : ""))
     ✦ c                  Run or activate Outlook and switch to the calendar, using an Outlook
                          shortcut to switch to the calendar
 */
-CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
+CapsLock & c::           RunOrActivateOutlook("^2")
 
 
 /*
@@ -149,7 +144,7 @@ CapsLock & c::           ActivateOrStartMicrosoftOutlook("^2")
     ✦ i                  Run or activate Outlook and switch to the inbox, using an Outlook shortcut
                          to switch to the inbox
 */
-CapsLock & i::           ActivateOrStartMicrosoftOutlook("^+I")
+CapsLock & i::           RunOrActivateOutlook("^+I")
 
 
 /*
@@ -210,7 +205,7 @@ CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
     ✦ l                  Start IntelliJ
     ✦ [                  Toggle left sidebar
 */
-CapsLock & l::           RunAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
+CapsLock & l::           RunOrActivateAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
 #HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
   CapsLock & [::         SendInput("!1")
 #HotIf
@@ -271,33 +266,12 @@ CapsLock & u::            SendInput(CreateRandomGUID(GetKeyState("Shift")))
 
 
 /*
-class Jira
-{
-  __New() {
-    this.BaseUrl := EnvGet("AHK_JIRA_URL")
-    this.MyProjectKeys := EnvGet("AHK_JIRA_MY_PROJECT_KEYS")
-    this.DefaultProjectKey := EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY")
-    this.DefaultRapidKey := EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY")
-    this.DefaultSprint := EnvGet("AHK_JIRA_DEFAULT_SPRINT")
-  }
-  
-
-  OpenJira(selectedText)
-  {
-    msgbox("opening Jira. SelectedText is " selectedText ", base url is " this.BaseUrl)
-  }
-}
-*/
-
-
-/*
   Include all libraries, utilities, and other AutoHotkey scripts
 
   I have to put this at the bottom of my script, or else it interferes with other code in this script
 */
 #Include "%A_ScriptDir%\Work\Work Functions_v2.ahk"
 #Include "%A_ScriptDir%\Work\Mute VOIP Apps_v2.ahk"
-#Include "%A_ScriptDir%\Work\Slack_v2.ahk"
 
 #Include "%A_ScriptDir%\Common\Common_v2.ahk"
 #Include "%A_ScriptDir%\Common\Convert Case_v2.ahk"

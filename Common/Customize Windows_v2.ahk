@@ -46,10 +46,9 @@ CapsLock:: return
   more complex.
 */
 #HotIf !WinActive("ahk_exe parsecd.exe", )
-  xbutton1::
+  xbutton1::      
   {
     WinMinimize("A")
-	  return
   }
 
   xbutton2::
@@ -71,7 +70,6 @@ CapsLock:: return
     {
       SendInput("!{f4}")    ; Close the APP
     }
-    return
   }
 #HotIf !WinActive(, )
 
@@ -128,5 +126,4 @@ FixCapsLockIfBroken()
     ;Send "{Blind}{CapsLock up}"
     ;Send "{CapsLock up}"
   }
-  return
 }

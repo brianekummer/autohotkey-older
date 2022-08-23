@@ -90,6 +90,7 @@ ToggleMuteVOIPApps() {
   MsgBox("Muting NOTHING")
 }
 
+
 /*
 */
 GetTeamsMeetingWindowId() {
@@ -114,10 +115,13 @@ GetTeamsMeetingWindowId() {
       return thisId
   }
   
-  return
+  return     ; I suspect this is useless
 }
 
 
+/*
+
+*/
 GetSlackCallWindowId()
 {
   windowId := WinGetID("Slack call with .* \| \d+:\d\d")
@@ -128,6 +132,9 @@ GetSlackCallWindowId()
 }
 
 
+/*
+
+*/
 GetSlackHuddleWindowId()
 {
   windowId := WinGetID("(.* screen share)")
@@ -138,6 +145,9 @@ GetSlackHuddleWindowId()
 }
 
 
+/*
+
+*/
 GetZoomMeetingWindowId()
 {
   windowId := WinGetID("ahk_class ZPContentViewWndClass")
@@ -145,6 +155,9 @@ GetZoomMeetingWindowId()
 }
 
 
+/*
+
+*/
 GetGoogleMeetWindowId()
 {
   ; Does NOT search through open tabs. But if the Meet is the active tab in any instance of Chrome, then it finds it

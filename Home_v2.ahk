@@ -51,14 +51,11 @@ RunAsAdmin()
 
 
 /*
-  Global variables
+  This code executes when the script starts, so declare global variables and do initializations here
 */
 InitializeCommonGlobalVariables()
 Configuration.IsWorkLaptop := False
 
-/*
-  This code executes when the script starts
-*/
 return
 
 

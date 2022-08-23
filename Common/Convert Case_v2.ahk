@@ -65,14 +65,12 @@ ConvertCase()
   ; Set a timer to run once 30 seconds from now, which will reset cycleNumber back to 1, so
   ; that after 30 seconds, this will start over converting to lowercase.
   SetTimer(ResetCycleNumber, -30000)
-  return
 }
 
 
 RemoveToolTip()
 {
   ToolTip()
-  return
 }
 
 
@@ -80,5 +78,4 @@ ResetCycleNumber()
 {
   global cycleNumber
   cycleNumber := 1
-  return
 }

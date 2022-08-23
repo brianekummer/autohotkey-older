@@ -6,12 +6,12 @@
 */
 
 
-RunAppAsAdmin(appTitle, whatToRun, maximizeWindow := True, timeToWait := 10)
+RunOrActivateAppAsAdmin(appTitle, whatToRun, maximizeWindow := True, timeToWait := 10)
 {
-  RunApp(appTitle, whatToRun, maximizeWindow, True, timeToWait)
+  RunOrActivateApp(appTitle, whatToRun, maximizeWindow, True, timeToWait)
 }
 
-RunApp(appTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10)
+RunOrActivateApp(appTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10)
 {
   if (!WinExist(appTitle))
   {
@@ -158,7 +158,7 @@ ShellRun(prms*)
 /*
   Two issues addressed here:
     1. Running D:\Portable Apps\Parsec\parsecd.exe didn't work, so I'm running the shortcut
-    2. I could not get RunApp() to work with the parameter I'm passing to parsecd, so I just replicated the
+    2. I could not get RunOrActivateApp() to work with the parameter I'm passing to parsecd, so I just replicated the
        relevant parts of that function here
 
 */
@@ -207,3 +207,11 @@ AmNearWifiNetwork(wifiNetworks)
 
 	return nearWifiNetwork
 }	
+
+
+/*
+  https://www.autohotkey.com/board/topic/80587-how-to-find-internet-connection-status/
+*/
+AmConnectedToInternet(flag := 0x40) { 
+  return DllCall("Wininet.dll\InternetGetConnectedState", "Str", flag, "Int", 0) 
+}

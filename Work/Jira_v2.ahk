@@ -10,7 +10,7 @@
 
 DEPENDENCIES
 -------------
-Utilities.RunApp()
+Utilities.RunOrActivateApp()
 
 
 */
@@ -47,7 +47,7 @@ class Jira
         ; Open the story
         title := "\[" storyNumber "\].*Jira"
         url := this.BaseUrl "/browse/" storyNumber
-        RunApp(title, url)
+        RunOrActivateApp(title, url)
         return
       }
     }
@@ -55,7 +55,7 @@ class Jira
     ; Either did not try to find a Jira story number, or did not, so open the default Jira board
     title := "Agile Board - Jira"
     url := this.BaseUrl "/secure/RapidBoard.jspa?rapidView=" this.DefaultRapidKey "&projectKey=" this.DefaultProjectKey "&sprint=" this.DefaultSprint
-    RunApp(title, url)
+    RunOrActivateApp(title, url)
   }
 
 

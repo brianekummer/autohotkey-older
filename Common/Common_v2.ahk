@@ -134,7 +134,7 @@ PrintScreen::SendInput("#+s")
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & n::         SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
 ;#If
-CapsLock & n::           RunApp("ahk_exe i)\\typora\.exe$", Configuration.WindowsProgramFilesFolder "\Typora\Typora.exe")
+CapsLock & n::           RunOrActivateApp("ahk_exe i)\\typora\.exe$", Configuration.WindowsProgramFilesFolder "\Typora\Typora.exe")
 
 #HotIf WinActive("ahk_exe i)\\typora\.exe$", )
   ^wheelup::                        SendInput("{Blind}^+{=}")
@@ -151,7 +151,7 @@ CapsLock & n::           RunApp("ahk_exe i)\\typora\.exe$", Configuration.Window
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
 ;#If
-CapsLock & b::           RunApp("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
+CapsLock & b::           RunOrActivateApp("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
 
 
 /*
@@ -162,7 +162,7 @@ CapsLock & b::           RunApp("- Google Chrome", Configuration.WindowsProgramF
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & t::         SendKeystrokesToPersonalLaptop("{CapsLock down}t{CapsLock up}")
 ;#If
-CapsLock & t::           RunAppAsAdmin("Cmder", "C:\tools\Cmder\Cmder.exe", False)
+CapsLock & t::           RunOrActivateAppAsAdmin("Cmder", "C:\tools\Cmder\Cmder.exe", False)
 
 
 /*
@@ -179,7 +179,7 @@ CapsLock & t::           RunAppAsAdmin("Cmder", "C:\tools\Cmder\Cmder.exe", Fals
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & v::         SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
 ;#If
-CapsLock & v::           RunAppAsAdmin("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
+CapsLock & v::           RunOrActivateAppAsAdmin("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
 
 #HotIf WinActive("ahk_exe i)\\code\.exe$", )
   ^wheelup::                 SendInput("{Blind}^{=}")

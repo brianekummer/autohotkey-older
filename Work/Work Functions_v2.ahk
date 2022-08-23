@@ -16,45 +16,16 @@ PriceWatchWebsites()
 
 
 /*
-  todo- dOES THIS MOVE INTO THE sLACK PROJECT?
-*/
-OpenSlack(shortcut := "")
-{
-  RunApp("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder "\Slack\Slack.exe")
-  if (shortcut != "")
-    SendInput(shortcut)
-  return
-}
-
-
-/*
 
 */
 SlackStatus_Eating(lunchIsBeforeHour)
 {
-  ; MOVE THIS IF Statement into Slack project
-  if (A_Hour < lunchIsBeforeHour)
-    SlackStatusUpdate_SetSlackStatusAndPresence("lunch", "away")
-  else
-    SlackStatusUpdate_SetSlackStatusAndPresence("dinner", "away")
+  MySlack.SetStatusEating(lunchIsBeforeHour)
 
   if AmNearWifiNetwork("(kummer)")   ; TODO- move to env var
     HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
+
   DllCall("user32.dll\LockWorkStation")
-  return
-}
-
-
-/*
-  todo- MOVE INTO SLACK PROJECT
-*/
-SlackStatus_Working()
-{
-  if AmNearWifiNetwork(Configuration.Work.OfficeNetworks)
-    SlackStatusUpdate_SetSlackStatusAndPresence("workingInOffice", "auto")
-  else
-    SlackStatusUpdate_SetSlackStatusAndPresence("workingRemotely", "auto")
-  return
 }
 
 
@@ -64,11 +35,9 @@ SlackStatus_Working()
 OpenSourceCode(ctrlPressed)
 {
   if (ctrlPressed)
-    RunApp("eventschema", Configuration.Work.SourceSchemaUrl)
+    RunOrActivateApp("eventschema", Configuration.Work.SourceSchemaUrl)
   else
-    RunApp("Overview", Configuration.Work.SourceCodeUrl)
-
-  return
+    RunOrActivateApp("Overview", Configuration.Work.SourceCodeUrl)
 }
 
 
@@ -81,7 +50,7 @@ OpenSourceCode(ctrlPressed)
 */
 RunOrActivateSpotify()
 {
-  RunApp("ahk_exe Spotify.exe", Configuration.WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
+  RunOrActivateApp("ahk_exe Spotify.exe", Configuration.WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
 }
 
 
@@ -90,7 +59,7 @@ RunOrActivateSpotify()
   refuses to run when Outlook is run as an administrator. Because we are running this AHK script as 
   an administrator, we cannot simply run Outlook. Instead, we must run it as a standard user.
 */
-ActivateOrStartMicrosoftOutlook(shortcut := "")
+RunOrActivateOutlook(shortcut := "")
 {
   outlookTitle := "i)" Configuration.Work.UserEmailAddress "\s-\sOutlook"
   if (!WinExist(outlookTitle))
@@ -132,11 +101,11 @@ HomeAutomationCommand(command)
 /*
   Create a random GUID
 */
-CreateRandomGUID(uppercase) 
+CreateRandomGUID(wantUppercase) 
 {
   newGUID := ComObject("Scriptlet.TypeLib").Guid
 	newGUID := StrReplace(NewGUID, "{")
 	newGUID := StrReplace(NewGUID, "}")
  
-  return uppercase ? StrUpper(newGUID) : StrLower(newGUID)
+  return wantUppercase ? StrUpper(newGUID) : StrLower(newGUID)
 }
