@@ -124,10 +124,18 @@ GetTeamsMeetingWindowId() {
 */
 GetSlackCallWindowId()
 {
-  windowId := WinGetID("Slack call with .* \| \d+:\d\d")
-  ; I don't believe I can get multiple windows, so I think this code is unnecessary
-  ;WinGet, callWindowIds, List, Slack call with .* \| \d+:\d\d
-  ;windowId := callWindowIds1    ; Return 1st matching window
+  try
+  {
+    windowId := WinGetID("Slack call with .* \| \d+:\d\d")
+
+    ; I don't believe I can get multiple windows, so I think this code is unnecessary
+    ;WinGet, callWindowIds, List, Slack call with .* \| \d+:\d\d
+    ;windowId := callWindowIds1    ; Return 1st matching window
+  }
+  catch TargetError as err
+  {
+    windowId := 0
+  }
   return windowId
 }
 
@@ -137,10 +145,18 @@ GetSlackCallWindowId()
 */
 GetSlackHuddleWindowId()
 {
-  windowId := WinGetID("(.* screen share)")
-  ; I don't believe I can get multiple windows, so I think this code is unnecessary
-  ;WinGet, huddleWindowIds, List, (.* screen share)
-  ;windowId := huddleWindowIds1    ; Return 1st matching window
+  try
+  {
+    windowId := WinGetID("(.* screen share)")
+
+    ; I don't believe I can get multiple windows, so I think this code is unnecessary
+    ;WinGet, huddleWindowIds, List, (.* screen share)
+    ;windowId := huddleWindowIds1    ; Return 1st matching window
+  }
+  catch TargetError as err
+  {
+    windowId := 0
+  }
   return windowId
 }
 
@@ -150,7 +166,14 @@ GetSlackHuddleWindowId()
 */
 GetZoomMeetingWindowId()
 {
-  windowId := WinGetID("ahk_class ZPContentViewWndClass")
+  try
+  {
+    windowId := WinGetID("ahk_class ZPContentViewWndClass")
+  }
+  catch TargetError as err
+  {
+    windowId := 0
+  }
   return windowId
 }
 
@@ -161,6 +184,13 @@ GetZoomMeetingWindowId()
 GetGoogleMeetWindowId()
 {
   ; Does NOT search through open tabs. But if the Meet is the active tab in any instance of Chrome, then it finds it
-  windowId := WinGetID("Meet - \w{3}\-\w{4}\-\w{3} \- Google Chrome")
+  try
+  {
+    windowId := WinGetID("Meet - \w{3}\-\w{4}\-\w{3} \- Google Chrome")
+  }
+  catch TargetError as err
+  {
+    windowId := 0
+  }
   return windowId
 }
