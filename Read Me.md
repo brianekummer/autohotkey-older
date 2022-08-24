@@ -16,62 +16,70 @@
 - Does CapsLock still get stuck? Is it "fixed"?
 - Does Spotify now always open?
 ### Definitely Do These Things
-- Decide on an IDE (AHKCon video)
-- Watch AHKCon presentations, AHK playlist
-    - https://www.the-automator.com/august-2022-autohotkey-newsletter/
-    - https://www.autohotkey.com/v2/
-    - https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbUlRcUV1anMtMU9NaEN1d3VCNHhSb1YxZVV6UXxBQ3Jtc0tsbFJtRGV3OXVYUHozR2lFbTR6elhoOC1kTlBvX0tSZUdrYm90b090S3FNUFpfY2NqTUl6R2R3d3Z5UHMtTmJyeU1DUDdjZmp5Y2F0Q1VIQWVxNGRYeTdNSHlfeXRGZGlIOUNENFFWZERUeWZrM1FLOA&q=https%3A%2F%2Fthe-Automator.com%2FV2&v=6rQCns7o3BA
-    - https://jacks-autohotkey-blog.com/autohotkey-topics-and-series/a-peek-at-the-coming-autohotkey-v2-0/
-    -https://www.youtube.com/watch?v=zpF1D7eMHXs
-- Redo comments- content, formatting, move some into this readme
+- Watch YouTube AHK playlist
+- Figure out what to do with "source code" - My current thoughts... I'm liking this idea...
+    - ✦ s     Source code overview (BitBucket dashboard)
+    - ✦ ^ s   Source code popup menu- choose between event schema, search code, search repo- make sure menu can be done w/keyboard. I don't use any
+              of these enough to have a default, but they'd all be helpful.
+                 - Search code- if no selected text, go to search page and set focus to window to enter search criteria
+                 - Search repo- if no selected text, go to search page and set focus to window to enter search criteria
+                 - Event schema
+- Look into automating switching between home and work scripts. Options
+    - Have 1 common script that both machines run, and then pull in appropriate file
+    - Combine together and only enable appropriately
+- Redo comments- content, formatting, move some comments from code into this readme
 - Update Configure.bat
 - Backup env vars to Google Drive
 - Merge v2 into main branch
 ### Maybe Do These
+- How can I get rid of HA on Tele laptop, specifically need for username and password as env vars?
+    - Send command to my NUC? SSH?
+    - Send command to a phone w/autoremote? My phone because of fixed IP? Work status phone? LR Pi?
+    - How slow will it be?
 - Is there any use for AppsKey (context menu)?
-- Visual Studio
-    - Moved Solution Explorer to left side, pinned
-    - ^!l shows it 
-    - +{Esc} makes it go away
-    - Can I get it working with AHK??? ✦ [
-        - Can't tell by the active window. maybe I can loop through all the active windows in
-- VS Code
-    ✦ v    Windows (AHK)    VS Code
-    ✦ ^ v  Open VS Code, create a new doc, paste selected text, then format it
-- Customizing App Behavior
-    - Slack:
-       ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
-    - VS Code - IF this is the editor I'm going to use
-       ~$^s                VS Code (AHK)    After save AHK file, reload current script
-- Standardize video keys for youtube and udemy
-- Grammarly? I coded it before, so should look into if it still works.
-- Window management
-    H left         HS       Snap active window to left half/third/two-thirds of the screen
-    H right        HS       Snap active window to right half/third/two-thirds of the screen
-    H up           HS       Snap active window to top half/third/two-thirds of the screen
-    H down         HS       Snap active window to top half/third/two-thirds of the screen
-    H return       HS       Toggle full screen
-    H âŒ˜ up         HS       Maximize window
-    H âŒ˜ down       HS       Minimize window
-    H âŒ˜ left       HS       Move active window to the previous screen
-    H âŒ˜ right      HS       Move active window to the next screen
-- Focusing/studying
-    H âŒ˜ f          HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
-                              which also sets Slack statuses to heads-down.
-    H âŒ˜ s          HS       Studying. Starts Do Not Disturb timer for 60 minutes,
-                              which also sets Slack statuses to books and opens udemy.com.
+- Other automation ideas
+    - Visual Studio
+        - Moved Solution Explorer to left side, pinned
+        - ^!l shows it 
+        - +{Esc} makes it go away
+        - Can I get it working with AHK??? ✦ [
+            - Can't tell by the active window. maybe I can loop through all the active windows in
+    - VS Code
+        ✦ v    Windows (AHK)    VS Code
+        ✦ ^ v  Open VS Code, create a new doc, paste selected text, then format it
+    - Customizing App Behavior
+        - Slack:
+           ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
+        - VS Code - IF this is the editor I'm going to use
+        ~$^s                VS Code (AHK)    After save AHK file, reload current script
+    - Standardize video keys for youtube and udemy
+    - Grammarly? I coded it before, so should look into if it still works. Not sure how much I'd use Grammarly, but if
+      it's EASY, I'd use it more
+    - Window management
+        H left         HS       Snap active window to left half/third/two-thirds of the screen
+        H right        HS       Snap active window to right half/third/two-thirds of the screen
+        H up           HS       Snap active window to top half/third/two-thirds of the screen
+        H down         HS       Snap active window to top half/third/two-thirds of the screen
+        H return       HS       Toggle full screen
+        H ^ up         HS       Maximize window
+        H ^ down       HS       Minimize window
+        H ^ left       HS       Move active window to the previous screen
+        H ^ right      HS       Move active window to the next screen
+    - Focusing/studying
+        H ^ f ??       HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
+                                which also sets Slack statuses to heads-down.
+        H ^ s ??       HS       Studying. Starts Do Not Disturb timer for 60 minutes,
+                                which also sets Slack statuses to books and opens udemy.com.
 
 
 
 
 
 ## Future Ideas
-; Keep in Mind While Developing This
-; ----------------------------------
-;   - Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
-;   - Popup menus are useful- can I use them elsewhere?
-;   - Are timed tooltips useful somewhere?
-;   - Are classes useful anywhere?
+- Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
+- Popup menus are useful- can I use them elsewhere?
+- Are timed tooltips useful somewhere?
+- Are classes useful anywhere?
 
 
 
@@ -246,16 +254,29 @@
 ;   - nircmd, for "setdefaultsounddevice" to switch between headphones and headset
 ;
 ;
-; Decisions
-; ---------
-;   - For Chrome extensions
-;       - I decided not to use "Add URL to Window Title" because there is no whitelist option, and
-;         having URL on every toolbar is ugly. Adding the input field id and name is cool and could
-;         be useful for multi-page logins (like timesheet) but that is not REQUIRED for what I need 
-;         (yet). https://github.com/erichgoldman/add-url-to-window-title
-;
-;
-; Credits
-; -------
-;   - CapsLock as a Windows modifier: https://www.howtogeek.com/446418/how-to-use-caps-lock-as-a-modifier-key-on-windows/
-;                                     https://www.autohotkey.com/boards/viewtopic.php?t=70854
+
+
+## Decisions
+- For Chrome extensions
+    - I decided not to use "Add URL to Window Title" because there is no whitelist option, and
+      having URL on every toolbar is ugly. Adding the input field id and name is cool and could
+      be useful for multi-page logins (like timesheet) but that is not REQUIRED for what I need 
+      (yet). https://github.com/erichgoldman/add-url-to-window-title
+- Using VS Code for IDE since I'm used to it
+    - These extensioons recommended by The Automator in 2022
+        - AutoHotkey Plus Plus
+        - AutoHotkey2 Language Support
+        - vscode-autohotkey-debug [if you need better debugging support than is built into AutoHotkey Plus Plus]
+    - Did not evaluate these extensions
+        - Autokey Debug by Helsmy
+
+
+
+## Credits
+- CapsLock as a Windows modifier: https://www.howtogeek.com/446418/how-to-use-caps-lock-as-a-modifier-key-on-windows/
+                                  https://www.autohotkey.com/boards/viewtopic.php?t=70854
+
+
+## VS Code Tips
+- Bottom left of Explorer view is Outline
+- Ctrl-Shift-P for command pallet

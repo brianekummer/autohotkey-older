@@ -44,7 +44,7 @@ class Slack
 {
   __New() 
   {
-    this.Tokens := StrSplit(EnvGet("SLACK_TOKENS"), "|")
+    this.Tokens := StrSplit(EnvGet("AHK_SLACK_TOKENS"), "|")
 
     this.Statuses := Map(
       "none", this.BuildStatus("", "|", 0),

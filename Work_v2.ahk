@@ -78,7 +78,7 @@ MySlack.SetStatusBasedOnNetwork()
 return
 
 
-AppsKey::    Msgbox(Configuration.WindowsAppDataFolder)
+AppsKey::    Msgbox(A_MyDocuments " //// " Configuration.WindowsUserProfile " //// " Configuration.MyDocumentsFolder)
 
 
 
@@ -209,8 +209,10 @@ CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
   IntelliJ
     ✦ l                  Start IntelliJ
     ✦ [                  Toggle left sidebar
+
+  I DO NOT USE THE "✦ l" RIGHT NOW                       
 */
-CapsLock & l::           RunOrActivateAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
+;CapsLock & l::           RunOrActivateAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
 #HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
   CapsLock & [::         SendInput("!1")
 #HotIf

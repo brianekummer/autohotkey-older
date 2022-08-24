@@ -9,7 +9,6 @@ InitializeCommonGlobalVariables()
   global Configuration := {
     WindowsAppDataFolder: EnvGet("APPDATA"),
     WindowsLocalAppDataFolder: EnvGet("LOCALAPPDATA"),
-    WindowsProgramFilesX86Folder: EnvGet("PROGRAMFILES(X86)"),
     WindowsProgramFilesFolder: EnvGet("PROGRAMFILES"),
     WindowsUserName: EnvGet("USERNAME"),
     WindowsUserDomain: EnvGet("USERDOMAIN"),
@@ -19,9 +18,9 @@ InitializeCommonGlobalVariables()
     ; These come from my Windows environment variables- see "Configure.bat" for details
     MyPersonalFolder: EnvGet("AHK_PERSONAL_FILES"),
     MyPersonalDocumentsFolder: EnvGet("AHK_PERSONAL_FILES") "\Documents\",
+    IsWorkLaptop: EnvGet("USERDOMAIN") != EnvGet("COMPUTERNAME"),   ; For home laptop, USERDOMAIN = COMPUTERNAME = "BRIAN-DESKTOP"
 
     ; These will get populated by the appropriate code later
-    IsWorkLaptop: "",
     Home: "",
     Work: ""
   }
@@ -35,7 +34,7 @@ ConnectToPersonalComputer()
   if (!WinExist("ahk_exe parsecd.exe"))
   {
     ;msgbox Parsec is NOT running
-    Run('"' Configuration.WindowsAppDataFolder '\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
+    Run('"' A_StartMenu '\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
     
     ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
     if (ErrorLevel)
@@ -70,7 +69,8 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
     ;   2. I could not get RunOrActivateApp() to work with the parameter I'm passing to parsecd, so I just replicated the
     ;      relevant parts of that function here
 
-    ;Run('"' Configuration.WindowsAppDataFolder '\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
+    ;Run('"' A_StartMenu '\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
+
     ;WinWaitActive, ahk_exe parsecd.exe,, 5
     ;If ErrorLevel
     ;{
@@ -82,8 +82,9 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
     if (!WinExist("ahk_exe parsecd.exe"))
     {
       MsgBox("Parsec is NOT running")
-      Run('"' Configuration.WindowsAppDataFolder '\Microsoft\Windows\Start Menu\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
-      ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
+      Run('"' A_StartMenu '\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
+      
+            ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
       if (ErrorLevel)
       {
         MsgBox("WinWait timed out.")
