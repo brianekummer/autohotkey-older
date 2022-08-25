@@ -1,98 +1,41 @@
-﻿/*
-  My AutoHotkey Automations - Common Between Work and Home
-
-  THIS IS FOR HOTKEYS, ETC. FUNCTIONS SHOULD BE IN Common Functions_v2.ahk
-
-
-
-
-REQUIREMENTS FOR CODE IN COMMON FOLDER
-- All code must compile/be-happy on both machines, not try to access env vars that don'ty exist on one machine, etc
-
-
-; Modifiers
-; ---------
-; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
-;
-;
-; ============================================================================================
-; TO DO ITEMS
-; ============================================================================================
-;
-; DEPENDENCIES
-; ------------
-; * IntelliJ
-;     - Plugin "macOS Dark Mode Sync" by Johnathan Gilday automatically 
-;       switches between Darcula and Intellij when OS changes
-; * Chrome extension "Dark Reader"
-; * VS Code extension "theme-switcher" by latusinski to toggle between light
-;  and dark mode
-;
-; >> Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
-;
-;   H âŒ˜ f          HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
-;                           which also sets Slack statuses to heads-down.
-;   H âŒ˜ s          HS       Studying. Starts Do Not Disturb timer for 60 minutes,
-;                           which also sets Slack statuses to books and opens udemy.com.
-;
-; (on login/unlock)  Windows (AHK)       Set Slack status based on nearby wifi networks
-; #numpadsub         Windows (AHK)       TEMP - price checks
-; #space             Windows (AHK)       Toggle dark mode for active application
-;
-; ============================================================================================
-;
-;
-;
-;
-;
-;
-; Notes
-; -----
-;   - Near the bottom of this script are a number of #include statements to include libraries of 
-;     utility functions
-;   - Using regex in "#IfWinActive ahk_exe i)\\xxxx\.exe$" requires "SetTitleMatchMode RegEx"
-;   - This script must be run as an admin or else any app run as an admin (i.e. Visual Studio,
-;     Visual Studio Code, etc.) will intercept the keystrokes before this script.
-;   - Definition of AutoHotkey keys: http://www.autohotkey.com/docs/KeyList.htm
-;   - This looks helpful: http://www.daviddeley.com/autohotkey/xprxmp/autohotkey_expression_examples.htm
-;
-;
-; Dependencies
-; ------------
-;   - IntelliJ
-;       - Enabled option: Editor > General > Change font size (Zoom) with Ctrl+MouseWheel
-;   - nircmd, for "setdefaultsounddevice" to switch between headphones and headset
-;
-*/
+﻿/**
+ *  My AutoHotkey Automations - Common Between Work and Home
+ *
+ *  Ideally, this script should contain only hotkeys and hostrings. Any supporting code
+ *  should be in a "xxxx Functions.ahk" script.
+ * 
+ *  Modifiers
+ *  ---------
+ *  ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
+ */
 
 
 
-/*
-  Emergency Reload
-    ✦ ^ ! Esc            Reload this script
-
-  I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
-  for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
-*/
+/**
+ *  Emergency Reload
+ *    ✦ ^ ! Esc            Reload this script
+ *
+ *  I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
+ *  for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
+ */
 #HotIf GetKeyState("Alt") and GetKeyState("Ctrl")
-  CapsLock & Esc::
-  {
-    if (WinActive("ahk_exe parsecd.exe"))      ; When using personal laptop at work, tell personal laptop to reload
+  CapsLock & Esc:: {
+    if (WinActive("ahk_exe parsecd.exe")) {      ; When using personal laptop at work, tell personal laptop to reload
       SendKeystrokesToPersonalLaptop("{Alt down}{Control down}{CapsLock down}{Esc}{CapsLock up}{Control up}{Alt up}")
-    else
-      Reload                                   ; Reload AHK on either work or personal laptop
-
+    } else {
+      Reload                                     ; Reload AHK on either work or personal laptop
+    }
     return
   }
 #HotIf
 
 
-/*
-  Price Watch
-    ✦ F12                Load stuff I'm watching
-
-  Note that sometimes I have to escape special characters like %
-*/
+/**
+ *  Price Watch
+ *    ✦ F12                Load stuff I'm watching
+ *
+ *  Sometimes I have to escape special characters like %
+ */
 #HotIf Configuration.IsWorkLaptop
   CapsLock & F12::       SendKeystrokesToPersonalLaptop("{CapsLock down}{F12}{CapsLock up}")
 #HotIf !Configuration.IsWorkLaptop
@@ -100,12 +43,12 @@ REQUIREMENTS FOR CODE IN COMMON FOLDER
 #HotIf
 
 
-/*
-  Convert case of selected text
-    ✦ RShift             Cycle selected text between lower/upper/sentence/title case
-
-; Since you cannot send RShift key to another window, I am using F17 here
-*/
+/**
+ *  Convert case of selected text
+ *    ✦ RShift             Cycle selected text between lower/upper/sentence/title cases
+ *
+ *  Since you cannot send RShift key to another window, I am using F17 here
+ */
 #HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
   CapsLock & RShift::    SendKeystrokesToPersonalLaptop("{CapsLock down}{F17}{CapsLock up}")
 #HotIf
@@ -113,24 +56,24 @@ CapsLock & RShift::      ConvertCase()    ; Work laptop reacts to this
 CapsLock & F17::         ConvertCase()    ; Personal laptop reacts to this
 
 
-/*
-  Screen shot
-    PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
-*/
+/**
+ *  Screen shot
+ *    PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
+ */
 #HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
   PrintScreen::          SendKeystrokesToPersonalLaptop("{LWin down}{Shift down}s{Shift up}{LWin up}")
 #HotIf
 PrintScreen::SendInput("#+s")
 
 
-/*
-  Typora
-    ✦ n                  Run or activate my notes in Typora on my work laptop
-    ✦ ! n                Run or activate my notes in Typora on my personal laptop
-
-    ^ mousewheel         Decrease/increase font size
-    ✦ [                  Toggle left sidebar
-*/
+/**
+ *  Typora
+ *    ✦ n                  Run or activate my notes in Typora on my work laptop
+ *    ✦ ! n                Run or activate my notes in Typora on my personal laptop
+ *
+ *    ^ mousewheel         Decrease/increase font size
+ *    ✦ [                  Toggle left sidebar
+ */
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & n::         SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
 ;#If
@@ -143,40 +86,39 @@ CapsLock & n::           RunOrActivateApp("ahk_exe i)\\typora\.exe$", Configurat
 #HotIf
 
 
-/*
-  Chrome
-    ✦ b                  Run or activate Chrome on my work laptop
-    ✦ ! b                Run or activate Chrome on my personal laptop
-*/
+/**
+ *  Browser/Chrome
+ *    ✦ b                  Run or activate Chrome on my work laptop
+ *    ✦ ! b                Run or activate Chrome on my personal laptop
+ */
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
 ;#If
-;CapsLock & b::           RunOrActivateApp("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
 CapsLock & b::           RunOrActivateBrowser()
 
 
-/*
-  Terminal/Cmder/bash
-    ✦ t                  Run or activate the terminal on my work laptop
-    ✦ ! t                Run or activate the terminal on my personal laptop
-*/
+/**
+ * Terminal/Cmder/bash
+ *   ✦ t                  Run or activate the terminal on my work laptop
+ *   ✦ ! t                Run or activate the terminal on my personal laptop
+ */
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & t::         SendKeystrokesToPersonalLaptop("{CapsLock down}t{CapsLock up}")
 ;#If
 CapsLock & t::           RunOrActivateAppAsAdmin("Cmder", "C:\tools\Cmder\Cmder.exe", False)
 
 
-/*
-  Visual Studio Code
-    ✦ v                  Open VS Code on my work laptop
-    ✦ ! v                Open VS Code on my personal laptop
-
-    ^ mousewheel         Decrease/increase font size
-    ✦ [                  Toggle left sidebar
-
-  TODO-
-    ✦ ^ v                Open VS Code, create a new doc, paste selected text, then format it
-*/
+/**
+ *  Visual Studio Code
+ *    ✦ v                  Open VS Code on my work laptop
+ *    ✦ ! v                Open VS Code on my personal laptop
+ *
+ *    ^ mousewheel         Decrease/increase font size
+ *    ✦ [                  Toggle left sidebar
+ *
+ *  TODO-
+ *    ✦ ^ v                Open VS Code, create a new doc, paste selected text, then format it
+ */
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & v::         SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
 ;#If
@@ -187,9 +129,6 @@ CapsLock & v::           RunOrActivateAppAsAdmin("ahk_exe i)\\code\.exe$", Confi
   ^wheeldown::               SendInput("{Blind}^{-}")
   CapsLock & [::             SendInput("^b")
 #HotIf
-
-
-
 
 
 
@@ -429,11 +368,11 @@ end
 
 
 
-/*
-  Include all libraries, utilities, and other AutoHotkey scripts
-
-  I have to put this at the bottom of my script, or else it interferes with other code in this script
-*/
+/**
+ *  Include all libraries, utilities, and other AutoHotkey scripts
+ *
+ *  I have to put this at the bottom of my script or it interferes with other code in this script
+ */
 #Include "%A_ScriptDir%\Common\My Auto Correct_v2.ahk"
 #Include "%A_ScriptDir%\Common\Common Functions_v2.ahk"
 #Include "%A_ScriptDir%\Common\Convert Case_v2.ahk"

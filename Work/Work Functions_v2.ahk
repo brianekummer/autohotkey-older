@@ -1,7 +1,7 @@
-﻿/*
-  The body of most everything is here
-  do not include re-usable utility type functions
-*/
+﻿/**
+ *  Functions to support Work.ahk
+ */
+
 
 
 /*

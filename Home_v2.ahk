@@ -54,17 +54,18 @@ RunAsAdmin()
   This code executes when the script starts, so declare global variables and do initializations here
 */
 InitializeCommonGlobalVariables()
+
 return
 
 
 
 
 
-/*
-  Include all libraries, utilities, and other AutoHotkey scripts
-
-  I have to put this at the bottom of my script, or else it interferes with other code in this script
-*/
+/**
+ *  Include all libraries, utilities, and other AutoHotkey scripts
+ *
+ *  I have to put this at the bottom of my script or it interferes with other code in this script
+ */
 #Include "%A_ScriptDir%\Common\Common_v2.ahk"
 
 #Include "%A_ScriptDir%\Home\Home Functions_v2.ahk"

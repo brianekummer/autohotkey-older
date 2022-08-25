@@ -1,77 +1,90 @@
-﻿/*
-  Utilities
+﻿/**
+ *  Utilities
+ * 
+ *  The intent is for these to be very generic functions that are not specific
+ *  to my needs.
+ *  
+ *  Notes
+ *  -----
+ *    - Some of this code may assume "SetTitleMatchMode RegEx" was set
+ */
 
-  Some of this code may assume "SetTitleMatchMode RegEx" was set
-  Very generic code
-*/
 
-
-RunOrActivateAppAsAdmin(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10)
-{
-  RunOrActivateApp(winTitle, whatToRun, maximizeWindow, True, timeToWait)
-}
-/*
-  Does not search if it's already open or not
-*/
-AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10, params*) 
-{
-  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True, (params = []) ? params : params[1])
-}
-RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False, params*)
-{
-  /*
-    My original code used WinWaitActive() and then WinMaximize(), but sometimes Windows
-    wouldn't set focus to the app. This post from Lexikos (from 2013!) suggested using 
-    WinWait() and WinActivate(), because WinActivate() is very aggressive. So far, this
-    has worked very well for me. 
-      https://www.autohotkey.com/boards/viewtopic.php?style=17&t=93937&p=416313#post_content416637
-  */
-  if (!WinExist(winTitle) || runEvenIfOpen)
-  {
-    if asAdminUser
+/**
+ *  Run or activate an app or url
+ * 
+ *  There are a large number of options, all are defaulted to what I most commonly use.
+ *  Overrides are provided for other commonly needed scenarios.
+ * 
+ *  My original code used WinWaitActive() and then WinMaximize(), but sometimes Windows
+ *  wouldn't set focus to the app. This post from Lexikos (from 2013!) suggested using 
+ *  WinWait() and WinActivate(), because WinActivate() is very aggressive. So far, this
+ *  has worked very well for me. 
+ *    https://www.autohotkey.com/boards/viewtopic.php?style=17&t=93937&p=416313#post_content416637
+ * 
+ *  @param winTitle         Title of the window to activate, or to find once the app has started
+ *  @param whatToRun        The exe/url to rul
+ *  @param maximizeWindow   Should it be maximized? True|False
+ *  @param asAdminUser      Should it be run as administrator? True|False 
+ *  @param timeToWait       When running the app/url, how long to wait (seconds)?
+ *  @param runEvenIfOpen    Run the app even if it's already open? True|False
+ *  @param params           Additional parameters
+ */
+RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False, params*) {
+  if (!WinExist(winTitle) || runEvenIfOpen) {
+    if asAdminUser {
       Run(whatToRun)
-    else
-    {
-  	  ShellRun(whatToRun, (!IsObject(params) || params.Length = 0) ? params : params[1])
+    } else {
+      ShellRun(whatToRun, (!IsObject(params) || params.Length = 0) ? params : params[1])
     }
 
     WinWait(winTitle,, timeToWait)
     WinActivate(winTitle)
-  }
-  else 
-  {
+  } else {
     WinActivate(winTitle)
   }
 
-  if (maximizeWindow)
+  if (maximizeWindow) {
     WinMaximize(winTitle)
+  }
+}
+
+RunOrActivateAppAsAdmin(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10) {
+  RunOrActivateApp(winTitle, whatToRun, maximizeWindow, True, timeToWait)
+}
+
+/***** Always run the app/url, even if it's already open *****/
+AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10, params*) {
+  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True, (!IsObject(params) || params.Length = 0) ? params : params[1])
 }
 
 
-/*
-
-*/
+/**
+ *  Activate a window and send it keystrokes
+ * 
+ *  @param windowId    The window id of the window to activate and send keystrokes to
+ *  @param keystroke   The keystrokes to send
+ *  @return 
+ */
 ActivateWindowByIdAndSendKeystroke(windowId, keystroke) {
-  if (windowId)
-  {
+  if (windowId) {
     WinActivate("ahk_id " windowId)
     Sleep(150)
     SendInput(keystroke)
     return True
-  }
-  else
-  {
+  } else {
     return False
   }
 }
 
 
-/*
-  Get the text that is currently selected by using the A_Clipboard, while preserving the A_Clipboard's 
-  current contents.
+/**
+ *  Get the text that is currently selected by using the clipboard, while preserving the clipboard's 
+ *  current contents.
+ *  
+ *  @return       The text that was selected when this function was called
 */
-GetSelectedTextUsingClipboard()
-{
+GetSelectedTextUsingClipboard() {
   selectedText := ""
   ClipSaved := A_Clipboard  
   A_Clipboard := ""
@@ -86,110 +99,36 @@ GetSelectedTextUsingClipboard()
 }
 
 
-/*
-  Run a DOS command. This code taken from AutoHotkey website: https://autohotkey.com/docs/commands/Run.htm
-*/
-RunWaitOne(command)
-{
+/**
+ *  Runs a DOS command and returns its output
+ *    - This is very simple code, but it shows the command box as it runs
+ *    - From https://autohotkey.com/docs/commands/Run.htm
+ * 
+ *  @param command    The command to run
+ *  @return           The standard output from running command
+ */
+RunWaitOne(command) {
   shell := ComObject("WScript.Shell")           ; WshShell object: http://msdn.microsoft.com/en-us/library/aew9yb99
   exec := shell.Exec(A_ComSpec " /C " command)  ; Execute a single command via cmd.exe
+  
   return exec.StdOut.ReadAll()                  ; Read and return the command's output 
 }
 
 
-/*
-  ShellRun by Lexikos
-
-	https://autohotkey.com/board/topic/72812-run-as-standard-limited-user/page-2#entry522235
-  requires: AutoHotkey_L
-  license: http://creativecommons.org/publicdomain/zero/1.0/
-
-  Credit for explaining this method goes to BrandonLive:
-  http://brandonlive.com/2008/04/27/getting-the-shell-to-run-an-application-for-you-part-2-how/
-
-  Shell.ShellExecute(File [, Arguments, Directory, Operation, Show])
-  http://msdn.microsoft.com/en-us/library/windows/desktop/gg537745
-*/
-; ShellRun(prms*)
-; {
-;     shellWindows := ComObject("{9BA05972-F6A8-11CF-A442-00A0C90A8F39}")
-
-;     desktop := shellWindows.Item(ComObj(19, 8)) ; VT_UI4, SCW_DESKTOP                
-
-;     ; Retrieve top-level browser object.
-;     if ptlb := ComObjQuery(desktop
-;         , "{4C96BE40-915C-11CF-99D3-00AA004AE837}"  ; SID_STopLevelBrowser
-;         , "{000214E2-0000-0000-C000-000000000046}") ; IID_IShellBrowser
-;     {
-;         ; IShellBrowser.QueryActiveShellView -> IShellView
-;         if DllCall(NumGet(NumGet(ptlb+0, "UPtr")+15*A_PtrSize, "UPtr"), "ptr", ptlb, "ptr*", &psv:=0) = 0
-;         {
-;             ; Define IID_IDispatch.
-;             VarSetStrCapacity(&IID_IDispatch, 16) ; V1toV2: if 'IID_IDispatch' is NOT a UTF-16 string, use 'IID_IDispatch := Buffer(16)'
-;             NumPut("int64", 0x46000000000000C0, IID_IDispatch)
-
-;             ; IShellView.GetItemObject -> IDispatch (object which implements IShellFolderViewDual)
-;             DllCall(NumGet(NumGet(psv+0, "UPtr")+15*A_PtrSize, "UPtr"), "ptr", psv, "uint", 0, "ptr", IID_IDispatch, "ptr*", &pdisp:=0)
-
-;             ; Get Shell object.
-;             shell := ComObj(9,pdisp,1).Application
-
-;             ; IShellDispatch2.ShellExecute
-;             shell.ShellExecute(prms*)
-
-;             ObjRelease(psv)
-;         }
-;         ObjRelease(ptlb)
-;     }
-; }
-
-; new version from https://www.autohotkey.com/boards/viewtopic.php?t=78190
-ShellRun(prms*)
-{
-  shellWindows := ComObject("Shell.Application").Windows
-  desktop := shellWindows.FindWindowSW(0, 0, 8, 0, 1) ; SWC_DESKTOP, SWFO_NEEDDISPATCH
-   
-  ; Retrieve top-level browser object.
-  tlb := ComObjQuery(desktop,
-      "{4C96BE40-915C-11CF-99D3-00AA004AE837}", ; SID_STopLevelBrowser
-      "{000214E2-0000-0000-C000-000000000046}") ; IID_IShellBrowser
-    
-  ; IShellBrowser.QueryActiveShellView -> IShellView
-  ComCall(15, tlb, "ptr*", sv := ComValue(13, 0)) ; VT_UNKNOWN
-    
-  ; Define IID_IDispatch.
-  NumPut("int64", 0x20400, "int64", 0x46000000000000C0, IID_IDispatch := Buffer(16))
-   
-  ; IShellView.GetItemObject -> IDispatch (object which implements IShellFolderViewDual)
-  ComCall(15, sv, "uint", 0, "ptr", IID_IDispatch, "ptr*", sfvd := ComValue(9, 0)) ; VT_DISPATCH
-   
-  ; Get Shell object.
-  shell := sfvd.Application
-   
-  ; IShellDispatch2.ShellExecute
-  shell.ShellExecute(prms*)
-}
-
-
-/*
-  Two issues addressed here:
-    1. Running D:\Portable Apps\Parsec\parsecd.exe didn't work, so I'm running the shortcut
-    2. I could not get RunOrActivateApp() to work with the parameter I'm passing to parsecd, so I just replicated the
-       relevant parts of that function here
-
-*/
-
-
-/*
-  Run a DOS command
-*/
-RunWaitHidden(cmd)
-{
+/**
+ *  Runs a DOS command and returns the output
+ *    - No console is visible while this runs
+ *    - The output is redirected to the clipboard, where this script can get it and return
+ *
+ *  @param command    The command to run
+ *  @return           The standard output from running command
+ */
+ RunWaitHidden(command) {
 	Sleep(250)                  ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
   clipSaved := ClipboardAll()	; Save the entire clipboard
   A_Clipboard := ""
 
-	RunWait(cmd " | clip", , "hide")
+	RunWait(command " | clip", , "hide")
   output := A_Clipboard
 	
 	Sleep(250)                ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
@@ -200,11 +139,56 @@ RunWaitHidden(cmd)
 }
 
 
-/*
-  wifiNetworks is regex like "(mycompany|mycobyod)"
-*/
-AmNearWifiNetwork(wifiNetworks)
-{
+/**
+ *  ShellRun by Lexikos
+ *
+ * 	https://autohotkey.com/board/topic/72812-run-as-standard-limited-user/page-2#entry522235
+ *  license: http://creativecommons.org/publicdomain/zero/1.0/
+ *
+ *  Credit for explaining this method goes to BrandonLive:
+ *  http://brandonlive.com/2008/04/27/getting-the-shell-to-run-an-application-for-you-part-2-how/
+ *
+ *  Shell.ShellExecute(File [, Arguments, Directory, Operation, Show])
+ *  http://msdn.microsoft.com/en-us/library/windows/desktop/gg537745
+ * 
+ *  When I upgraded AHK to v2, this no longer worked for me, so I found a modified version:
+ *  https://www.autohotkey.com/boards/viewtopic.php?t=78190
+ *
+ *  @param prms*     The parameters to pass to the shell
+ */
+ShellRun(prms*) {
+  shellWindows := ComObject("Shell.Application").Windows
+  desktop := shellWindows.FindWindowSW(0, 0, 8, 0, 1) ; SWC_DESKTOP, SWFO_NEEDDISPATCH
+   
+  ; Retrieve top-level browser object
+  tlb := ComObjQuery(desktop,
+      "{4C96BE40-915C-11CF-99D3-00AA004AE837}", ; SID_STopLevelBrowser
+      "{000214E2-0000-0000-C000-000000000046}") ; IID_IShellBrowser
+    
+  ; IShellBrowser.QueryActiveShellView -> IShellView
+  ComCall(15, tlb, "ptr*", sv := ComValue(13, 0)) ; VT_UNKNOWN
+    
+  ; Define IID_IDispatch
+  NumPut("int64", 0x20400, "int64", 0x46000000000000C0, IID_IDispatch := Buffer(16))
+   
+  ; IShellView.GetItemObject -> IDispatch (object which implements IShellFolderViewDual)
+  ComCall(15, sv, "uint", 0, "ptr", IID_IDispatch, "ptr*", sfvd := ComValue(9, 0)) ; VT_DISPATCH
+   
+  ; Get Shell object
+  shell := sfvd.Application
+   
+  ; IShellDispatch2.ShellExecute
+  shell.ShellExecute(prms*)
+}
+
+
+/**
+ *  Am I near one of the specified networks?
+ *
+ *  @param wifiNetworks   List of wifi network names as a regex string, such as "(mycompany|mycobyod)" 
+ *  @return               True if am near any of the wifi networks, else False
+ */
+AmNearWifiNetwork(wifiNetworks) {
   nearWifiNetwork := False
   wifiNetworksPattern := "i)" wifiNetworks
 
@@ -212,45 +196,49 @@ AmNearWifiNetwork(wifiNetworks)
 
   pos := 1
   match := [""]
-  While !nearWifiNetwork && pos := RegExMatch(allNetworks, "i)\Rssid.+?:\s(\V+)\R", &match, pos+StrLen(match[1]))
-  {
+  while !nearWifiNetwork && pos := RegExMatch(allNetworks, "i)\Rssid.+?:\s(\V+)\R", &match, pos+StrLen(match[1])) {
     ; match is the line like "SSID x : network_ssid", so parse out the network's SSID
     networkSSID := RegExReplace(match[1], "\R.*?:\s(\V+)\R", "$1")
 
-    if (RegExMatch(networkSSID, wifiNetworksPattern))
+    if (RegExMatch(networkSSID, wifiNetworksPattern)) {
       nearWifiNetwork := True
+    }
   }
 
 	return nearWifiNetwork
 }	
 
 
-/*
-  https://www.autohotkey.com/board/topic/80587-how-to-find-internet-connection-status/
-*/
+/**
+ *  Am I connected to a the internet?
+ * 
+ *  https://www.autohotkey.com/board/topic/80587-how-to-find-internet-connection-status/ 
+ */
 AmConnectedToInternet(flag := 0x40) { 
   return DllCall("Wininet.dll\InternetGetConnectedState", "Str", flag, "Int", 0) 
 }
 
 
-/*
-
-*/
-URI_Encode(Str, All := False)
-{
-    Static doc := ComObject("HTMLfile")
-    Try
-    {
-        doc.write("<body><script>document.body.innerText = encodeURI" . (All ? "Component" : "") . '("' . Str . '");</script>')
-        ;Return, doc.body.innerText, doc.body.innerText := ""
-        Return doc.body.innerText
-    }
+/**
+ *  URL encodes a string
+ * 
+ *  @param str      The string to encode
+ *  @param all
+ *  @return         The URL-encoded string
+ */
+URI_Encode(str, all := False) {
+  Static doc := ComObject("HTMLfile")
+  try {
+    doc.write("<body><script>document.body.innerText = encodeURI" . (all ? "Component" : "") . '("' . str . '");</script>')
+    ;Return, doc.body.innerText, doc.body.innerText := ""
+    return doc.body.innerText
+  }
 }
 
 
-/*
-*/
-LockWorkstation()
-{
+/**
+ *  Locks my workstation
+ */
+LockWorkstation() {
   DllCall("user32.dll\LockWorkStation")
 }

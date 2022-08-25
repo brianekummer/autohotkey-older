@@ -1,14 +1,139 @@
 # My AutoHotkey Automations for Work & Home
 
 
-## Hotkeys
+## Modifiers
+  ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
 
+
+## Hotkeys
+### Windows Provided
+\# -                   Windows          Windows Magnifier -
+\# =                   Windows          Windows Magnifier +
+\# a                   Windows          Windows Action Center
+\# d                   Windows          Windows desktop
+\# e                   Windows          Windows Explorer
+\# l                   Windows          Lock workstation
+\# p                   Windows          Project (duplicate, extend, etc)
+\# up                  Windows          Maximize active window
+
+### Shortcuts
+✦ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
+✦ b                   Windows (AHK)    Browser (if a url is selected, open it)
+✦ c                   Windows (AHK)    Calendar
+✦ g                   Windows (AHK)    Google search for selected text
+✦ i                   Windows (AHK)    Inbox
+✦ j                   Windows (AHK)    JIRA- current project board
+✦ ^ j                 Windows (AHK)    JIRA- open selected story number
+✦ m                   Windows (AHK)    Music/Spotify
+✦ p                   Windows (AHK)    Parsec/Personal computer
+✦ s                   Windows (AHK)    Source code- dashboard/overview
+✦ ^ s                 Windows (AHK)    Source code- popup menu
+                                         - Search code for selected text
+                                         - Search repositories for selected text
+                                         - Event schema repository
+✦ t                   Windows (AHK)    Terminal/Cmder/bash
+PrintScreen           Windows (AHK)    Windows screenshot tool
+
+### Other Stuff
+✦ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
+✦ u                   Windows (AHK)    Generate a random UUID (lowercase)
+✦ + u                 Windows (AHK)    Generate a random UUID (uppercase)
+✦ ^! Esc              Windows (AHK)    Emergency reset
+AppsKey               Windows (AHK)    Using it for debugging something
+✦ F12                 Windows (AHK)    Price watch
+
+### Media Controls
+✦ WheelUp/WheelDown   Windows (AHK)    Volume up/down
+✦ LButton             Windows (AHK)    Play/pause
+✦ RButton             Windows (AHK)    Music app (Spotify)
+✦ XButton1            Windows (AHK)    Previous track
+✦ XButton2            Windows (AHK)    Next track
+Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
+
+### Home Automation
+(keys listed are numeric keypad)
+✦ +                   Windows (AHK)     Air cleaner: toggle on/off
+✦ Enter               Windows (AHK)             Fan: toggle on/off
+
+✦ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
+✦ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
+✦ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
+
+✦ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
+✦ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
+✦ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
+
+### Customizing Windows Behavior
+\# Down               Windows (AHK)    Minimize active window (instead of unmaximize, then minimize)
+XButton1              Windows (AHK)    Minimize current application
+XButton2              Windows (AHK)    Minimize app or close window/tab or close app
+(auto-correct)        Windows (AHK)    Auto correct/capitalize lots of words, including first names
+
+### Customizing App Behavior
+#### IntelliJ
+  ✦ [                 IntelliJ (AHK)   Toggle left sidebar
+#### Slack
+  ^ mousewheel        Slack (AHK)      Decrease/increase font size
+  ^ k                 Slack (AHK)      Insert hyperlink
+  ✦ [                 Slack (AHK)      Toggle left sidebar
+  ✦ ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb. If I'm in
+                                       the office, also locks my workstation.
+  ✦ ! c               Slack (AHK)      Status - cleared. Clears Slack status.
+  ✦ ! e               Status - Eating  Sets Slack statuses to lunch/dinner.
+                                       Locks my workstation. If I'm at home, also turns off my office lights.
+  ✦ ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
+  ✦ ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
+  ✦ ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
+#### Spotify
+  ^ mousewheel        Spotify (AHK)     Decrease/increase font size
+#### Typora
+  ^ mousewheel        Typora (AHK)     Decrease/increase font size
+  ✦ [                 Typora (AHK)     Toggle left sidebar
+#### Visual Studio
+  ✦ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
+#### VS Code
+  ^ mousewheel        VS Code (AHK)    Decrease/increase font size
+  ✦ [                 VS Code (AHK)    Toggle left sidebar
 
 
 ## Code Structure
+├── Home.ahk                    ; root only has runnable scripts, ideally only
+├── Work.ahk                    ;   hotkeys, etc and should not have blocks of code
+├── Read Me.md
+├── Configure.bat               ; template to set all necessary environment variables
+│
+├── Lib                         ; third party scripts
+│   ├── AutoCorrect.ahk
+│   └── RunAsAdmin.ahk
+│
+├── Common                      ; scripts used by both work and home computers
+│   ├── Common.ahk              ; hotkeys that are common to both work and home
+│   ├── Common Functions.ahk    ; script to support Common.ahk
+│   ├── Convert Case.ahk        ; converts string between lower/upper/sentence/title case
+│   ├── Customize Windows.ahk   ; adds features to Windows (hyper key, media controls, etc.)
+│   ├── My Auto Correct.ahk     ; My wrapper around auto-correction
+│   └── Utilities.ahk
+│
+├── Home                        ; scripts to support Home.ahk
+│   └── Home Functions.ahk
+│
+├── Work                        ; scripts to support Work.ahk
+│   ├── Jira.ahk
+│   ├── Mute VOIP Apps.ahk
+│   ├── Slack.ahk
+│   └── Work Functions.ahk
+│
+└── Non-Production Code         ; scripts for research/experimentation/POC
+    ├── Examples to keep
+    └── Experiments
 
 
-
+### Dependencies
+- IntelliJ
+  - Plugin "macOS Dark Mode Sync" by Johnathan Gilday automatically switches between Darcula and Intellij when OS changes
+  - Enabled option: Editor > General > Change font size (Zoom) with Ctrl+MouseWheel
+- Chrome extension "Dark Reader"
+- VS Code extension "theme-switcher" by latusinski to toggle between light and dark mode
 
 ## To Do's
 ### Evaluate Status of What I Have
@@ -16,11 +141,12 @@
 - Does CapsLock still get stuck? Is it "fixed"?
 - Does Spotify now always open? YES
 ### Definitely Do These Things
+- Can I simplify the browser code with params? If is a url, just use RunOrActivateApp("- Google Chrome", url) instead of running Chrome and passing a parameter?
+- In Jira OpenJira, when search for story #, can I use coalesce like this? Or something like it?
+    storyNumber := this.SearchSelectedTextForJiraStoryNumber()
+    storyNumber := storyNumber ?? this.SearchWindowsForJiraStoryNumber(...)
+    storyNumber := storyNumber ?? this.SearchWindowsForJiraStoryNumber(...)
 - Watch YouTube AHK playlist
-- Look into automating switching between home and work scripts. Options
-    - Have 1 common script that both machines run, and then pull in appropriate file
-    - Combine together and only enable appropriately
-    - Can I simply use an "if" statement?
 - Redo comments- content, formatting, move some comments from code into this readme
 - Update Configure.bat
 - Backup env vars to Google Drive
@@ -59,11 +185,13 @@
         H ^ down       HS       Minimize window
         H ^ left       HS       Move active window to the previous screen
         H ^ right      HS       Move active window to the next screen
-    - Focusing/studying
+    - Focusing/studying   : Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
         H ^ f ??       HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
                                 which also sets Slack statuses to heads-down.
         H ^ s ??       HS       Studying. Starts Do Not Disturb timer for 60 minutes,
                                 which also sets Slack statuses to books and opens udemy.com.
+    - ✦ numpadsub         Windows (AHK)       TEMP - price checks
+    - ✦ space             Windows (AHK)       Toggle dark mode for active application
 
 
 
@@ -87,127 +215,7 @@
 ; laptop, and the personal laptop has to react to that.
 ;
 ;
-; Modifiers
-; ---------
-; ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
 ;
-;
-; Windows Provided
-; ----------------
-; # -                   Windows          Windows Magnifier -
-; # =                   Windows          Windows Magnifier +
-; # a                   Windows          Windows Action Center
-; # d                   Windows          Windows desktop
-; # e                   Windows          Windows Explorer
-; # l                   Windows          Lock workstation
-; # p                   Windows          Project (duplicate, extend, etc)
-; # up                  Windows          Maximize active window
-;
-;
-; Shortcuts
-; ---------
-; ✦ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
-; ✦ b                   Windows (AHK)    Browser
-; ✦ c                   Windows (AHK)    Calendar
-; ✦ i                   Windows (AHK)    Inbox
-; ✦ j                   Windows (AHK)    JIRA- current project board
-; ✦ ^ j                 Windows (AHK)    JIRA- open selected story number
-; ✦ m                   Windows (AHK)    Music/Spotify
-; ✦ t                   Windows (AHK)    Terminal/Cmder/bash
-; PrintScreen           Windows (AHK)    Windows screenshot tool
-;
-;
-; Other Stuff
-; -----------
-; ✦ RShift              Windows (AHK)    Cycle selected text between lower/upper/sentence/title case
-; ✦ u                   Windows (AHK)    Generate a random UUID (lowercase)
-; ✦ + u                 Windows (AHK)    Generate a random UUID (uppercase)
-;
-;
-; Media Controls
-; --------------
-; ✦ WheelUp/WheelDown   Windows (AHK)    Volume up/down
-; ✦ LButton             Windows (AHK)    Play/pause
-; ✦ RButton             Windows (AHK)    Music app (Spotify)
-; ✦ XButton1            Windows (AHK)    Previous track
-; ✦ XButton2            Windows (AHK)    Next track
-; Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
-;
-;
-;
-;
-; Home Automation
-; ---------------
-; (keys listed are numeric keypad)
-; ✦ +                   Windows (AHK)     Air cleaner: toggle on/off
-; ✦ Enter               Windows (AHK)             Fan: toggle on/off
-;
-; ✦ 7|8|9               Windows (AHK)       Top light: brightness down|toggle on/off|brightness up
-; ✦ 4|5|6               Windows (AHK)    Middle light: brightness down|toggle on/off|brightness up
-; ✦ 1|2|3               Windows (AHK)    Bottom light: brightness down|toggle on/off|brightness up
-;
-; ✦ ^ 7|9               Windows (AHK)       Top light: brightness 1%|brightness 100%
-; ✦ ^ 4|6               Windows (AHK)    Middle light: brightness 1%|brightness 100%
-; ✦ ^ 1|3               Windows (AHK)    Bottom light: brightness 1%|brightness 100%
-;
-;
-; Customizing Windows Behavior
-; ---------------------------
-; # Down                Windows (AHK)    Minimize active window (instead of unmaximize, then minimize)
-; XButton1              Windows (AHK)    Minimize current application
-; XButton2              Windows (AHK)    Minimize app or close window/tab or close app
-; (auto-correct)        Windows (AHK)    Auto correct/capitalize lots of words, including first names
-;
-;
-; Customizing App Behavior
-; ------------------------
-; Slack:
-;   ^ mousewheel        Slack (AHK)      Decrease/increase font size
-;   ^ k                 Slack (AHK)      Insert hyperlink
-;   ✦ [                 Slack (AHK)      Toggle left sidebar
-;   ✦ ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb and presence to away.
-;   ✦ ! l               Slack (AHK)      Status - At lunch. Sets Slack statuses to lunch and presence to away.
-;   ✦ ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
-;   ✦ ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
-;   ✦ ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
-; Typora
-;   ^ mousewheel        Typora (AHK)     Decrease/increase font size
-;   ✦ [                 Typora (AHK)     Toggle left sidebar
-; VS Code
-;   ^ mousewheel        VS Code (AHK)    Decrease/increase font size
-;   ✦ [                 VS Code (AHK)    Toggle left sidebar
-; IntelliJ
-;   ✦ [                 IntelliJ (AHK)   Toggle left sidebar
-; Visual Studio
-;   ✦ [                 VS (AHK)         Make left sidebar (Solution Explorer) appear
-;
-;
-; Code Structure
-; --------------
-; autohotkey/
-; â”œâ”€ experiments/                Temporary things I'm experimenting with
-; â”‚  â”œâ”€ trying-to-do-blah.ahk
-; â”‚  â””â”€ can-i-do-this.ahk
-; â”‚
-; â”œâ”€ examples to keep/           Interesting stuff I want to keep but am not using
-; â”‚  â””â”€ example1.ahk
-; â”‚
-; â”œâ”€ lib/                        Libraries of other people's work that I'm using
-; â”‚  â”œâ”€ AutoCorrect.ahk
-; â”‚  â”œâ”€ RunAsAdmin.ahk
-; â”‚  â””â”€ FindText.ahk             ** TODO- AM I GOING TO USE THIS???
-; â”‚
-; â”œâ”€ Configure.bat               Batch file to configure by setting environment variables
-; â”œâ”€ Main Home.ahk               Main code for personal laptop, mostly hotkeys that call functions
-; â”œâ”€ Main Work.ahk               Main code for work laptop, mostly hotkeys that call functions
-; â”œâ”€ Shared.ahk                  Shared between personal and work laptops, mostly hotkeys that call functions
-; â”œâ”€ Functions.ahk               Majority of my code is here
-; â”œâ”€ Convert Case.ahk            Cycle through lower/upper/sentence/title case
-; â”œâ”€ Customize Windows.ahk       Code that customizes how Windows works
-; â”œâ”€ My Auto Correct.ahk         My wrapper over AutoCorrect.ahk that includes my words to correct
-; â”œâ”€ Mute VOIP Apps.ahk          Functions to mute Microsoft Teams, Slack, and Zoom calls/meetings
-; â”œâ”€ Slack.ahk                   Controlling Slack
-; â””â”€ Utilities.ahk               Utility functions
 ;
 ;
 ;
@@ -248,6 +256,13 @@
 
 
 ## Decisions
+- Coding style: "one true brace" (1TBS or OTB[S]) turns a single controlled statement into a compound statement by enclosing it in braces:
+    if (x) {
+      a();
+    } else {
+      b();
+      c();
+    }
 - For Chrome extensions
     - I decided not to use "Add URL to Window Title" because there is no whitelist option, and
       having URL on every toolbar is ugly. Adding the input field id and name is cool and could

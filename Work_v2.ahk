@@ -61,9 +61,6 @@ RunAsAdmin()
   This code executes when the script starts, so declare global variables and do initializations here
 */
 InitializeCommonGlobalVariables()
-global MyJira := Jira()      ; Requires several Windows environmental variables
-global MySlack := Slack()    ; Requires several Windows environmental variables
-
 Configuration.Work := {
   UserEmailAddress: EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN"),
 
@@ -82,12 +79,17 @@ Configuration.Work := {
   }
 }
 
+; Initialize Jira
+global MyJira := Jira()
+
+; Initialize Slack integration and set my status based on where I am
+;   * Requires several Windows environmental variables
+global MySlack := Slack()
+MySlack.SetStatusBasedOnNetwork()
+
 ; Define the pop-up menu for accessing source code
 global SourceCodeMenu := Menu()
 CreateSourceCodeMenu()
-
-; Set my Slack status based on where I am 
-MySlack.SetStatusBasedOnNetwork()
 
 return
 
@@ -127,10 +129,12 @@ Volume_Mute::            ToggleMuteVOIPApps()
 
     Statuses
       These use to use #/Win instead of !/Alt, but that broke by upgrading to AHK v2
-      ✦ ! b              Status - Be Right Back. Sets Slack statuses to brb.
-      ✦ ! c              Status - Cleared. Clears Slack status.
+      ✦ ! b              Status - Be Right Back. Sets Slack statuses to brb. If I'm in
+                                  the office, also locks my workstation.
+      ✦ ! c              Status - Clears Slack status.
       ✦ ! e              Status - Eating. Sets Slack statuses to lunch/dinner.
-                          Also locks my laptop and turns off my office lights if I'm at home.
+                                    - Locks my workstation
+                                    - If I'm at home, also turns off my office lights
       ✦ ! m              Status - In a meeting. Sets Slack statuses to mtg.
       ✦ ! p              Status - Playing. Sets home Slack status to 8bit.
       ✦ ! w              Status - Working. Clears Slack statuses.
@@ -184,8 +188,10 @@ CapsLock & i::           RunOrActivateOutlook("^+I")
 CapsLock & j::           MyJira.OpenJira()
 
 
-/*
-*/
+/**
+ *  Google search
+ *    ✦ g                 Search for the selected text
+ */
 CapsLock & g::           GoogleSearch()
 
 
@@ -209,8 +215,12 @@ CapsLock & p::           ConnectToPersonalComputer()
 
 /*
   Source code
-    ✦ s                  Source code/BitBucket
-    ✦ ^ s                Source code/BitBucket- schemas
+    ✦ s                  Source code- dashboard/overview
+    ✦ ^ s                Source code- popup menu
+                            - Search code for selected text
+                            - Search repositories for selected text
+                            - Event schema repository
+
 */
 CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
 
@@ -296,11 +306,11 @@ CapsLock & u::            SendInput(CreateRandomGUID(GetKeyState("Shift")))
 
 
 
-/*
-  Include all libraries, utilities, and other AutoHotkey scripts
-
-  I have to put this at the bottom of my script, or else it interferes with other code in this script
-*/
+/**
+ *  Include all libraries, utilities, and other AutoHotkey scripts
+ *
+*  I have to put this at the bottom of my script or it interferes with other code in this script
+ */
 #Include "%A_ScriptDir%\Common\Common_v2.ahk"
 
 #Include "%A_ScriptDir%\Work\Work Functions_v2.ahk"

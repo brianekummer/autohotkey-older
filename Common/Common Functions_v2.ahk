@@ -1,11 +1,16 @@
-/*
+/**
  *  Common Functions
+ *
  */
 
 
 
-InitializeCommonGlobalVariables()
-{
+/**
+ *  Initializes global variables for both work and home
+ * 
+ *  Requires several environment variables, see "Configure.bat" for details
+ */
+InitializeCommonGlobalVariables() {
   global Configuration := {
     WindowsAppDataFolder: EnvGet("APPDATA"),
     WindowsLocalAppDataFolder: EnvGet("LOCALAPPDATA"),
@@ -15,36 +20,33 @@ InitializeCommonGlobalVariables()
     WindowsUserProfile: EnvGet("USERPROFILE"),
     MyDocumentsFolder: EnvGet("USERPROFILE") "\Documents\",
 
-    ; These come from my Windows environment variables- see "Configure.bat" for details
     MyPersonalFolder: EnvGet("AHK_PERSONAL_FILES"),
     MyPersonalDocumentsFolder: EnvGet("AHK_PERSONAL_FILES") "\Documents\",
-    IsWorkLaptop: EnvGet("USERDOMAIN") != EnvGet("COMPUTERNAME"),   ; For home laptop, USERDOMAIN = COMPUTERNAME = "BRIAN-DESKTOP"
-
-    ; These will get populated by the appropriate code later
-    Home: "",
-    Work: ""
+    
+    ; For home laptop, USERDOMAIN = COMPUTERNAME = "BRIAN-DESKTOP"
+    IsWorkLaptop: EnvGet("USERDOMAIN") != EnvGet("COMPUTERNAME")
   }
 }
 
 
 
-ConnectToPersonalComputer()
-{
+/**
+ *  Connect to my personal computer
+ * 
+ *  TODO- can this be moved to Work Functions.ahk?
+ */
+ConnectToPersonalComputer() {
   ; TODO- This appears to work if Parsec is not running, but fails if it is already open
-  if (!WinExist("ahk_exe parsecd.exe"))
-  {
+  if (!WinExist("ahk_exe parsecd.exe")) {
     ;msgbox Parsec is NOT running
     Run('"' A_StartMenu '\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
     
     ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
-    if (ErrorLevel)
-    {
+    if (ErrorLevel) {
       MsgBox("WinWait timed out.")
       return
     }
-  }
-  else
-  {
+  } else {
     ;Msgbox Parsec IS running
   
     ; Is Parsec connected?
@@ -57,13 +59,14 @@ ConnectToPersonalComputer()
 }
 
 
-/*
-  Send keystrokes to Parsec, optionally activating the window first
-*/
-SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
-{
-  if (activateFirst)
-  {
+/**
+ *  Send keystrokes to my personal computer, optionally activating the window first
+ * 
+ *  @param keystrokes      The keystrokes to send
+ *  @param activateFirst   Should the window be activated before sending the keystrokes?
+ */
+SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True) {
+  if (activateFirst) {
     ; Two issues addressed here:
     ;   1. Running D:\Portable Apps\Parsec\parsecd.exe didn't work, so I'm running the shortcut
     ;   2. I could not get RunOrActivateApp() to work with the parameter I'm passing to parsecd, so I just replicated the
@@ -79,20 +82,16 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
     ;}
 
     ; TODO- This appears to work if Parsec is not running, but fails if it is already open
-    if (!WinExist("ahk_exe parsecd.exe"))
-    {
+    if (!WinExist("ahk_exe parsecd.exe")) {
       MsgBox("Parsec is NOT running")
       Run('"' A_StartMenu '\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
       
-            ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
-      if (ErrorLevel)
-      {
+      ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
+      if (ErrorLevel) {
         MsgBox("WinWait timed out.")
         return
       }
-    }
-    else
-    {
+    } else {
       ;Msgbox Parsec IS running
     
       ; Is Parsec connected?
@@ -119,25 +118,28 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True)
 
 
 
-/*
-*/
-GoogleSearch()
-{
+/**
+ *  Google Search for the selected text
+ */
+GoogleSearch() {
   selectedText := GetSelectedTextUsingClipboard()
   selectedText := RegExReplace(RegExReplace(selectedText, "\r?\n", " "), "(^\s+|\s+$)")
   RunOrActivateApp("- Google Chrome", "https://www.google.com/search?hl=en&q=" selectedText)
 }
 
 
-/*
-*/
-RunOrActivateBrowser()
-{
+/**
+ *  Run or activate the browser
+ *    - If there is selected text that is a url, then it it opened
+ *    - If the browser is already opened, switch to it
+ */
+RunOrActivateBrowser() {
   selectedText := GetSelectedTextUsingClipboard()
   cmd := Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe"
 
-  if (selectedText ~= "https?:\/\/")
+  if (selectedText ~= "https?:\/\/") {
     AlwaysRunApp("- Google Chrome", cmd,,, '"' selectedText '"')
-  else
+  } else {
     RunOrActivateApp("- Google Chrome", cmd)
+  }
 }

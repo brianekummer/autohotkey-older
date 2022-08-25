@@ -1,23 +1,22 @@
-﻿/*
-  Convert Case
-
-  Cycles selected text between lowercase, uppercase, sentence case, and title case
-
-  Based on code by J. Scott Elblein, GeekDrop.com
-    https://geekdrop.com/content/super-handy-autohotkey-ahk-script-to-change-the-case-of-text-in-line-or-wrap-text-in-quotes
-  Modified by Brian Kummer
-    - Code is noticeably faster by using SendInput for moving cursor
-    - Moves cursor to start of text, highlights text, leaving cursor at rightmost end of highlighted text
-    - Tooltip to say what new case is
-    - Timer to reset cycle back to lowercase after 30 seconds
-    - For converting to title case, instead of using AutoHotkey's StringUpper/StringLower with the title option (which
-      capitalizes EVERY word, including articles, prepositions, etc), I'm using code from this thread that is more 
-      accurate: https://www.autohotkey.com/boards/viewtopic.php?t=19036
-    - I tried using my GetSelectedTextUsingClipboard() method but it was unreliable and much slower when used here.
-      I do not know why, nor did I have the time to figure out why and fix it.
-*/
-ConvertCase()
-{
+﻿/**
+ *  Convert Case
+ * 
+ *  Cycles selected text between lowercase, uppercase, sentence case, and title case
+ *
+ *  Based on code by J. Scott Elblein, GeekDrop.com
+ *    https://geekdrop.com/content/super-handy-autohotkey-ahk-script-to-change-the-case-of-text-in-line-or-wrap-text-in-quotes
+ *  Modified by Brian Kummer
+ *    - Code is noticeably faster by using SendInput for moving cursor
+ *    - Moves cursor to start of text, highlights text, leaving cursor at rightmost end of highlighted text
+ *    - Tooltip to say what new case is
+ *    - Timer to reset cycle back to lowercase after 30 seconds
+ *    - For converting to title case, instead of using AutoHotkey's StringUpper/StringLower with the title option (which
+ *      capitalizes EVERY word, including articles, prepositions, etc), I'm using code from this thread that is more 
+ *      accurate: https://www.autohotkey.com/boards/viewtopic.php?t=19036
+ *    - I tried using my GetSelectedTextUsingClipboard() method but it was unreliable and much slower when used here.
+ *      I do not know why, nor did I have the time to figure out why and fix it.
+ */
+ConvertCase() {
   static cycleNumber := 1
 
   SetTimer(ResetCycleNumber,0)
@@ -28,8 +27,7 @@ ConvertCase()
   Errorlevel := !ClipWait()
   A_Clipboard := StrReplace(A_Clipboard, "`r`n", "`n")  ; Fix for SendInput sending Windows linebreaks
 
-  switch cycleNumber
-  {
+  switch cycleNumber {
     case 1:   
       A_Clipboard := StrLower(A_Clipboard)
       ToolTip("Lowercase")
@@ -43,7 +41,7 @@ ConvertCase()
     case 4:    
       str := Format("{:T}", A_Clipboard)
       static tCase := "(?:A(?:nd?|s|t)?|B(?:ut|y)|For|In|Nor|O(?:f|n|r)|Per|T(?:he|o))"
-      Loop 3	   ; Must run at least twice to overcome potential misses from using '\K'
+      loop 3	   ; Must run at least twice to overcome potential misses from using '\K'
         str := RegExReplace(str, "s)[^\.\?\!]\h+\K\b" tCase "\b(?![\.\?\!])", "$L0")
       A_Clipboard := str
       ToolTip("Title Case")
@@ -68,14 +66,12 @@ ConvertCase()
 }
 
 
-RemoveToolTip()
-{
+RemoveToolTip() {
   ToolTip()
 }
 
 
-ResetCycleNumber()
-{
+ResetCycleNumber() {
   global cycleNumber
   cycleNumber := 1
 }
