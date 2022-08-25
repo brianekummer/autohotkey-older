@@ -12,14 +12,12 @@
 
 ## To Do's
 ### Evaluate Status of What I Have
-- Does everything still work?
+- Do I have problems w/some apps activating? Find the pattern!!
 - Does CapsLock still get stuck? Is it "fixed"?
 - Does Spotify now always open?
-- Do I have problems w/some apps activating? Find the pattern!!
 ### Definitely Do These Things
 - Watch YouTube AHK playlist
-- Fix Source Code menu issues
-    - LOWER PRIORITY: be able to consistently use keyboard to navigate
+- Fix browser being able to open a url
 - Look into automating switching between home and work scripts. Options
     - Have 1 common script that both machines run, and then pull in appropriate file
     - Combine together and only enable appropriately
@@ -294,6 +292,12 @@
     - Chrome now has "Scroll to text fragment" that will highlight parts of the web page, 
         but that also doesn't apply to input fields
 
+
+## Research
+- For source code popup menu, my keyboard navigation problem is because I move the
+  mouse while popping up the menu.
+    - If I want to use the keyboard to navigate the popup menu, take my hand off the
+    mouse
 
 
 ## Credits

@@ -13,11 +13,12 @@ RunOrActivateAppAsAdmin(winTitle, whatToRun, maximizeWindow := True, timeToWait 
 /*
   Does not search if it's already open or not
 */
-AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10) 
+AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10, params*) 
 {
-  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True)
+  msgbox("AlwaysRunApp- " params[1])
+  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True, params)
 }
-RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False)
+RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False, params*)
 {
   /*
     My original code used WinWaitActive() and then WinMaximize(), but sometimes Windows
@@ -26,13 +27,17 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
     has worked very well for me. 
       https://www.autohotkey.com/boards/viewtopic.php?style=17&t=93937&p=416313#post_content416637
   */
-
+  msgbox("RunOrActivateApp #1- " params[1][1])
+  
   if (!WinExist(winTitle) || runEvenIfOpen)
   {
     if asAdminUser
       Run(whatToRun)
     else
-  	  ShellRun(whatToRun)
+    {
+      msgbox("RunOrActivateApp #2- " params[1][1])
+  	  ShellRun(whatToRun, params[1][1])
+    }
 
     WinWait(winTitle,, timeToWait)
     WinActivate(winTitle)
@@ -244,4 +249,12 @@ URI_Encode(Str, All := False)
         ;Return, doc.body.innerText, doc.body.innerText := ""
         Return doc.body.innerText
     }
+}
+
+
+/*
+*/
+LockWorkstation()
+{
+  DllCall("user32.dll\LockWorkStation")
 }

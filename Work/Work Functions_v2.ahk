@@ -5,6 +5,22 @@
 
 
 /*
+*/
+AmAtHome()
+{
+  return AmNearWifiNetwork(Configuration.Work.WifiNetworks.Home)
+}
+
+
+/*
+*/
+AmAtOffice()
+{
+  return AmNearWifiNetwork(Configuration.Work.WifiNetworks.Office)
+}
+
+
+/*
   Price watch web sites
 
   Note that sometimes I have to escape special characters like %
@@ -16,16 +32,27 @@ PriceWatchWebsites()
 
 
 /*
+*/
+SlackStatus_BeRightBack()
+{
+  MySlack.SetStatusBeRightBack()
+
+  if AmAtOffice()
+    LockWorkstation()
+}
+
+
+/*
 
 */
 SlackStatus_Eating(lunchIsBeforeHour)
 {
   MySlack.SetStatusEating(lunchIsBeforeHour)
 
-  if AmNearWifiNetwork(Configuration.Work.WifiNetworks.Home)
+  if AmAtHome()
     HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
 
-  DllCall("user32.dll\LockWorkStation")
+  LockWorkstation()
 }
 
 
@@ -54,7 +81,7 @@ CreateSourceCodeMenu()
 }
 
 
-SourceCodeMenuHandler(itemName, itemPos)
+SourceCodeMenuHandler(itemName, *)
 {
   selectedText := GetSelectedTextUsingClipboard()
 

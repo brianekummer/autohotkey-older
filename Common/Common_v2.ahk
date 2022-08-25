@@ -151,7 +151,8 @@ CapsLock & n::           RunOrActivateApp("ahk_exe i)\\typora\.exe$", Configurat
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
 ;#If
-CapsLock & b::           RunOrActivateApp("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
+;CapsLock & b::           RunOrActivateApp("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
+CapsLock & b::           RunOrActivateBrowser()
 
 
 /*

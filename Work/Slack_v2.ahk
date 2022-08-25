@@ -33,10 +33,8 @@
 
 /*
   DEPENDENCIES
-     Utilities.AmConnectedToInternet()
-     Utilities.RunOrActivateApp()
-     Configuration.Work.WifiNetworks
-     Configuration.WindowsLocalAppDataFolder
+     Utilities *
+     TODO- Add details above
 */
 
 
@@ -98,10 +96,11 @@ class Slack
         {
           ; I'm connected to a network
           done := True
-          if (AmNearWifiNetwork(Configuration.Work.WifiNetworks.Office))
-            this.SetStatus(this.Statuses["workingInOffice"])
-          else
-            this.SetStatus(this.Statuses["workingRemotely"])
+          ;if (AmAtOffice())
+          ;  this.SetStatus(this.Statuses["workingInOffice"])
+          ;else
+          ;  this.SetStatus(this.Statuses["workingRemotely"])
+          this.SetStatusWorking()
         }
         else
         {
@@ -246,28 +245,59 @@ class Slack
 
 
   /*
-
   */
-  SetStatusEating(lunchIsBeforeHour)
+  SetStatusNone()
   {
-    ; MOVE THIS IF Statement into Slack project
-    if (A_Hour < lunchIsBeforeHour)
-      this.SetStatusAndPresence("lunch", "away")
-    else
-      this.SetStatusAndPresence("dinner", "away")
+    this.SetStatusAndPresence("none", "auto")
   }
-
 
 
   /*
   */
   SetStatusWorking()
   {
-    if AmNearWifiNetwork(Configuration.Work.WifiNetworks.Office)
+    if AmAtOffice()
       this.SetStatusAndPresence("workingInOffice", "auto")
     else
       this.SetStatusAndPresence("workingRemotely", "auto")
   }
+  
+  
+  /*
+  */
+  SetStatusMeeting()
+  {
+    this.SetStatusAndPresence("meeting", "auto")
+  }
+
+
+  /*
+  */
+  SetStatusBeRightBack()
+  {
+    this.SetStatusAndPresence("brb", "away")
+  }
+
+
+  /*
+  */
+  SetStatusPlaying() 
+  {
+    this.SetSlackHomeStatus("playing")
+  }
+
+  
+  /*
+
+  */
+  SetStatusEating(lunchIsBeforeHour)
+  {
+    if (A_Hour < lunchIsBeforeHour)
+      this.SetStatusAndPresence("lunch", "away")
+    else
+      this.SetStatusAndPresence("dinner", "away")
+  }
+
 
 
   

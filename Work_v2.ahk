@@ -145,11 +145,11 @@ CapsLock & k::           MySlack.OpenSlackApp((GetKeyState("Ctrl") ? "^k" : ""))
 #HotIf
 
 #HotIf GetKeyState("Alt")
-  CapsLock & b::         MySlack.SetStatusAndPresence("brb", "away")
-  CapsLock & c::         MySlack.SetStatusAndPresence("none", "auto")
+  CapsLock & b::         SlackStatus_BeRightBack()
+  CapsLock & c::         MySlack.SetStatusNone()
   CapsLock & e::         SlackStatus_Eating(15)    ; Lunch is before 3:00pm/15:00
-  CapsLock & m::         MySlack.SetStatusAndPresence("meeting", "auto")
-  CapsLock & p::         MySlack.SetSlackHomeStatus("playing")
+  CapsLock & m::         MySlack.SetStatusMeeting()
+  CapsLock & p::         MySlack.SetStatusPlaying()
   CapsLock & w::         MySlack.SetStatusWorking()
 #HotIf
 
@@ -182,6 +182,11 @@ CapsLock & i::           RunOrActivateOutlook("^+I")
                            * Last resort is to open the current sprint board
 */
 CapsLock & j::           MyJira.OpenJira()
+
+
+/*
+*/
+CapsLock & g::           GoogleSearch()
 
 
 /*
