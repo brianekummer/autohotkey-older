@@ -30,7 +30,6 @@ SlackStatus_Eating(lunchIsBeforeHour)
 
 
 /*
-
 */
 OpenSourceCode(ctrlPressed)
 {
@@ -40,77 +39,43 @@ OpenSourceCode(ctrlPressed)
     RunOrActivateApp("Overview", Configuration.Work.SourceCode.Url)
 }
 
+
+/*
+
+*/
 CreateSourceCodeMenu() 
 {
-  SourceCodeMenu.Add("Search &Code", MenuHandlerSearchCode)
-  SourceCodeMenu.Add("Search &Repositories", MenuHandlerSearchRepositories)
+  SourceCodeMenu.Add("Search &Code", SourceCodeMenuHandler)
+  SourceCodeMenu.Add("Search &Repositories", SourceCodeMenuHandler)
   SourceCodeMenu.Add()  ; Add a separator
-  SourceCodeMenu.Add("&Event Schema Repository", MenuHandlerEventSchema)
+  SourceCodeMenu.Add("&Event Schema Repository", SourceCodeMenuHandler)
   SourceCodeMenu.Add()  ; Add a separator
-  SourceCodeMenu.Add("Cance&l", MenuHandlerCancel)
+  SourceCodeMenu.Add("Cance&l", SourceCodeMenuHandler)
 }
 
-MenuHandlerSearchCode(*) 
+
+SourceCodeMenuHandler(itemName, itemPos)
 {
-  ; TODO- FIX not always able to use keyboard
-
   selectedText := GetSelectedTextUsingClipboard()
-  searchCriteria := Configuration.Work.SourceCode.SearchCodePrefix " " selectedText
 
-  ; TODO- LATER, COULD, if there is no search criteria, open the page w/no search criteria, 
-  ; select the input w/class "css-13hc3dd" and type in the search criteria (NOT ...)
-  ; NOT SURE how I can find that textbox because it has no id. Would have to automate Chrome 
-  ; to do this, but would be cool
-  ;if (StrLen(selectedText) = 0)
-  ;{
-    /* Do automation of chrome. 
-        - Open Configuration.Work.SourceCode.SearchCodeUrl
-        - select the input w/class "css-13hc3dd" - NOT SURE how I can find that textbox because it has no id
-        - SendInput(searchCriteria)
-    */
-  ;}
-  ;else
-  ;{
+  if (itemName ~= "Code")
+  {
+    searchCriteria := Configuration.Work.SourceCode.SearchCodePrefix " " selectedText
     AlwaysRunApp("Search — Bitbucket", Configuration.Work.SourceCode.SearchCodeUrl URI_Encode(searchCriteria))
-  ;}
-}
-MenuHandlerSearchRepositories(*) 
-{
-  selectedText := GetSelectedTextUsingClipboard()
-
-  ;if (StrLen(selectedText) = 0)
-  ;{
-    /* Do automation of chrome. 
-      - Open Configuration.Work.SourceCode.SearchRepositoriesUrl
-      - Set focus to textbox id = search_repository-input (may have to send Tab 2x)
-      
-      - Alternative
-          - Open Configuration.Work.SourceCode.Url 
-          - SendInput("/") so user can type name there
-    */
-  ;}
-  ;else
-  ;{
+  }
+  else if (itemName ~= "Repositories")
+  {
     AlwaysRunApp("Repositories — Bitbucket", Configuration.Work.SourceCode.SearchRepositoriesUrl URI_Encode(GetSelectedTextUsingClipboard()))
-  ;}
-
-
+  }
+  else if (itemName ~= "Schema")
+  {
+    RunOrActivateApp("eventschema", Configuration.Work.SourceCode.SchemaUrl)
+  }
+  else if (itemName ~= "Cance&l")
+  {
+    SendInput("{Escape}")
+  }
 }
-MenuHandlerEventSchema(*)
-{
-  RunOrActivateApp("eventschema", Configuration.Work.SourceCode.SchemaUrl)
-}
-MenuHandlerCancel(*)
-{
-  SendInput("{Escape}")
-}
-  
-
-
-
-
-
-
 
 
 /*

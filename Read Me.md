@@ -20,11 +20,10 @@
 - Watch YouTube AHK playlist
 - Fix Source Code menu issues
     - LOWER PRIORITY: be able to consistently use keyboard to navigate
-    - Improve for no selected text for code search
-    - Improve for no selected text for repository search
 - Look into automating switching between home and work scripts. Options
     - Have 1 common script that both machines run, and then pull in appropriate file
     - Combine together and only enable appropriately
+    - Can I simply use an "if" statement?
 - Redo comments- content, formatting, move some comments from code into this readme
 - Update Configure.bat
 - Backup env vars to Google Drive
@@ -273,6 +272,27 @@
             - Adobe Source Code Pro - https://github.com/adobe-fonts/source-code-pro  [ I think these letters are too thin ]
             - Cascadia Code - https://windowsloop.com/download-install-cascadia-code-font/
             - Hack - https://sourcefoundry.org/hack/
+- Automating browsers
+    - For interacting with the code search functions, it'd be great to be able to interact with
+      the web page, set focus to specific text boxes, and type text.
+        - When searching for specific code, and the user did not select any text to search for, 
+          it'd be great to open the page, select the search box, and enter my default search 
+          text ("NOT project:abc NOT project:def")
+        - When searching for a repository, and the user did not select any text to search for,
+          it'd be great to open the page and set focus on the search box
+    - But automating Chrome is difficult:  I cannot find code that works with AHK v2, and what
+      I do find seems like it breaks often. It's not worth the work for these features.
+    - Can I automate another browser easier? 
+        - Since Edge is just Chromium, it's no easier. 
+        - Firefox doesn't seem to have any better options. 
+        - IE is easy to automate, but ick, and getting harder in Windows 11
+    - I could build my own GUI in AHK and use a WebView, but that's a lot of work
+    - Selenium is far more work than this feature warrants
+    - Chrome has "fragments" so you can do "https://mysite.com/#section-number-two" which
+        will move to the element with id "section-number-two". You cannot use this to set 
+        focus on input fields, etc.
+    - Chrome now has "Scroll to text fragment" that will highlight parts of the web page, 
+        but that also doesn't apply to input fields
 
 
 
