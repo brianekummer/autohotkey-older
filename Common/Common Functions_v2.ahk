@@ -133,20 +133,11 @@ GoogleSearch()
 */
 RunOrActivateBrowser()
 {
-  ; POC - this works exactly as I want it to
-  ;ShellRun(Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe", "http://microsoft.com")
-
-
   selectedText := GetSelectedTextUsingClipboard()
   cmd := Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe"
 
   if (selectedText ~= "https?:\/\/")
-  {
-    ; TODO- this is broken- fix it
-    ;AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10, params*) 
     AlwaysRunApp("- Google Chrome", cmd,,, '"' selectedText '"')
-    
-  }
   else
     RunOrActivateApp("- Google Chrome", cmd)
 }

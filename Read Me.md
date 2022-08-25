@@ -14,10 +14,9 @@
 ### Evaluate Status of What I Have
 - Do I have problems w/some apps activating? Find the pattern!!
 - Does CapsLock still get stuck? Is it "fixed"?
-- Does Spotify now always open?
+- Does Spotify now always open? YES
 ### Definitely Do These Things
 - Watch YouTube AHK playlist
-- Fix browser being able to open a url
 - Look into automating switching between home and work scripts. Options
     - Have 1 common script that both machines run, and then pull in appropriate file
     - Combine together and only enable appropriately

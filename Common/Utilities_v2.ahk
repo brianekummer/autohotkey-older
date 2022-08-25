@@ -15,8 +15,7 @@ RunOrActivateAppAsAdmin(winTitle, whatToRun, maximizeWindow := True, timeToWait 
 */
 AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10, params*) 
 {
-  msgbox("AlwaysRunApp- " params[1])
-  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True, params)
+  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True, (params = []) ? params : params[1])
 }
 RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False, params*)
 {
@@ -27,16 +26,13 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
     has worked very well for me. 
       https://www.autohotkey.com/boards/viewtopic.php?style=17&t=93937&p=416313#post_content416637
   */
-  msgbox("RunOrActivateApp #1- " params[1][1])
-  
   if (!WinExist(winTitle) || runEvenIfOpen)
   {
     if asAdminUser
       Run(whatToRun)
     else
     {
-      msgbox("RunOrActivateApp #2- " params[1][1])
-  	  ShellRun(whatToRun, params[1][1])
+  	  ShellRun(whatToRun, (!IsObject(params) || params.Length = 0) ? params : params[1])
     }
 
     WinWait(winTitle,, timeToWait)
