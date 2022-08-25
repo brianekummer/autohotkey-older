@@ -434,4 +434,8 @@ end
 
   I have to put this at the bottom of my script, or else it interferes with other code in this script
 */
+#Include "%A_ScriptDir%\Common\My Auto Correct_v2.ahk"
 #Include "%A_ScriptDir%\Common\Common Functions_v2.ahk"
+#Include "%A_ScriptDir%\Common\Convert Case_v2.ahk"
+#Include "%A_ScriptDir%\Common\Customize Windows_v2.ahk"
+#Include "%A_ScriptDir%\Common\Utilities_v2.ahk"
