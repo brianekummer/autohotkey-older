@@ -48,11 +48,13 @@ SetTitleMatchMode("RegEx")       ; Make windowing commands use regex
 RunAsAdmin()
 
 
+
 /*
   Include classes here, because they must be included before the auto-execute section
 */
 #Include "%A_ScriptDir%\Work\Jira_v2.ahk"
 #Include "%A_ScriptDir%\Work\Slack_v2.ahk"
+
 
 
 /*
@@ -62,24 +64,41 @@ InitializeCommonGlobalVariables()
 global MyJira := Jira()      ; Requires several Windows environmental variables
 global MySlack := Slack()    ; Requires several Windows environmental variables
 
-Configuration.IsWorkLaptop := True
 Configuration.Work := {
   UserEmailAddress: EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN"),
 
   ; These come from my Windows environment variables- see "Configure.bat" for details
-  SourceCodeUrl: EnvGet("AHK_SOURCE_CODE_URL"),
-  SourceSchemaUrl: EnvGet("AHK_SOURCE_CODE_SCHEMA_URL"),
+  SourceCode: {
+    Url: EnvGet("AHK_SOURCE_CODE_URL"),
+    SchemaUrl: EnvGet("AHK_SOURCE_CODE_SCHEMA_URL"),
+    SearchCodePrefix : EnvGet("AHK_SOURCE_CODE_SEARCH_CODE_PREFIX"),
+    SearchCodeUrl: EnvGet("AHK_SOURCE_CODE_SEARCH_CODE_URL"),
+    SearchRepositoriesUrl: EnvGet("AHK_SOURCE_CODE_SEARCH_REPOSITORIES_URL")
+  },
   ParsecPeerId: EnvGet("AHK_PARSEC_PEER_ID"),
-  OfficeWifiNetworks: EnvGet("AHK_OFFICE_WIFI_NETWORKS"),
-  HomeWifiNetworks: EnvGet("AHK_HOME_WIFI_NETWORKS")
+  WifiNetworks: {
+    Office: EnvGet("AHK_OFFICE_WIFI_NETWORKS"),
+    Home: EnvGet("AHK_HOME_WIFI_NETWORKS")
+  }
 }
 
+; Define the pop-up menu for accessing source code
+global SourceCodeMenu := Menu()
+CreateSourceCodeMenu()
+
+; Set my Slack status based on where I am 
 MySlack.SetStatusBasedOnNetwork()
+
 return
 
 
-AppsKey::    Msgbox(A_MyDocuments " //// " Configuration.WindowsUserProfile " //// " Configuration.MyDocumentsFolder)
 
+
+
+/*
+  I use this for debugging various things
+*/
+;AppsKey::    Msgbox(Configuration.Work.SourceCode.SchemaUrl " //// " Configuration.Work.SourceCode.SearchCodePrefix " //// " Configuration.Work.SourceCode.SearchCodeUrl " //// " Configuration.Work.SourceCode.SearchRepositoryUrl)
 
 
 /*

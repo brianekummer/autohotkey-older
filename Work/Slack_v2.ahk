@@ -35,7 +35,7 @@
   DEPENDENCIES
      Utilities.AmConnectedToInternet()
      Utilities.RunOrActivateApp()
-     Configuration.Work.OfficeWifiNetworks
+     Configuration.Work.WifiNetworks
      Configuration.WindowsLocalAppDataFolder
 */
 
@@ -98,7 +98,7 @@ class Slack
         {
           ; I'm connected to a network
           done := True
-          if (AmNearWifiNetwork(Configuration.Work.OfficeWifiNetworks))
+          if (AmNearWifiNetwork(Configuration.Work.WifiNetworks.Office))
             this.SetStatus(this.Statuses["workingInOffice"])
           else
             this.SetStatus(this.Statuses["workingRemotely"])
@@ -263,7 +263,7 @@ class Slack
   */
   SetStatusWorking()
   {
-    if AmNearWifiNetwork(Configuration.Work.OfficeWifiNetworks)
+    if AmNearWifiNetwork(Configuration.Work.WifiNetworks.Office)
       this.SetStatusAndPresence("workingInOffice", "auto")
     else
       this.SetStatusAndPresence("workingRemotely", "auto")

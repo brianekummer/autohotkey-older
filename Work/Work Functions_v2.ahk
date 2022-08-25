@@ -22,7 +22,7 @@ SlackStatus_Eating(lunchIsBeforeHour)
 {
   MySlack.SetStatusEating(lunchIsBeforeHour)
 
-  if AmNearWifiNetwork(Configuration.Work.HomeWifiNetworks)
+  if AmNearWifiNetwork(Configuration.Work.WifiNetworks.Home)
     HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
 
   DllCall("user32.dll\LockWorkStation")
@@ -35,10 +35,82 @@ SlackStatus_Eating(lunchIsBeforeHour)
 OpenSourceCode(ctrlPressed)
 {
   if (ctrlPressed)
-    RunOrActivateApp("eventschema", Configuration.Work.SourceSchemaUrl)
+    SourceCodeMenu.Show()
   else
-    RunOrActivateApp("Overview", Configuration.Work.SourceCodeUrl)
+    RunOrActivateApp("Overview", Configuration.Work.SourceCode.Url)
 }
+
+CreateSourceCodeMenu() 
+{
+  SourceCodeMenu.Add("Search &Code", MenuHandlerSearchCode)
+  SourceCodeMenu.Add("Search &Repositories", MenuHandlerSearchRepositories)
+  SourceCodeMenu.Add()  ; Add a separator
+  SourceCodeMenu.Add("&Event Schema Repository", MenuHandlerEventSchema)
+  SourceCodeMenu.Add()  ; Add a separator
+  SourceCodeMenu.Add("Cance&l", MenuHandlerCancel)
+}
+
+MenuHandlerSearchCode(*) 
+{
+  ; TODO- FIX not always able to use keyboard
+
+  selectedText := GetSelectedTextUsingClipboard()
+  searchCriteria := Configuration.Work.SourceCode.SearchCodePrefix " " selectedText
+
+  ; TODO- LATER, COULD, if there is no search criteria, open the page w/no search criteria, 
+  ; select the input w/class "css-13hc3dd" and type in the search criteria (NOT ...)
+  ; NOT SURE how I can find that textbox because it has no id. Would have to automate Chrome 
+  ; to do this, but would be cool
+  ;if (StrLen(selectedText) = 0)
+  ;{
+    /* Do automation of chrome. 
+        - Open Configuration.Work.SourceCode.SearchCodeUrl
+        - select the input w/class "css-13hc3dd" - NOT SURE how I can find that textbox because it has no id
+        - SendInput(searchCriteria)
+    */
+  ;}
+  ;else
+  ;{
+    AlwaysRunApp("Search — Bitbucket", Configuration.Work.SourceCode.SearchCodeUrl URI_Encode(searchCriteria))
+  ;}
+}
+MenuHandlerSearchRepositories(*) 
+{
+  selectedText := GetSelectedTextUsingClipboard()
+
+  ;if (StrLen(selectedText) = 0)
+  ;{
+    /* Do automation of chrome. 
+      - Open Configuration.Work.SourceCode.SearchRepositoriesUrl
+      - Set focus to textbox id = search_repository-input (may have to send Tab 2x)
+      
+      - Alternative
+          - Open Configuration.Work.SourceCode.Url 
+          - SendInput("/") so user can type name there
+    */
+  ;}
+  ;else
+  ;{
+    AlwaysRunApp("Repositories — Bitbucket", Configuration.Work.SourceCode.SearchRepositoriesUrl URI_Encode(GetSelectedTextUsingClipboard()))
+  ;}
+
+
+}
+MenuHandlerEventSchema(*)
+{
+  RunOrActivateApp("eventschema", Configuration.Work.SourceCode.SchemaUrl)
+}
+MenuHandlerCancel(*)
+{
+  SendInput("{Escape}")
+}
+  
+
+
+
+
+
+
 
 
 /*
@@ -50,7 +122,7 @@ OpenSourceCode(ctrlPressed)
 */
 RunOrActivateSpotify()
 {
-  RunOrActivateApp("ahk_exe Spotify.exe", Configuration.WindowsUserProfile "\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\My Shortcuts\Spotify.lnk")
+  RunOrActivateApp("ahk_exe Spotify.exe", A_StartMenu "\Programs\My Shortcuts\Spotify.lnk", False)
 }
 
 

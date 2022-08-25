@@ -15,15 +15,13 @@
 - Does everything still work?
 - Does CapsLock still get stuck? Is it "fixed"?
 - Does Spotify now always open?
+- Do I have problems w/some apps activating? Find the pattern!!
 ### Definitely Do These Things
 - Watch YouTube AHK playlist
-- Figure out what to do with "source code" - My current thoughts... I'm liking this idea...
-    - ✦ s     Source code overview (BitBucket dashboard)
-    - ✦ ^ s   Source code popup menu- choose between event schema, search code, search repo- make sure menu can be done w/keyboard. I don't use any
-              of these enough to have a default, but they'd all be helpful.
-                 - Search code- if no selected text, go to search page and set focus to window to enter search criteria
-                 - Search repo- if no selected text, go to search page and set focus to window to enter search criteria
-                 - Event schema
+- Fix Source Code menu issues
+    - LOWER PRIORITY: be able to consistently use keyboard to navigate
+    - Improve for no selected text for code search
+    - Improve for no selected text for repository search
 - Look into automating switching between home and work scripts. Options
     - Have 1 common script that both machines run, and then pull in appropriate file
     - Combine together and only enable appropriately
@@ -140,9 +138,6 @@
 ; Mute                  Windows (AHK)    Toggle mute in the current VOIP app (Slack/Teams/Zoom)
 ;
 ;
-; ?????
-;^#pause::Run("nircmd setdefaultsounddevice `"Headphones`"", , "Hide")      ; ^numlock = ^pause
-;^#numpadsub::Run("nircmd setdefaultsounddevice `"Headset`"", , "Hide")
 ;
 ;
 ; Home Automation
@@ -269,6 +264,15 @@
         - vscode-autohotkey-debug [if you need better debugging support than is built into AutoHotkey Plus Plus]
     - Did not evaluate these extensions
         - Autokey Debug by Helsmy
+    - Fonts - can evaluate these here: https://www.programmingfonts.org
+        - My 2 favorites
+            - Fira Code - Using this for now
+            - Monoid - https://larsenwork.com/monoid/
+        - Others
+            - JetBrains Mono - https://www.jetbrains.com/lp/mono/
+            - Adobe Source Code Pro - https://github.com/adobe-fonts/source-code-pro  [ I think these letters are too thin ]
+            - Cascadia Code - https://windowsloop.com/download-install-cascadia-code-font/
+            - Hack - https://sourcefoundry.org/hack/
 
 
 

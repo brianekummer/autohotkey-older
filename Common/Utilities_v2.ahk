@@ -6,29 +6,44 @@
 */
 
 
-RunOrActivateAppAsAdmin(appTitle, whatToRun, maximizeWindow := True, timeToWait := 10)
+RunOrActivateAppAsAdmin(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10)
 {
-  RunOrActivateApp(appTitle, whatToRun, maximizeWindow, True, timeToWait)
+  RunOrActivateApp(winTitle, whatToRun, maximizeWindow, True, timeToWait)
 }
-
-RunOrActivateApp(appTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10)
+/*
+  Does not search if it's already open or not
+*/
+AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10) 
 {
-  if (!WinExist(appTitle))
+  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True)
+}
+RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False)
+{
+  /*
+    My original code used WinWaitActive() and then WinMaximize(), but sometimes Windows
+    wouldn't set focus to the app. This post from Lexikos (from 2013!) suggested using 
+    WinWait() and WinActivate(), because WinActivate() is very aggressive. So far, this
+    has worked very well for me. 
+      https://www.autohotkey.com/boards/viewtopic.php?style=17&t=93937&p=416313#post_content416637
+  */
+
+  if (!WinExist(winTitle) || runEvenIfOpen)
   {
     if asAdminUser
       Run(whatToRun)
     else
   	  ShellRun(whatToRun)
-	  ErrorLevel := WinWaitActive(appTitle, , timeToWait)
+
+    WinWait(winTitle,, timeToWait)
+    WinActivate(winTitle)
   }
   else 
   {
-    WinActivate()
+    WinActivate(winTitle)
   }
 
-  WinShow()
   if (maximizeWindow)
-    WinMaximize()
+    WinMaximize(winTitle)
 }
 
 
@@ -214,4 +229,19 @@ AmNearWifiNetwork(wifiNetworks)
 */
 AmConnectedToInternet(flag := 0x40) { 
   return DllCall("Wininet.dll\InternetGetConnectedState", "Str", flag, "Int", 0) 
+}
+
+
+/*
+
+*/
+URI_Encode(Str, All := False)
+{
+    Static doc := ComObject("HTMLfile")
+    Try
+    {
+        doc.write("<body><script>document.body.innerText = encodeURI" . (All ? "Component" : "") . '("' . Str . '");</script>')
+        ;Return, doc.body.innerText, doc.body.innerText := ""
+        Return doc.body.innerText
+    }
 }
