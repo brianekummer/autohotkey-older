@@ -1,5 +1,5 @@
 /**
- *  Common Functions
+ *  Functions to support Common.ahk
  *
  */
 

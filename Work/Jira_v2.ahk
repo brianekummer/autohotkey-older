@@ -1,22 +1,26 @@
 /**
  *  Jira functionality
  * 
+ *  Features
+ *    - Open Jira page in browser, searching for a story number in the selected text, as well as
+ *      window titles of Cmder/ConEmu and Mintty terminal windows.  If no story number is found, 
+ *      the current sprint's board is opened.
+ * 
  *  Dependencies
- *  ------------
- *  Utilities.xxxx
- *  Environment variables
- *    AHK_JIRA_URL
- *    AHK_JIRA_MY_PROJECT_KEYS
- *    AHK_JIRA_DEFAULT_PROJECT_KEY
- *    AHK_JIRA_DEFAULT_RAPID_KEY
- *    AHK_JIRA_DEFAULT_SPRINT
+ *    - Utilities.RunOrActivateApp()
+ *    - Environment variables:
+ *        AHK_JIRA_URL
+ *        AHK_JIRA_MY_PROJECT_KEYS
+ *        AHK_JIRA_DEFAULT_PROJECT_KEY
+ *        AHK_JIRA_DEFAULT_RAPID_KEY
+ *        AHK_JIRA_DEFAULT_SPRINT
  */
 class Jira
 {
   /**
    *  Constructor that initializes variables
    */
-  __New() {
+   __New() {
     this.BaseUrl := EnvGet("AHK_JIRA_URL")
     this.MyProjectKeys := EnvGet("AHK_JIRA_MY_PROJECT_KEYS")
     this.DefaultProjectKey := EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY")
@@ -28,20 +32,22 @@ class Jira
   }
   
 
+
+
+
+  /******************************  Public Methods  ******************************/
+  
+
+
   /**
-   *  Open Jira in a browser
+   *  Opens Jira in a browser
    *    - If Ctrl is pressed, try to find a specific story number to open
-   *         - 
-  ✦ j                  Opens the current sprint board
-  ✦ ^ j                Search for a specific story number to open
-                         * If the highlighted text looks like a Jira story number (e.g. 
-                           PROJECT-1234), then open that story
-                         * If the Git Bash window has text that looks like a Jira story number, 
-                           then open that story
-                         * Last resort is to open the current sprint board
- * open the current sprint board
- */
-OpenJira() {
+   *        - Searches the selected text
+   *        - Searches for a ConEmu/Cmder window with a window title with a story number
+   *        - Searches for a Mintty (comes w/Git Bash) window title with a story number
+   *    - If Ctrl is not pressed, or cannot find a speciifc story, then open the current sprint board
+   */
+  OpenJira() {
     if (GetKeyState("Ctrl")) {
       storyNumber := this.SearchSelectedTextForJiraStoryNumber()
       storyNumber := this.SearchWindowsForJiraStoryNumber(storyNumber, "ahk_exe i)\\conemu64\.exe$ ahk_class VirtualConsoleClass")
@@ -50,7 +56,7 @@ OpenJira() {
       if (StrLen(storyNumber) > 0) {
         ; Ensure there is a hyphen between the project name and story number
         storyNumber := RegExReplace(storyNumber, "[\s_]", "")
-        If (InStr(storyNumber, "-") = 0) {
+        if (InStr(storyNumber, "-") = 0) {
           storyNumber := RegExReplace(storyNumber, "(\d+)", "-$1")
         }
 
@@ -65,9 +71,18 @@ OpenJira() {
   }
 
 
+
+
+
+  /******************************  Private Methods  ******************************/
+  
+
+
   /**
-   *  @param storyNumber
-   *  @return
+   *  Builds the url for a specific story
+   * 
+   *  @param storyNumber        The Jira story number
+   *  @return                   The url for that story
    */
   BuildStoryUrl(storyNumber) {
     return this.BaseUrl "/browse/" storyNumber
@@ -75,17 +90,19 @@ OpenJira() {
 
 
   /**
-   *  @return    The url for the default sprint board of the current sprint
+   *  Builds the url for the current sprint board
+   * 
+   *  @return    The url for thecurrent sprint board
    */
   BuildSprintBoardUrl() {
-    return  url := this.BaseUrl "/secure/RapidBoard.jspa?rapidView=" this.DefaultRapidKey "&projectKey=" this.DefaultProjectKey "&sprint=" this.DefaultSprint
+    return this.BaseUrl "/secure/RapidBoard.jspa?rapidView=" this.DefaultRapidKey "&projectKey=" this.DefaultProjectKey "&sprint=" this.DefaultSprint
   }
 
 
   /**
-   *  Search the selected text for a Jira story number
+   *  Searches the selected text for a Jira story number
    * 
-   *  @return     The Jira story number
+   *  @return        The Jira story number, or else "" if not found
    */
   SearchSelectedTextForJiraStoryNumber() {
     selectedText := GetSelectedTextUsingClipboard()
@@ -114,7 +131,7 @@ OpenJira() {
    * 
    *  @param storyNumber            The current story number
    *  @param titleSearchCriteria    The search criteria
-   *  @return                       The found story number
+   *  @return                       The found story number, or "" if not found
    */
   SearchWindowsForJiraStoryNumber(storyNumber, titleSearchCriteria) {
     if (StrLen(storyNumber) = 0) {
@@ -122,7 +139,7 @@ OpenJira() {
         pos := RegExMatch(WinGetTitle(titleSearchCriteria), this.RegexStoryNumberWithProject, &matches)
         storyNumber = (pos > 0) ? matches[] : ""
       } catch {
-        return ""
+        storyNumber := ""
       }
     }
 

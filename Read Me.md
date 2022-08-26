@@ -146,11 +146,16 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
     storyNumber := this.SearchSelectedTextForJiraStoryNumber()
     storyNumber := storyNumber ?? this.SearchWindowsForJiraStoryNumber(...)
     storyNumber := storyNumber ?? this.SearchWindowsForJiraStoryNumber(...)
+- Can the Mute VOIP code be simplified using similar ?? logic?
+- Can I move ConnectToPersonalComputer() etc to Work Functions.ahk?
+- Cleanup formatting
+
 - Watch YouTube AHK playlist
-- Redo comments- content, formatting, move some comments from code into this readme
+
 - Update Configure.bat
 - Backup env vars to Google Drive
 - Merge v2 into main branch
+- Clean up this document
 ### Maybe Do These
 - How can I get rid of HA on Tele laptop, specifically need for username and password as env vars?
     - Send command to my NUC? SSH?

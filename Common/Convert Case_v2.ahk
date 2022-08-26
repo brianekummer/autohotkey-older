@@ -3,18 +3,17 @@
  * 
  *  Cycles selected text between lowercase, uppercase, sentence case, and title case
  *
- *  Based on code by J. Scott Elblein, GeekDrop.com
+ *  - Based on code by J. Scott Elblein (GeekDrop.com), modified by Brian Kummer
  *    https://geekdrop.com/content/super-handy-autohotkey-ahk-script-to-change-the-case-of-text-in-line-or-wrap-text-in-quotes
- *  Modified by Brian Kummer
- *    - Code is noticeably faster by using SendInput for moving cursor
- *    - Moves cursor to start of text, highlights text, leaving cursor at rightmost end of highlighted text
- *    - Tooltip to say what new case is
- *    - Timer to reset cycle back to lowercase after 30 seconds
- *    - For converting to title case, instead of using AutoHotkey's StringUpper/StringLower with the title option (which
- *      capitalizes EVERY word, including articles, prepositions, etc), I'm using code from this thread that is more 
- *      accurate: https://www.autohotkey.com/boards/viewtopic.php?t=19036
- *    - I tried using my GetSelectedTextUsingClipboard() method but it was unreliable and much slower when used here.
- *      I do not know why, nor did I have the time to figure out why and fix it.
+ *  - Code is noticeably faster by using SendInput for moving cursor
+ *  - Moves cursor to start of text, highlights text, leaving cursor at rightmost end of highlighted text
+ *  - Tooltip to say what new case is
+ *  - Timer to reset cycle back to lowercase after 30 seconds
+ *  - For converting to title case, instead of using AutoHotkey's StringUpper/StringLower with the title option (which
+ *    capitalizes EVERY word, including articles, prepositions, etc), I'm using code from this thread that is more 
+ *    accurate: https://www.autohotkey.com/boards/viewtopic.php?t=19036
+ *  - I tried using my GetSelectedTextUsingClipboard() method but it was unreliable and much slower when used here.
+ *    I do not know why, nor did I have the time to figure out why and fix it.
  */
 ConvertCase() {
   static cycleNumber := 1

@@ -2,6 +2,10 @@
  *  Customize Windows
  *
  *  Improvements to Windows, including adding new features
+ * 
+ *  Features
+ *    - Extra mouse functionality
+ *    - Media controls using CapsLock/Hyper and the mouse
  */
 
 

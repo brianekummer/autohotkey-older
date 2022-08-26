@@ -5,8 +5,7 @@
  *  should be in a "xxxx Functions.ahk" script.
  * 
  *  Modifiers
- *  ---------
- *  ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
+ *    ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
  */
 
 
@@ -88,7 +87,7 @@ CapsLock & n::           RunOrActivateApp("ahk_exe i)\\typora\.exe$", Configurat
 
 /**
  *  Browser/Chrome
- *    ✦ b                  Run or activate Chrome on my work laptop
+ *    ✦ b                  Run or activate Chrome on my work laptop, opening the url in selected text, if there is any
  *    ✦ ! b                Run or activate Chrome on my personal laptop
  */
 ;#If IsWorkLaptop && GetKeyState("Alt")

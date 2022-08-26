@@ -5,7 +5,6 @@
  *  to my needs.
  *  
  *  Notes
- *  -----
  *    - Some of this code may assume "SetTitleMatchMode RegEx" was set
  */
 
