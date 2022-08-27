@@ -86,8 +86,6 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True) {
 }
 
 
-
-
 /**
  *  Google Search for the selected text
  */
@@ -105,11 +103,9 @@ GoogleSearch() {
  */
 RunOrActivateBrowser() {
   selectedText := GetSelectedTextUsingClipboard()
-  cmd := Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe"
-
   if (selectedText ~= "https?:\/\/") {
-    AlwaysRunApp("- Google Chrome", cmd,,, '"' selectedText '"')
+    AlwaysRunApp("- Google Chrome", selectedText)
   } else {
-    RunOrActivateApp("- Google Chrome", cmd)
+    RunOrActivateApp("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
   }
 }

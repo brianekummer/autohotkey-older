@@ -27,14 +27,13 @@
  *  @param asAdminUser      Should it be run as administrator? True|False 
  *  @param timeToWait       When running the app/url, how long to wait (seconds)?
  *  @param runEvenIfOpen    Run the app even if it's already open? True|False
- *  @param params           Additional parameters
  */
-RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False, params*) {
+RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False) {
   if (!WinExist(winTitle) || runEvenIfOpen) {
     if asAdminUser {
       Run(whatToRun)
     } else {
-      ShellRun(whatToRun, (!IsObject(params) || params.Length = 0) ? params : params[1])
+      ShellRun(whatToRun)
     }
 
     WinWait(winTitle,, timeToWait)
@@ -53,8 +52,8 @@ RunOrActivateAppAsAdmin(winTitle, whatToRun, maximizeWindow := True, timeToWait 
 }
 
 /***** Always run the app/url, even if it's already open *****/
-AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10, params*) {
-  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True, (!IsObject(params) || params.Length = 0) ? params : params[1])
+AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10) {
+  RunOrActivateApp(winTitle, whatToRun, maximizeWindow,, timeToWait, True)
 }
 
 
