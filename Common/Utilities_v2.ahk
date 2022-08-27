@@ -212,7 +212,7 @@ AmNearWifiNetwork(wifiNetworks) {
  * 
  *  https://www.autohotkey.com/board/topic/80587-how-to-find-internet-connection-status/ 
  */
-AmConnectedToInternet(flag := 0x40) { 
+AmConnectedToInternet(flag := 0x40) => { 
   return DllCall("Wininet.dll\InternetGetConnectedState", "Str", flag, "Int", 0) 
 }
 

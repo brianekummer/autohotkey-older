@@ -33,23 +33,12 @@
 
 
 /**
- *  Am I at home?
+ *  Am I at home? Am I at the office?
  * 
- *  @return     True if I'm near any of my home wifi networks, else False
+ *  @return     True/False
  */
-AmAtHome() {
-  return AmNearWifiNetwork(Configuration.Work.WifiNetworks.Home)
-}
-
-
-/**
- *  Am I at the office?
- * 
- *  @return     True if I'm near any of my employer's wifi networks, else False
- */
-AmAtOffice() {
-  return AmNearWifiNetwork(Configuration.Work.WifiNetworks.Office)
-}
+AmAtHome()   => AmNearWifiNetwork(Configuration.Work.WifiNetworks.Home)
+AmAtOffice() => AmNearWifiNetwork(Configuration.Work.WifiNetworks.Office)
 
 
 /**

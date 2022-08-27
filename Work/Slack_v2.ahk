@@ -142,21 +142,12 @@ class Slack {
   /**
    *  Simple functions to set a specific status
    */
-   SetStatusPlaying() {
-    this.SetSlackHomeStatus("playing")
-  }
-  SetStatusNone() {
-    this.SetStatusAndPresence("none", "auto")
-  }
-  SetStatusMeeting() {
-    this.SetStatusAndPresence("meeting", "auto")
-  }
-  SetStatusBeRightBack() {
-    this.SetStatusAndPresence("brb", "away")
-  }
-  SetStatusVacation() {
-    this.SetStatusAndPresence("vacation", "away")
-  }
+  SetStatusPlaying()     => this.SetSlackHomeStatus("playing")
+  SetStatusNone()        => this.SetStatusAndPresence("none", "auto")
+  SetStatusMeeting()     => this.SetStatusAndPresence("meeting", "auto")
+  SetStatusBeRightBack() => this.SetStatusAndPresence("brb", "away")
+  SetStatusVacation()    => this.SetStatusAndPresence("vacation", "away")
+
 
 
   /**
@@ -241,13 +232,9 @@ class Slack {
    * 
    *  @param newStatusKey       The status key of the new status (the key from this.Statuses)
    */
-  SetSlackHomeStatus(newStatusKey) {
-    this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[2]])
-  }
-  SetSlackWorkStatus(newStatusKey) {
-    this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[1]])
-  }
-
+  SetSlackHomeStatus(newStatusKey) => this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[2]])
+  SetSlackWorkStatus(newStatusKey) => this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[1]])
+  
 
   /**
    *  Sets my Slack status for a single account
