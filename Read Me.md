@@ -128,12 +128,13 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
     └── Experiments
 
 
-### Dependencies
+## Dependencies
 - IntelliJ
   - Plugin "macOS Dark Mode Sync" by Johnathan Gilday automatically switches between Darcula and Intellij when OS changes
   - Enabled option: Editor > General > Change font size (Zoom) with Ctrl+MouseWheel
 - Chrome extension "Dark Reader"
 - VS Code extension "theme-switcher" by latusinski to toggle between light and dark mode
+
 
 ## To Do's
 ### Evaluate Status of What I Have
@@ -141,20 +142,11 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Does CapsLock still get stuck? Is it "fixed"?
 - Does Spotify now always open? YES
 ### Definitely Do These Things
-- Can I simplify the browser code with params? If is a url, just use RunOrActivateApp("- Google Chrome", url) instead of running Chrome and passing a parameter?
-- In Jira OpenJira, when search for story #, can I use coalesce like this? Or something like it?
-    storyNumber := this.SearchSelectedTextForJiraStoryNumber()
-    storyNumber := storyNumber ?? this.SearchWindowsForJiraStoryNumber(...)
-    storyNumber := storyNumber ?? this.SearchWindowsForJiraStoryNumber(...)
-- Can the Mute VOIP code be simplified using similar ?? logic?
-- Can I move ConnectToPersonalComputer() etc to Work Functions.ahk?
-- Cleanup formatting
-
 - Watch YouTube AHK playlist
 
 - Update Configure.bat
 - Backup env vars to Google Drive
-- Merge v2 into main branch
+- Remove "_v2" from file names and merge v2 into main branch
 - Clean up this document
 ### Maybe Do These
 - How can I get rid of HA on Tele laptop, specifically need for username and password as env vars?
@@ -199,21 +191,14 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
     - ✦ space             Windows (AHK)       Toggle dark mode for active application
 
 
-
-
-
 ## Future Ideas
 - Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
 - Popup menus are useful- can I use them elsewhere?
+- GUIs in AHK v2 are easier- anythijng to do here?
 - Are timed tooltips useful somewhere?
-- Are classes useful anywhere?
-
-
-
 
 
 ## Old Stuff That Needs Cleaned Up
-;
 ; There is often interaction between the work laptop and the personal laptop, so both bits of code
 ; are here, to simplify seeing how these interact. For example, when I press CapsLock+F12 to open
 ; the webpages I am price watching, the work laptop needs to send CapsLock+F12 to the personal 
@@ -327,3 +312,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 ## VS Code Tips
 - Bottom left of Explorer view is Outline
 - Ctrl-Shift-P for command pallet
+
+
+## Useful Links and Documentation
+- https://www.the-automator.com/com-and-autohotkey/

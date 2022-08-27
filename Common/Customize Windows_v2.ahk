@@ -14,7 +14,7 @@
  *    - First time you use it, un-maximizes (restores) the window
  *    - Second second time you use it, it minimizes the window
  */
-#down::WinMinimize("A")
+#down:: WinMinimize("A")
 
 
 /**
