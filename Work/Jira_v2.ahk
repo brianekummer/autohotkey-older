@@ -49,9 +49,10 @@ class Jira
    */
   OpenJira() {
     if (GetKeyState("Ctrl")) {
-      storyNumber := this.SearchSelectedTextForJiraStoryNumber()
-      storyNumber := this.SearchWindowsForJiraStoryNumber(storyNumber, "ahk_exe i)\\conemu64\.exe$ ahk_class VirtualConsoleClass")
-      storyNumber := this.SearchWindowsForJiraStoryNumber(storyNumber, "ahk_exe i)\\mintty\.exe$ ahk_class mintty")
+      storyNumber := this.SearchSelectedTextForJiraStoryNumber() 
+                     || this.SearchWindowsForJiraStoryNumber("ahk_exe i)\\conemu64\.exe$ ahk_class VirtualConsoleClass") 
+                     || this.SearchWindowsForJiraStoryNumber("ahk_exe i)\\mintty\.exe$ ahk_class mintty") 
+                     || ""
 
       if (StrLen(storyNumber) > 0) {
         ; Ensure there is a hyphen between the project name and story number
@@ -129,18 +130,15 @@ class Jira
    * 
    *  The current story number is passed in
    * 
-   *  @param storyNumber            The current story number
    *  @param titleSearchCriteria    The search criteria
    *  @return                       The found story number, or "" if not found
    */
-  SearchWindowsForJiraStoryNumber(storyNumber, titleSearchCriteria) {
-    if (StrLen(storyNumber) = 0) {
-      try {
-        pos := RegExMatch(WinGetTitle(titleSearchCriteria), this.RegexStoryNumberWithProject, &matches)
-        storyNumber = (pos > 0) ? matches[] : ""
-      } catch {
-        storyNumber := ""
-      }
+  SearchWindowsForJiraStoryNumber(titleSearchCriteria) {
+    try {
+      pos := RegExMatch(WinGetTitle(titleSearchCriteria), this.RegexStoryNumberWithProject, &matches)
+      storyNumber = (pos > 0) ? matches[] : ""
+    } catch {
+      storyNumber := ""
     }
 
     return storyNumber
