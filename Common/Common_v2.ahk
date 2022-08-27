@@ -12,7 +12,7 @@
 
 /**
  *  Emergency Reload
- *    ✦ ^ ! Esc            Reload this script
+ *    ✦ ^ ! Esc          Reload this script
  *
  *  I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
  *  for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
@@ -31,7 +31,7 @@
 
 /**
  *  Price Watch
- *    ✦ F12                Load stuff I'm watching
+ *    ✦ F12              Load stuff I'm watching
  *
  *  Sometimes I have to escape special characters like %
  */
@@ -44,7 +44,7 @@
 
 /**
  *  Convert case of selected text
- *    ✦ RShift             Cycle selected text between lower/upper/sentence/title cases
+ *    ✦ RShift           Cycle selected text between lower/upper/sentence/title cases
  *
  *  Since you cannot send RShift key to another window, I am using F17 here
  */
@@ -57,7 +57,7 @@ CapsLock & F17::         ConvertCase()    ; Personal laptop reacts to this
 
 /**
  *  Screen shot
- *    PrintScreen          Open the Windows screenshot tool by using the Windows hotkey
+ *    PrintScreen        Open the Windows screenshot tool by using the Windows hotkey
  */
 #HotIf WinActive("ahk_exe parsecd.exe", )          ; Work laptop when working on personal laptop
   PrintScreen::          SendKeystrokesToPersonalLaptop("{LWin down}{Shift down}s{Shift up}{LWin up}")
@@ -67,66 +67,66 @@ PrintScreen::SendInput("#+s")
 
 /**
  *  Typora
- *    ✦ n                  Run or activate my notes in Typora on my work laptop
- *    ✦ ! n                Run or activate my notes in Typora on my personal laptop
+ *    ✦ n                Run or activate my notes in Typora on my work laptop
+ *    ✦ ! n              Run or activate my notes in Typora on my personal laptop
  *
- *    ^ mousewheel         Decrease/increase font size
- *    ✦ [                  Toggle left sidebar
+ *    ^ mousewheel       Decrease/increase font size
+ *    ✦ [                Toggle left sidebar
  */
 ;#If IsWorkLaptop && GetKeyState("Alt")
-;  CapsLock & n::         SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
+;  CapsLock & n::        SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
 ;#If
 CapsLock & n::           RunOrActivateApp("ahk_exe i)\\typora\.exe$", Configuration.WindowsProgramFilesFolder "\Typora\Typora.exe")
 
 #HotIf WinActive("ahk_exe i)\\typora\.exe$", )
-  ^wheelup::                        SendInput("{Blind}^+{=}")
-  ^wheeldown::                      SendInput("{Blind}^+{-}")
-  Capslock & [::                    SendInput("^+{l}")
+  ^wheelup::             SendInput("{Blind}^+{=}")
+  ^wheeldown::           SendInput("{Blind}^+{-}")
+  Capslock & [::         SendInput("^+{l}")
 #HotIf
 
 
 /**
  *  Browser/Chrome
- *    ✦ b                  Run or activate Chrome on my work laptop, opening the url in selected text, if there is any
- *    ✦ ! b                Run or activate Chrome on my personal laptop
+ *    ✦ b                Run or activate Chrome on my work laptop, opening the url in selected text, if there is any
+ *    ✦ ! b              Run or activate Chrome on my personal laptop
  */
 ;#If IsWorkLaptop && GetKeyState("Alt")
-;  CapsLock & b::         SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
+;  CapsLock & b::        SendKeystrokesToPersonalLaptop("{CapsLock down}b{CapsLock up}")
 ;#If
 CapsLock & b::           RunOrActivateBrowser()
 
 
 /**
  * Terminal/Cmder/bash
- *   ✦ t                  Run or activate the terminal on my work laptop
- *   ✦ ! t                Run or activate the terminal on my personal laptop
+ *   ✦ t                 Run or activate the terminal on my work laptop
+ *   ✦ ! t               Run or activate the terminal on my personal laptop
  */
 ;#If IsWorkLaptop && GetKeyState("Alt")
-;  CapsLock & t::         SendKeystrokesToPersonalLaptop("{CapsLock down}t{CapsLock up}")
+;  CapsLock & t::        SendKeystrokesToPersonalLaptop("{CapsLock down}t{CapsLock up}")
 ;#If
 CapsLock & t::           RunOrActivateAppAsAdmin("Cmder", "C:\tools\Cmder\Cmder.exe", False)
 
 
 /**
  *  Visual Studio Code
- *    ✦ v                  Open VS Code on my work laptop
- *    ✦ ! v                Open VS Code on my personal laptop
+ *    ✦ v                Open VS Code on my work laptop
+ *    ✦ ! v              Open VS Code on my personal laptop
  *
- *    ^ mousewheel         Decrease/increase font size
- *    ✦ [                  Toggle left sidebar
+ *    ^ mousewheel       Decrease/increase font size
+ *    ✦ [                Toggle left sidebar
  *
  *  TODO-
- *    ✦ ^ v                Open VS Code, create a new doc, paste selected text, then format it
+ *    ✦ ^ v              Open VS Code, create a new doc, paste selected text, then format it
  */
 ;#If IsWorkLaptop && GetKeyState("Alt")
-;  CapsLock & v::         SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
+;  CapsLock & v::        SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
 ;#If
 CapsLock & v::           RunOrActivateAppAsAdmin("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
 
 #HotIf WinActive("ahk_exe i)\\code\.exe$", )
-  ^wheelup::                 SendInput("{Blind}^{=}")
-  ^wheeldown::               SendInput("{Blind}^{-}")
-  CapsLock & [::             SendInput("^b")
+  ^wheelup::             SendInput("{Blind}^{=}")
+  ^wheeldown::           SendInput("{Blind}^{-}")
+  CapsLock & [::         SendInput("^b")
 #HotIf
 
 

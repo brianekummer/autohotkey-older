@@ -13,7 +13,7 @@
 /**
  *  AutoHotkey configuration options
  */
- #SingleInstance FORCE            ; Skip invocation dialog box and silently replace previously executing instance of this script
+#SingleInstance FORCE            ; Skip invocation dialog box and silently replace previously executing instance of this script
 Persistent
 SendMode("Input")                ; Recommended for new scripts due to its superior speed and reliability
 SetWorkingDir(A_ScriptDir)       ; Ensures a consistent starting directory
@@ -80,14 +80,14 @@ return
 
 /**
  *  Toggle mute in VOIP apps (Slack/Microsoft Teams/Zoom/Google Meet)
- *    Mute                 Activate the current VOIP call/meeting and toggles mute
+ *    Mute               Activate the current VOIP call/meeting and toggles mute
  */
 Volume_Mute::            ToggleMuteVOIPApps()
 
 
 /**
  *  When looking at my personal laptop
- *    ✦ [                  On my personal laptop, toggle left sidebar
+ *    ✦ [                On my personal laptop, toggle left sidebar
  */
 #HotIf WinActive("ahk_exe parsecd.exe", )
   CapsLock & [::         SendKeystrokesToPersonalLaptop("{CapsLock down}[{CapsLock up}")
@@ -96,22 +96,25 @@ Volume_Mute::            ToggleMuteVOIPApps()
 
 /**
  *  Slack
- *    ✦ k                  Open Slack
- *    ✦ ^ k                Open Slack and go to the "jump to" window
- *    ✦ [                  Toggle left sidebar
- *    ^ mousewheel         Decrease/increase font size
- *    ^ k                  Insert hyperlink (overrides Slack opening "jump to" window)
+ *    ✦ k                Open Slack
+ *    ✦ ^ k              Open Slack and go to the "jump to" window
+ *    ✦ [                Toggle left sidebar
+ *    ^ mousewheel       Decrease/increase font size
+ *    ^ k                Insert hyperlink (overrides Slack opening "jump to" window)
  *
  *   Statuses
  *     These used to use #/Win instead of !/Alt, but that broke by upgrading to AHK v2
- *     ✦ ! b              Status - Be Right Back. If I'm in the office, also locks my laptop.
- *     ✦ ! c              Status - Clears Slack status
- *     ✦ ! e              Status - Eating. Sets Slack status to lunch/dinner.
- *                                   - Locks my workstation
- *                                   - If I'm at home, also turns off my office lights
- *     ✦ ! m              Status - In a meeting
- *     ✦ ! p              Status - Playing
- *     ✦ ! w              Status - Working. Sets Slack status to office/remote.
+ *     ✦ ! b             Status: Be Right Back
+ *                          - If I'm in the office, also locks my laptop
+ *     ✦ ! c             Status: Clears Slack status
+ *     ✦ ! e             Status: Eating
+ *                          - Sets Slack status to lunch/dinner depending on the time
+ *                          - Locks my workstation
+ *                          - If I'm at home, also turns off my office lights
+ *     ✦ ! m             Status: In a meeting
+ *     ✦ ! p             Status: Playing
+ *     ✦ ! w             Status: Working
+ *                         - Sets Slack status to office/remote depending on my location
  */
 CapsLock & k::           MySlack.RunOrActivateSlack((GetKeyState("Ctrl") ? "^k" : ""))    
 
@@ -134,89 +137,88 @@ CapsLock & k::           MySlack.RunOrActivateSlack((GetKeyState("Ctrl") ? "^k" 
 
 /**
  *  Calendar
- *    ✦ c                  Run or activate Outlook and switch to the calendar, using an Outlook
- *                         shortcut to switch to the calendar
+ *    ✦ c                Run or activate Outlook and switch to the calendar, using an Outlook
+ *                       shortcut
  */
 CapsLock & c::           RunOrActivateOutlook("^2")
 
 
 /**
  *  Inbox
- *    ✦ i                  Run or activate Outlook and switch to the inbox, using an Outlook shortcut
- *                          to switch to the inbox  
+ *    ✦ i                Run or activate Outlook and switch to the inbox, using an Outlook shortcut
  */
 CapsLock & i::           RunOrActivateOutlook("^+I")
 
 
-/*
+/**
  *  Jira
- *    ✦ j                  Opens the current sprint board
- *    ✦ ^ j                Search for a specific story number to open
- *                           * If the selected text looks like a Jira story number (e.g. 
- *                             PROJECT-1234), then open that story
- *                           * If the Git Bash window has text that looks like a Jira story number, 
- *                             then open that story
- *                           * Last resort is to open the current sprint board
+ *    ✦ j                Opens the current sprint board
+ *    ✦ ^ j              Search for a specific story number to open
+ *                         - If the selected text looks like a Jira story number (e.g. 
+ *                           PROJECT-1234), then open that story
+ *                         - If the Git Bash window has text that looks like a Jira story number, 
+ *                           then open that story
+ *                         - Last resort is to open the current sprint board
  */
 CapsLock & j::           MyJira.OpenJira()
 
 
 /**
  *  Google search
- *    ✦ g                 Search for the selected text
+ *    ✦ g               Search for the selected text
  */
 CapsLock & g::           GoogleSearch()
 
 
 /**
  *  Music/Spotify
- *    ✦ m                  Run or activate Spotify
- *    ^ mousewheel         Decrease/increase font size
+ *    ✦ m                Run or activate Spotify
+ *    ^ mousewheel       Decrease/increase font size
  */
 CapsLock & m::           RunOrActivateSpotify()
 #HotIf WinActive("ahk_exe i)\\spotify\.exe$", )
-  ^wheelup::              SendInput("^{=}")
-  ^wheeldown::            SendInput("^{-}")
+  ^wheelup::             SendInput("^{=}")
+  ^wheeldown::           SendInput("^{-}")
 #HotIf
   
 
 /**
  *  Personal computer using Parsec
- *    ✦ p                  Connect to personal computer
+ *    ✦ p                Connect to personal computer
  */
 CapsLock & p::           ConnectToPersonalComputer()
 
 
 /**
  *  Source code 
- *    ✦ s                  Source code- dashboard/overview
- *    ✦ ^ s                Source code- popup menu
- *                            - Search code for selected text
- *                            - Search repositories for selected text
- *                            - Event schema repository
+ *    ✦ s                Source code- dashboard/overview
+ *    ✦ ^ s              Source code- popup menu
+ *                          - Search code for selected text
+ *                          - Search repositories for selected text
+ *                          - Event schema repository
  */
 CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
 
 
 /**
  *  Visual Studio
- *    ✦ [                  Toggle left sidebar
- *                          Use Shift+Esc to exit, or click outside
- *                          I could not find a way to determine if the Solution Explorer was open or 
- *                          not, to determine if I should do ✦[ or +{Esc}
+ *    ✦ [               Toggle left sidebar
+ *                       Use Shift+Esc to exit, or click outside
+ *                       I could not find a way to determine if the Solution Explorer was open or 
+ *                       not, to determine if I should do ✦[ or +{Esc}
  */
 #HotIf WinActive("ahk_exe i)\\devenv\.exe$", )
-  CapsLock & [::          SendInput("^!l")
+  CapsLock & [::         SendInput("^!l")
 #HotIf
 
 
 /**
  *  IntelliJ
- *    ✦ l                  UNUSED - Start IntelliJ
- *    ✦ [                  Toggle left sidebar
+ *    ✦ l                UNUSED - Start IntelliJ
+ *    ✦ [                Toggle left sidebar
  *
  */
-;CapsLock & l::           RunOrActivateAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
+;CapsLock & l::            RunOrActivateAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
 #HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
   CapsLock & [::         SendInput("!1")
 #HotIf
@@ -226,21 +228,21 @@ CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
  *  Home automation
  *
  *  (keys listed are on the numeric keypad)
- *    ✦ +                   Air cleaner: toggle on/off
- *    ✦ Enter                       Fan: toggle on/off
+ *    ✦ +                 Air cleaner: toggle on/off
+ *    ✦ Enter                     Fan: toggle on/off
  *
- *    ✦ 7|8|9                 Top light: brightness down|toggle on/off|brightness up
- *    ✦ ^ 7|9                 Top light: brightness 1%|brightness 100%
+ *    ✦ 7|8|9               Top light: brightness down|toggle on/off|brightness up
+ *    ✦ ^ 7|9               Top light: brightness 1%|brightness 100%
  *
- *    ✦ 4|5|6              Middle light: brightness down|toggle on/off|brightness up
- *    ✦ ^ 4|6              Middle light: brightness 1%|brightness 100%
+ *    ✦ 4|5|6            Middle light: brightness down|toggle on/off|brightness up
+ *    ✦ ^ 4|6            Middle light: brightness 1%|brightness 100%
  *
- *   ✦ 1|2|3               Bottom light: brightness down|toggle on/off|brightness up
- *   ✦ ^ 1|3               Bottom light: brightness 1%|brightness 100%
+ *   ✦ 1|2|3             Bottom light: brightness down|toggle on/off|brightness up
+ *   ✦ ^ 1|3             Bottom light: brightness 1%|brightness 100%
  *
  * Disabled
- *   ✦ ^ +                  Air cleaner: cycle between fan speeds
- *                          THIS IS VALID FOR VESYNC AIR CLEANER, NOT WYZE PLUG
+ *   ✦ ^ +               Air cleaner: cycle between fan speeds
+ *                       This is valid for vesync air cleaner, not Wyze plugs
  */
 CapsLock & NumpadAdd::   HomeAutomationCommand("officeac         toggle")     
 CapsLock & NumpadEnter:: HomeAutomationCommand("officefan        toggle")
@@ -267,10 +269,10 @@ CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (G
 
 /**
  *  Generate a random UUID/GUID
- *    ✦ u                  Generate random UUID (lowercase)
- *    ✦ + u                Generate random UUID (uppercase)
+ *    ✦ u                Generate random UUID (lowercase)
+ *    ✦ + u              Generate random UUID (uppercase)
  */
-CapsLock & u::            SendInput(CreateRandomGUID(GetKeyState("Shift")))
+CapsLock & u::           SendInput(CreateRandomGUID(GetKeyState("Shift")))
 
 
 
