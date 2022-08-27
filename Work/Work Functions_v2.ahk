@@ -6,6 +6,33 @@
 
 
 /**
+ *  Connect to my personal computer
+ */
+ ConnectToPersonalComputer() {
+  ; TODO- This appears to work if Parsec is not running, but fails if it is already open
+  if (!WinExist("ahk_exe parsecd.exe")) {
+    ;msgbox Parsec is NOT running
+    Run('"' A_StartMenu '\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
+    
+    ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
+    if (ErrorLevel) {
+      MsgBox("WinWait timed out.")
+      return
+    }
+  } else {
+    ;Msgbox Parsec IS running
+  
+    ; Is Parsec connected?
+    ; Looks like I need to use FindText to look for the Connect button: https://www.autohotkey.com/boards/viewtopic.php?p=167586#p167586
+    
+    WinActivate()
+  }
+  
+  WinMaximize()  ; Use the window found by WinExist|WinWaitActive
+}
+
+
+/**
  *  Am I at home?
  * 
  *  @return     True if I'm near any of my home wifi networks, else False
