@@ -138,18 +138,6 @@ SourceCodeMenuHandler(itemName, *) {
 
 
 /**
- *  Runs or activates the Spotify app
- *
- *  Since this is a Microsoft Store app, I needed to add a shortcut to me Start menu so that I can
- *  run the shortcut.  Since the window title changes, depending if something is playing or not, 
- *  I am using the filename to find the window.
- */
-RunOrActivateSpotify() {
-  RunOrActivateApp("ahk_exe Spotify.exe", A_StartMenu "\Programs\My Shortcuts\Spotify.lnk", False)
-}
-
-
-/**
  *  Runs or activates Outlook
  * 
  *  Outlook is whiny, and the "instant search" feature (press Ctrl+E to search your mail items) 

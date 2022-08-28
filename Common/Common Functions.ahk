@@ -1,5 +1,8 @@
 /**
  *  Functions to support Common.ahk
+ * 
+ *  Dependencies
+ *    - Customize Windows.FixCapsLockIfBroken()
  */
 
 
@@ -107,4 +110,20 @@ RunOrActivateBrowser() {
   } else {
     RunOrActivateApp("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
   }
+}
+
+
+/**
+ *  Runs or activates the Spotify app
+ *
+ *  Since this is a Microsoft Store app, I needed to add a shortcut to me Start menu so that I can
+ *  run the shortcut.  Since the window title changes, depending if something is playing or not, 
+ *  I am using the filename to find the window.
+ * 
+ *  Although this is only used on my work laptop, it is referenced by Customize Windows.ahk, which 
+ *  means it must be available for Home.ahk to compile, so I moved it into Common Functions.ahk.
+ */
+RunOrActivateSpotify() {
+  RunOrActivateApp("ahk_exe Spotify.exe", A_StartMenu "\Programs\My Shortcuts\Spotify.lnk", False)
+  FixCapsLockIfBroken()
 }

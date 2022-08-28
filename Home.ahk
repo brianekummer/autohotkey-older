@@ -13,12 +13,12 @@
 /**
  *  AutoHotkey configuration options
  */
+#Requires AutoHotkey v2.0-b      ; I've converted all my code to AHK v2.0+
 #SingleInstance FORCE            ; Skip invocation dialog box and silently replace previously executing instance of this script
-Persistent
-SendMode("Input")                ; Recommended for new scripts due to its superior speed and reliability
+Persistent                       ; Prevents script from exiting automatically when its last thread completes, allowing it to stay running in an idle state
 SetWorkingDir(A_ScriptDir)       ; Ensures a consistent starting directory
 SetCapsLockState("AlwaysOff")    ; Disable the CapsLock LED on my keyboard
-SetNumLockState("On")            ; So my macros with keypad work
+SetNumLockState("On")            ; Turn on Scroll Lock, so my macros with keypad work
 SetTitleMatchMode("RegEx")       ; Make windowing commands use regex
 RunAsAdmin()
 

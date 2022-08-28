@@ -88,18 +88,13 @@ CapsLock:: return
   CapsLock & wheelup::     SendMediaKey("{Blind}{Volume_Up 1}")
   CapsLock & wheeldown::   SendMediaKey("{Blind}{Volume_Down 1}")
   CapsLock & LButton::     SendMediaKey("{Blind}{Media_Play_Pause}")
-  CapsLock & RButton::     RunSpotifyByMediaKey()
+  CapsLock & RButton::     RunOrActivateSpotify()
   CapsLock & XButton1::    SendMediaKey("{Blind}{Media_Prev}")
   CapsLock & XButton2::    SendMediaKey("{Blind}{Media_Next}")
 #HotIf
 
 SendMediaKey(mediaKey) {
   SendInput(mediaKey)
-  FixCapsLockIfBroken()
-}
-
-RunSpotifyByMediaKey() {
-  RunOrActivateSpotify()
   FixCapsLockIfBroken()
 }
 
