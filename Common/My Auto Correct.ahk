@@ -1,18 +1,18 @@
-;--------------------------------------------------------------------------------------------------
-; Add auto-correct to EVERY application
-; includes my customizations
-; 
-; https://www.autohotkey.com/download/AutoCorrect.ahk, based on http://www.biancolo.com/articles/autocorrect/
-;--------------------------------------------------------------------------------------------------
-#Include %A_ScriptDir%\Lib\AutoCorrect.ahk
+﻿/**
+ *  Add auto-correct to EVERY application
+ *  includes my customizations
+ * 
+ *  https://www.autohotkey.com/download/AutoCorrect.ahk, based on http://www.biancolo.com/articles/autocorrect/
+ */
+#Include "%A_ScriptDir%\Lib\AutoCorrect.ahk"
 
-;----- Things I intentionally do NOT want to fix -----
+/***** Things I intentionally do NOT want to fix *****/
 ;::brian::Brian      ; Doing this always capitalizes Brian-kummer@company.com
 ;::kummer::Kummer    ; Otherwise, it changes brian-kummer to brian-Kummer, and some apps REQUIRE a username to be all lowercase
 ;::i::I              ; Don't want to always capitalize i (e.g. "-i")
 ;::iqtc::IQTC
 ;::pto::PTO
-::~~::≈              ; Approximation. I use ~~ in markdown in Typora
+;::~~::≈              ; Approximation. I use ~~ in markdown in Typora
 
 ::nancy::Nancy
 ::manoj::Manoj
