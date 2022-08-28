@@ -4,7 +4,7 @@
  * 
  *  https://www.autohotkey.com/download/AutoCorrect.ahk, based on http://www.biancolo.com/articles/autocorrect/
  */
-#Include "%A_ScriptDir%\Lib\AutoCorrect_v2.ahk"
+#Include "%A_ScriptDir%\Lib\AutoCorrect.ahk"
 
 /***** Things I intentionally do NOT want to fix *****/
 ;::brian::Brian      ; Doing this always capitalizes Brian-kummer@company.com

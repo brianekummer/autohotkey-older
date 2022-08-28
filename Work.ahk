@@ -27,8 +27,8 @@ RunAsAdmin()
 /**
  *  Include classes here, because they must be included before the auto-execute section 
  */
-#Include "%A_ScriptDir%\Work\Jira_v2.ahk"
-#Include "%A_ScriptDir%\Work\Slack_v2.ahk"
+#Include "%A_ScriptDir%\Work\Jira.ahk"
+#Include "%A_ScriptDir%\Work\Slack.ahk"
 
 
 
@@ -283,9 +283,7 @@ CapsLock & u::           SendInput(CreateRandomGUID(GetKeyState("Shift")))
  *
  *  I have to put this at the bottom of my script or it interferes with other code in this script
  */
-#Include "%A_ScriptDir%\Common\Common_v2.ahk"
-
-#Include "%A_ScriptDir%\Work\Work Functions_v2.ahk"
-#Include "%A_ScriptDir%\Work\Mute VOIP Apps_v2.ahk"
-
-#Include "%A_ScriptDir%\Lib\RunAsAdmin_v2.ahk"
+#Include "%A_ScriptDir%\Common\Common.ahk"
+#Include "%A_ScriptDir%\Work\Work Functions.ahk"
+#Include "%A_ScriptDir%\Work\Mute VOIP Apps.ahk"
+#Include "%A_ScriptDir%\Lib\RunAsAdmin.ahk"

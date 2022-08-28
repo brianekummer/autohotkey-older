@@ -79,7 +79,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
   ✦ ! b               Slack (AHK)      Status - Be Right Back. Sets Slack statuses to brb. If I'm in
                                        the office, also locks my workstation.
   ✦ ! c               Slack (AHK)      Status - cleared. Clears Slack status.
-  ✦ ! e               Status - Eating  Sets Slack statuses to lunch/dinner.
+  ✦ ! e               Slack (AHK)      Status - Eating. Sets Slack statuses to lunch/dinner.
                                        Locks my workstation. If I'm at home, also turns off my office lights.
   ✦ ! m               Slack (AHK)      Status - In a meeting. Sets Slack statuses to mtg and sets presence to auto.
   ✦ ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
@@ -98,7 +98,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 
 ## Code Structure
 ├── Home.ahk                    ; root only has runnable scripts, ideally only
-├── Work.ahk                    ;   hotkeys, etc and should not have blocks of code
+├── Work.ahk                    ;   hotkeys, etc. and should not have blocks of code
 ├── Read Me.md
 ├── Configure.bat               ; template to set all necessary environment variables
 │
@@ -143,11 +143,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Does Spotify now always open? YES
 ### Definitely Do These Things
 - Watch YouTube AHK playlist
-
-- Update Configure.bat
-- Backup env vars to Google Drive
-- Remove "_v2" from file names and merge v2 into main branch
-- Clean up this document
 ### Maybe Do These
 - How can I get rid of HA on Tele laptop, specifically need for username and password as env vars?
     - Send command to my NUC? SSH?
@@ -155,6 +150,16 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
     - How slow will it be?
 - Is there any use for AppsKey (context menu)?
 - Other automation ideas
+    - Window management
+        H left         HS       Snap active window to left half/third/two-thirds of the screen
+        H right        HS       Snap active window to right half/third/two-thirds of the screen
+        H up           HS       Snap active window to top half/third/two-thirds of the screen
+        H down         HS       Snap active window to top half/third/two-thirds of the screen
+    - Focusing/studying   : Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
+        H ^ f ??       HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
+                                which also sets Slack statuses to heads-down.
+        H ^ s ??       HS       Studying. Starts Do Not Disturb timer for 60 minutes,
+                                which also sets Slack statuses to books and opens udemy.com.
     - Visual Studio
         - Moved Solution Explorer to left side, pinned
         - ^!l shows it 
@@ -172,21 +177,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
     - Standardize video keys for youtube and udemy
     - Grammarly? I coded it before, so should look into if it still works. Not sure how much I'd use Grammarly, but if
       it's EASY, I'd use it more
-    - Window management
-        H left         HS       Snap active window to left half/third/two-thirds of the screen
-        H right        HS       Snap active window to right half/third/two-thirds of the screen
-        H up           HS       Snap active window to top half/third/two-thirds of the screen
-        H down         HS       Snap active window to top half/third/two-thirds of the screen
-        H return       HS       Toggle full screen
-        H ^ up         HS       Maximize window
-        H ^ down       HS       Minimize window
-        H ^ left       HS       Move active window to the previous screen
-        H ^ right      HS       Move active window to the next screen
-    - Focusing/studying   : Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
-        H ^ f ??       HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
-                                which also sets Slack statuses to heads-down.
-        H ^ s ??       HS       Studying. Starts Do Not Disturb timer for 60 minutes,
-                                which also sets Slack statuses to books and opens udemy.com.
     - ✦ numpadsub         Windows (AHK)       TEMP - price checks
     - ✦ space             Windows (AHK)       Toggle dark mode for active application
 
@@ -196,53 +186,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Popup menus are useful- can I use them elsewhere?
 - GUIs in AHK v2 are easier- anythijng to do here?
 - Are timed tooltips useful somewhere?
-
-
-## Old Stuff That Needs Cleaned Up
-; There is often interaction between the work laptop and the personal laptop, so both bits of code
-; are here, to simplify seeing how these interact. For example, when I press CapsLock+F12 to open
-; the webpages I am price watching, the work laptop needs to send CapsLock+F12 to the personal 
-; laptop, and the personal laptop has to react to that.
-;
-;
-;
-;
-;
-;
-; DEPENDENCIES
-; ------------
-; * IntelliJ
-;     - Plugin "macOS Dark Mode Sync" by Johnathan Gilday automatically 
-;       switches between Darcula and Intellij when OS changes
-; * Chrome extension "Dark Reader"
-; * VS Code extension "theme-switcher" by latusinski to toggle between light
-;  and dark mode
-;
-; ============================================================================================
-;
-;
-;
-;
-;
-;
-; Notes
-; -----
-;   - Near the bottom of this script are a number of #include statements to include libraries of 
-;     utility functions
-;   - Using regex in "#IfWinActive ahk_exe i)\\xxxx\.exe$" requires "SetTitleMatchMode RegEx"
-;   - This script must be run as an admin or else any app run as an admin (i.e. Visual Studio,
-;     Visual Studio Code, etc.) will intercept the keystrokes before this script.
-;   - Definition of AutoHotkey keys: http://www.autohotkey.com/docs/KeyList.htm
-;   - This looks helpful: http://www.daviddeley.com/autohotkey/xprxmp/autohotkey_expression_examples.htm
-;
-;
-; Dependencies
-; ------------
-;   - IntelliJ
-;       - Enabled option: Editor > General > Change font size (Zoom) with Ctrl+MouseWheel
-;   - nircmd, for "setdefaultsounddevice" to switch between headphones and headset
-;
-;
 
 
 ## Decisions
@@ -314,5 +257,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Ctrl-Shift-P for command pallet
 
 
-## Useful Links and Documentation
+## Useful AutoHotkey Tips, Links, Documentation
 - https://www.the-automator.com/com-and-autohotkey/
+- When sending lots of text, SendInput is slow. Instead, set the text into the clipboard and send ^v. Don't' forget to save the clipboard before you start.
+- Best options for automation are COM objects, then API, then UIA (UI Automation), using send/post messages, lastly SendInput/click/etc

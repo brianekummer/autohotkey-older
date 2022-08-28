@@ -40,8 +40,6 @@ return
  *
  *  I have to put this at the bottom of my script or it interferes with other code in this script
  */
-#Include "%A_ScriptDir%\Common\Common_v2.ahk"
-
-#Include "%A_ScriptDir%\Home\Home Functions_v2.ahk"
-
-#Include "%A_ScriptDir%\Lib\RunAsAdmin_v2.ahk"
+#Include "%A_ScriptDir%\Common\Common.ahk"
+#Include "%A_ScriptDir%\Home\Home Functions.ahk"
+#Include "%A_ScriptDir%\Lib\RunAsAdmin.ahk"
