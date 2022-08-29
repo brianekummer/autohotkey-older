@@ -142,13 +142,15 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Does CapsLock still get stuck? Is it "fixed"?
 - Does Spotify now always open? YES
 ### Definitely Do These Things
-- Watch YouTube AHK playlist
-### Maybe Do These
-- How can I get rid of HA on Tele laptop, specifically need for username and password as env vars?
-    - Send command to my NUC? SSH?
-    - Send command to a phone w/autoremote? My phone because of fixed IP? Work status phone? LR Pi?
-    - How slow will it be?
-- Is there any use for AppsKey (context menu)?
+- How easily update new sprint variable? Does this work?
+    Would be great to add another hotkey (MAYBE ✦ ^ + J) where I open the new sprint board, select the url, and hit the hotkey. It'd parse out the sprint #, set the env var, and run this script.
+      Code for setting env var is here: https://github.com/iseahound/Environment.ahk
+      Can I just use SETX ??
+      "HKEY_CURRENT_USER\Environment\AHK_JIRA_DEFAULT_SPRINT". 
+      SendMessage 0x1A, 0, "Environment",, ahk_id 0xFFFF ; 0x1A is WM_SETTINGCHANGE
+Add new user env variable: reg add "HKEY_CURRENT_USER\Environment" /v shared_dir /d "c:\shared" /t REG_SZ. Use REG_EXPAND_SZ for paths containing other %% variables.
+    MUST stop and restart AutoHotkey- reload the script doesn't work. Work\Restart.bat.
+    DON'T NEED TO DO THIS: "taskkill /IM explorer.exe /F" and "explorer.exe"
 - Other automation ideas
     - Window management
         H left         HS       Snap active window to left half/third/two-thirds of the screen
@@ -156,10 +158,18 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
         H up           HS       Snap active window to top half/third/two-thirds of the screen
         H down         HS       Snap active window to top half/third/two-thirds of the screen
     - Focusing/studying   : Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
+        - Should be able to do this in AHK GUI
         H ^ f ??       HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
                                 which also sets Slack statuses to heads-down.
         H ^ s ??       HS       Studying. Starts Do Not Disturb timer for 60 minutes,
                                 which also sets Slack statuses to books and opens udemy.com.
+- Watch YouTube AHK playlist
+- Learn about UIA, specifically for improving my Mute VOIP
+    - https://www.the-automator.com/automate-any-program-with-ui-automation/
+### Maybe Do These
+- Is there any use for AppsKey (context menu)?
+- GUIs are so good w/AHK, what can I do with it?
+- Other automation ideas
     - Visual Studio
         - Moved Solution Explorer to left side, pinned
         - ^!l shows it 
@@ -174,7 +184,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
            ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
         - VS Code - IF this is the editor I'm going to use
         ~$^s                VS Code (AHK)    After save AHK file, reload current script
-    - Standardize video keys for youtube and udemy
+    - Standardize video keys for youtube and udemyI
     - Grammarly? I coded it before, so should look into if it still works. Not sure how much I'd use Grammarly, but if
       it's EASY, I'd use it more
     - ✦ numpadsub         Windows (AHK)       TEMP - price checks

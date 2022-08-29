@@ -41,34 +41,35 @@ class Jira
 
   /**
    *  Opens Jira in a browser
-   *    - If Ctrl is pressed, try to find a specific story number to open
-   *        - Searches the selected text
-   *        - Searches for a ConEmu/Cmder window with a window title with a story number
-   *        - Searches for a Mintty (comes w/Git Bash) window title with a story number
-   *    - If Ctrl is not pressed, or cannot find a speciifc story, then open the current sprint board
+   *    - If the selected text is the url to a Jira sprint, then parse out the
+   *      story number and set it to be our current sprint number
+   *    - Else if Ctrl is pressed, try to find a specific story number to open
+   * 
+   *    - If we cannot find a speciifc story, then open the current sprint board
    */
   OpenJira() {
-    if (GetKeyState("Ctrl")) {
-      storyNumber := this.SearchSelectedTextForJiraStoryNumber() 
-                     || this.SearchWindowsForJiraStoryNumber("ahk_exe i)\\conemu64\.exe$ ahk_class VirtualConsoleClass") 
-                     || this.SearchWindowsForJiraStoryNumber("ahk_exe i)\\mintty\.exe$ ahk_class mintty") 
-                     || ""
+    openSprintBoard := True
+    selectedText := GetSelectedTextUsingClipboard()
+
+    if (selectedText  ~= (this.BaseUrl ".*sprint=\d+")) {
+      ; Parse the sprint number from the URL and save it
+      this.SaveNewSprintNumber(selectedText)
+      openSprintBoard := False
+      
+    } else if (GetKeyState("Ctrl")) {
+      ; Try to find a specific story to open
+      storyNumber := this.FindStoryNumber(selectedText)
 
       if (StrLen(storyNumber) > 0) {
-        ; Ensure there is a hyphen between the project name and story number
-        storyNumber := RegExReplace(storyNumber, "[\s_]", "")
-        if (InStr(storyNumber, "-") = 0) {
-          storyNumber := RegExReplace(storyNumber, "(\d+)", "-$1")
-        }
-
-        ; Open the story
         RunOrActivateApp("\[" storyNumber "\].*Jira", this.BuildStoryUrl(storyNumber))
-        return
+        openSprintBoard := False
       }
     }
 
-    ; Either did not try to find a Jira story number, or did not, so open the default Jira board
-    RunOrActivateApp("Agile Board - Jira", this.BuildSprintBoardUrl())
+    if (openSprintBoard) {
+      ; Either did not try to find a Jira story number, or did not, so open the default Jira board
+      RunOrActivateApp("Agile Board - Jira", this.BuildSprintBoardUrl(this.DefaultSprint))
+    }
   }
 
 
@@ -76,13 +77,74 @@ class Jira
 
 
   /******************************  Private Methods  ******************************/
+
   
+
+
+
+  /**
+   *  Possibly save the sprint number parsed from this url
+   *  
+   *  @param selectedText       The selected text
+   *  @return                   Was the sprint number saved? True/False
+   */
+  SaveNewSprintNumber(selectedText) {
+    savedSprintNumber := False
+
+    if (RegExMatch(selectedText, "(?<=sprint\=)\d+", &matches) != 0) {
+      sprintNumber := matches[]
+
+      if (sprintNumber > this.DefaultSprint) {
+
+        if (MsgBox("Change the current sprint number from " this.DefaultSprint " to " sprintNumber "?", "Change Current Sprint Number", "YesNo Icon?") = "Yes") {
+          ; Temporarily update the sprint number for the current instance of this script
+          EnvSet("AHK_JIRA_DEFAULT_SPRINT", sprintNumber)
+          this.DefaultSprint := sprintNumber
+
+          ; Permanently set the sprint number for the next time this script runs
+          RegWrite(sprintNumber, "REG_SZ", "HKEY_CURRENT_USER\Environment", "AHK_JIRA_DEFAULT_SPRINT")
+
+          Msgbox("Current Jira sprint number changed to " sprintNumber ".", "Change Current Sprint Number")
+          savedSprintNumber := True
+        }
+      }
+    }
+
+    return savedSprintNumber
+  }
+
+
+  /**
+   *  Tries to find a story to open
+   *    - Searches the selected text
+   *    - Searches for a ConEmu/Cmder window with a window title with a story number
+   *    - Searches for a Mintty (comes w/Git Bash) window title with a story number
+   * 
+   *  @param selectedText       The selected text
+   *  @return                   The found story number, else ""
+   */
+  FindStoryNumber(selectedText) {
+    storyNumber := this.SearchSelectedTextForJiraStoryNumber(selectedText) 
+                   || this.SearchWindowsForJiraStoryNumber("ahk_exe i)\\conemu64\.exe$ ahk_class VirtualConsoleClass") 
+                   || this.SearchWindowsForJiraStoryNumber("ahk_exe i)\\mintty\.exe$ ahk_class mintty") 
+                   || ""
+
+    if (StrLen(storyNumber) > 0) {
+      ; Ensure there is a hyphen between the project name and story number
+      storyNumber := RegExReplace(storyNumber, "[\s_]", "")
+      if (InStr(storyNumber, "-") = 0) {
+        storyNumber := RegExReplace(storyNumber, "(\d+)", "-$1")
+      }
+    }
+
+    return storyNumber
+  }
 
 
   /**
    *  Builds the url for a specific story
    * 
-   *  @param storyNumber        The Jira story number
+   *  @param storyNumber        The story number
    *  @return                   The url for that story
    */
   BuildStoryUrl(storyNumber) {
@@ -91,22 +153,23 @@ class Jira
 
 
   /**
-   *  Builds the url for the current sprint board
+   *  Builds the url for a specific sprint board
    * 
-   *  @return    The url for thecurrent sprint board
+   *  @param sprintNumber       The sprint number
+   *  @return                   The url for that sprint board
    */
-  BuildSprintBoardUrl() {
-    return this.BaseUrl "/secure/RapidBoard.jspa?rapidView=" this.DefaultRapidKey "&projectKey=" this.DefaultProjectKey "&sprint=" this.DefaultSprint
+  BuildSprintBoardUrl(sprintNumber) {
+    return this.BaseUrl "/secure/RapidBoard.jspa?rapidView=" this.DefaultRapidKey "&projectKey=" this.DefaultProjectKey "&sprint=" sprintNumber
   }
 
 
   /**
    *  Searches the selected text for a Jira story number
    * 
-   *  @return        The Jira story number, or else "" if not found
+   *  @param selectedText       The selected text
+   *  @return                   The Jira story number, or else "" if not found
    */
-  SearchSelectedTextForJiraStoryNumber() {
-    selectedText := GetSelectedTextUsingClipboard()
+  SearchSelectedTextForJiraStoryNumber(selectedText) {
     storyNumber := ""
 
     if (StrLen(selectedText) > 0) {
