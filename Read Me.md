@@ -22,7 +22,8 @@
 ✦ c                   Windows (AHK)    Calendar
 ✦ g                   Windows (AHK)    Google search for selected text
 ✦ i                   Windows (AHK)    Inbox
-✦ j                   Windows (AHK)    JIRA- current project board
+✦ j                   Windows (AHK)    JIRA- if a Jira sprint board's url is selected, update the sprint number
+                                             else open current project board
 ✦ ^ j                 Windows (AHK)    JIRA- open selected story number
 ✦ m                   Windows (AHK)    Music/Spotify
 ✦ p                   Windows (AHK)    Parsec/Personal computer
@@ -32,6 +33,8 @@
                                          - Search repositories for selected text
                                          - Event schema repository
 ✦ t                   Windows (AHK)    Terminal/Cmder/bash
+✦ w                   Windows (AHK)    Wiki/Confluence
+✦ ^ w                 Windows (AHK)    Wiki/Confluence- search for selected text
 PrintScreen           Windows (AHK)    Windows screenshot tool
 
 ### Other Stuff
@@ -142,33 +145,43 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Does CapsLock still get stuck? Is it "fixed"?
 - Does Spotify now always open? YES
 ### Definitely Do These Things
-- How easily update new sprint variable? Does this work?
-    Would be great to add another hotkey (MAYBE ✦ ^ + J) where I open the new sprint board, select the url, and hit the hotkey. It'd parse out the sprint #, set the env var, and run this script.
-      Code for setting env var is here: https://github.com/iseahound/Environment.ahk
-      Can I just use SETX ??
-      "HKEY_CURRENT_USER\Environment\AHK_JIRA_DEFAULT_SPRINT". 
-      SendMessage 0x1A, 0, "Environment",, ahk_id 0xFFFF ; 0x1A is WM_SETTINGCHANGE
-Add new user env variable: reg add "HKEY_CURRENT_USER\Environment" /v shared_dir /d "c:\shared" /t REG_SZ. Use REG_EXPAND_SZ for paths containing other %% variables.
-    MUST stop and restart AutoHotkey- reload the script doesn't work. Work\Restart.bat.
-    DON'T NEED TO DO THIS: "taskkill /IM explorer.exe /F" and "explorer.exe"
 - Other automation ideas
-    - Window management
-        H left         HS       Snap active window to left half/third/two-thirds of the screen
-        H right        HS       Snap active window to right half/third/two-thirds of the screen
-        H up           HS       Snap active window to top half/third/two-thirds of the screen
-        H down         HS       Snap active window to top half/third/two-thirds of the screen
-    - Focusing/studying   : Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
-        - Should be able to do this in AHK GUI
-        H ^ f ??       HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
-                                which also sets Slack statuses to heads-down.
-        H ^ s ??       HS       Studying. Starts Do Not Disturb timer for 60 minutes,
-                                which also sets Slack statuses to books and opens udemy.com.
+    - EASY
+        - ✦ ^ g     - Use Google search to try to fix the selected text
+                        CODED- NEED TO EVALUATE HOW USEFUL THIS REALLY IS
+        - ✦ ^ + g   - grammarly
+                        IS THE APP STILL DIFFICULT TO AUTOMATE? DOES UIA FIX THIS?
+                        IS IT EVEN NECESSARY? THE GRAMMARLY APP INTEGRATES INTO
+                        EVERYTHING AND SEEMS OUT-OF-THE-WAY.
+                           THIS WOULD KILL THE GOOGLE SEARCH THING ABOVE.
+       
+        - ✦ v       - open vs code
+        - ✦ ^ v     - vs code and auto format
+    - MORE COMPLEX
+        - Window management
+            H left         HS       Snap active window to left half/third/two-thirds of the screen
+            H right        HS       Snap active window to right half/third/two-thirds of the screen
+            H up           HS       Snap active window to top half/third/two-thirds of the screen
+            H down         HS       Snap active window to top half/third/two-thirds of the screen
+        - Focusing/studying   : Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
+            - Should be able to do this in AHK GUI
+            H ^ f ??       HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
+                                    which also sets Slack statuses to heads-down.
+            H ^ s ??       HS       Studying. Starts Do Not Disturb timer for 60 minutes,
+                                    which also sets Slack statuses to books and opens udemy.com.
 - Watch YouTube AHK playlist
 - Learn about UIA, specifically for improving my Mute VOIP
     - https://www.the-automator.com/automate-any-program-with-ui-automation/
+- I have code to do url encode/decode in old code: https://github.com/brianekummer/autohotkey-old/blob/master/My%20Automations%20Utilities.ahk
+    
 ### Maybe Do These
 - Is there any use for AppsKey (context menu)?
 - GUIs are so good w/AHK, what can I do with it?
+- From my old automations: https://github.com/brianekummer/autohotkey-old/blob/master/My%20Automations.ahk
+    - WHAT KEYCODES?     - plain text paste
+
+
+
 - Other automation ideas
     - Visual Studio
         - Moved Solution Explorer to left side, pinned

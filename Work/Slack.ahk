@@ -30,12 +30,12 @@ class Slack {
 
     this.Statuses := Map(
       "none", this.BuildStatus("", "|", 0),
-      "meeting", this.BuildStatus("SLACK_STATUS_MEETING", "In a meeting|:spiral_calendar_pad:", 0), 
-      "workingInOffice", this.BuildStatus("SLACK_STATUS_WORKING_OFFICE", "In the office|:cityscape:", 0), 
+      "meeting", this.BuildStatus("SLACK_STATUS_MEETING", "Meeting|:spiral_calendar_pad:", 0), 
+      "workingInOffice", this.BuildStatus("SLACK_STATUS_WORKING_OFFICE", "Office|:cityscape:", 0), 
       "workingRemotely", this.BuildStatus("SLACK_STATUS_WORKING_REMOTELY", "Working remotely|:house_with_garden:", 0),
       "vacation", this.BuildStatus("SLACK_STATUS_VACATION", "Vacationing|:palm_tree:", 0), 
-      "lunch", this.BuildStatus("SLACK_STATUS_LUNCH", "At lunch|:hamburger:", 0), 
-      "dinner", this.BuildStatus("SLACK_STATUS_DINNER", "At dinner|:poultry_leg:", 0), 
+      "lunch", this.BuildStatus("SLACK_STATUS_LUNCH", "Lunch|:hamburger:", 0), 
+      "dinner", this.BuildStatus("SLACK_STATUS_DINNER", "Dinner|:poultry_leg:", 0), 
       "brb", this.BuildStatus("SLACK_STATUS_BRB", "Be Right Back|:brb:", 0), 
       "playing", this.BuildStatus("SLACK_STATUS_PLAYING", "Playing|:8bit:", 0)
     )
@@ -100,7 +100,7 @@ class Slack {
    *  Now that I have both a work and a personal Slack account, we're just getting the status of the first 
    *  (work) account.
    * 
-   *  @return        The emoji for my current Slack status
+   *  @return                    The emoji for my current Slack status
    */
   GetStatusEmoji() {
     try {
@@ -129,7 +129,7 @@ class Slack {
   /**
    *  Runs or activates Slack app
    * 
-   *  @param shortcut        The shortcut key to send to the Slack app after it is run or activated
+   *  @param shortcut            The shortcut key to send to the Slack app after it is run or activated
    */
    RunOrActivateSlack(shortcut := "") {
     RunOrActivateApp("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder "\Slack\Slack.exe")
@@ -142,11 +142,11 @@ class Slack {
   /**
    *  Simple functions to set a specific status
    */
-  SetStatusPlaying()     => this.SetSlackHomeStatus("playing")
+  SetStatusPlaying()     => this.SetSlackHomeStatusAndPresence("playing", "auto")
   SetStatusNone()        => this.SetStatusAndPresence("none", "auto")
-  SetStatusMeeting()     => this.SetStatusAndPresence("meeting", "auto")
-  SetStatusBeRightBack() => this.SetStatusAndPresence("brb", "away")
-  SetStatusVacation()    => this.SetStatusAndPresence("vacation", "away")
+  SetStatusMeeting()     => this.SetSlackWorkStatusAndPresence("meeting", "auto")
+  SetStatusBeRightBack() => this.SetSlackWorkStatusAndPresence("brb", "away")
+  SetStatusVacation()    => this.SetSlackWorkStatusAndPresence("vacation", "away")
 
 
 
@@ -155,9 +155,9 @@ class Slack {
    */
   SetStatusWorking() {
     if AmAtOffice() {
-      this.SetStatusAndPresence("workingInOffice", "auto")
+      this.SetSlackWorkStatusAndPresence("workingInOffice", "auto")
     } else {
-      this.SetStatusAndPresence("workingRemotely", "auto")
+      this.SetSlackWorkStatusAndPresence("workingRemotely", "auto")
     }
   }
 
@@ -165,13 +165,13 @@ class Slack {
   /**
    *  Sets my status to either lunch or dinner, depending on the current time
    * 
-   *  @param lunchIsBeforeHour     Any time before this hour is considered lunch
+   *  @param lunchIsBeforeHour   Any time before this hour is considered lunch
    */
   SetStatusEating(lunchIsBeforeHour) {
     if (A_Hour < lunchIsBeforeHour) {
-      this.SetStatusAndPresence("lunch", "away")
+      this.SetSlackWorkStatusAndPresence("lunch", "away")
     } else {
-      this.SetStatusAndPresence("dinner", "away")
+      this.SetSlackWorkStatusAndPresence("dinner", "away")
     }
   }
 
@@ -218,8 +218,8 @@ class Slack {
    *  Now I have a work and a personal Slack account, so I have two Slack tokens. So we'll loop through them
    *  and send the status update to both.
    * 
-   *  @param newStatusKey       The status key of the new status (the key from this.Statuses)
-   *  @param newPresence        The new presence (auto|away)
+   *  @param newStatusKey        The status key of the new status (the key from this.Statuses)
+   *  @param newPresence         The new presence (auto|away)
    */
   SetStatusAndPresence(newStatusKey, newPresence := "") {
     this.SetStatus(this.Statuses[newStatusKey])
@@ -230,17 +230,23 @@ class Slack {
   /**
    *  Set Slack status for home and away
    * 
-   *  @param newStatusKey       The status key of the new status (the key from this.Statuses)
+   *  @param newStatusKey        The status key of the new status (the key from this.Statuses)
    */
-  SetSlackHomeStatus(newStatusKey) => this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[2]])
-  SetSlackWorkStatus(newStatusKey) => this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[1]])
+  SetSlackHomeStatusAndPresence(newStatusKey, newPresence := "") {
+    this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[2]])
+    this.SetPresence(newPresence, [this.Tokens[2]])
+  }
+  SetSlackWorkStatusAndPresence(newStatusKey, newPresence := "") {
+    this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[1]])
+    this.SetPresence(newPresence, [this.Tokens[1]])
+  }
   
 
   /**
-   *  Sets my Slack status for a single account
+   *  Sets my Slack status for one or more accounts
    * 
-   *  @param newStatus       The status object of the new status, contains properties text, emoji, expiration
-   *  @param tokens          The array of tokens for my Slack accounts
+   *  @param newStatus           The status object of the new status, contains properties text, emoji, expiration
+   *  @param tokens              The array of tokens for my Slack accounts. Defaults to all my accounts.
    */
   SetStatus(newStatus, tokens := this.Tokens) {
     webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
@@ -256,19 +262,21 @@ class Slack {
 
 
   /**
-   *  Set presence for each of my Slack accounts
+   *  Set presence for for one or more accounts
    * 
-   *  @param newPresence        The new presence (auto|away)
-   *  @param tokens          The array of tokens for my Slack accounts
+   *  @param newPresence         The new presence (auto|away)
+   *  @param tokens              The array of tokens for my Slack accounts. Defaults to all my accounts.
    */
   SetPresence(newPresence, tokens := this.Tokens) {
-    webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
+    if (StrLen(newPresence) > 0) {
+      webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
 
-    for i, thisToken in tokens {
-      webRequest.Open("POST", "https://slack.com/api/users.setPresence?presence=" newPresence)
-      webRequest.SetRequestHeader("Content-Type", "application/application/json")
-      webRequest.SetRequestHeader("Authorization", "Bearer " thisToken)
-      webRequest.Send("")
+      for i, thisToken in tokens {
+        webRequest.Open("POST", "https://slack.com/api/users.setPresence?presence=" newPresence)
+        webRequest.SetRequestHeader("Content-Type", "application/application/json")
+        webRequest.SetRequestHeader("Authorization", "Bearer " thisToken)
+        webRequest.Send("")
+      }
     }
   }
 

@@ -53,6 +53,9 @@ REM SETX AHK_SOURCE_CODE_SEARCH_CODE_URL "https://xxxxxxxxx.xxx/search?account=x
 REM SETX AHK_SOURCE_CODE_SEARCH_REPOSITORIES_URL "https://xxxxxxxxx.xxx/repositories?search="
 REM SETX AHK_SOURCE_CODE_URL "https://xxxxxxxxx.xxx/dashboard/overview"
 
+REM SETX AHK_WIKI_URL "https://xxxxxxxxxxx/wiki/home"
+REM SETX AHK_WIKI_SEARCH_URL "https://xxxxxxxxxx/wiki/search?text="
+
 REM --- Slack
 REM - Slack security tokens are pipe-delimited, work MUST be first
 REM - OPTIONAL: If you want to override the emoji for various statuses, you can override them

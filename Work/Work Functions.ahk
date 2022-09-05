@@ -69,7 +69,7 @@ SlackStatus_BeRightBack() {
  * 
  *  If I'm working at home, then turn off my smart devices in my office
  * 
- *  @param lunchIsBeforeHour     Any time before this hour is considered lunch
+ *  @param lunchIsBeforeHour       Any time before this hour is considered lunch
  */
 SlackStatus_Eating(lunchIsBeforeHour) {
   MySlack.SetStatusEating(lunchIsBeforeHour)
@@ -85,16 +85,11 @@ SlackStatus_Eating(lunchIsBeforeHour) {
 /**
  *  Opens source code 
  * 
- *  - If Ctrl is not pressed, then the dashboard/overview is opened
- *  - If Ctrl is pressed, a pop-up menu lets me select between
- *      - Searching for code that matches the selected text
- *      - Searching for a repository whose name matches the selected text
- *      - Our event schema repository
- * 
- *  @param ctrlPressed
+ *  @param showPopupMenu           If set, the source code popup menu is shown
+ *                                 else the dashboard/overview is opened
  */
-OpenSourceCode(ctrlPressed) {
-  if (ctrlPressed) {
+OpenSourceCode(showPopupMenu) {
+  if (showPopupMenu) {
     SourceCodeMenu.Show()
   } else {
     RunOrActivateApp("Overview", Configuration.Work.SourceCode.Url)
@@ -144,8 +139,8 @@ SourceCodeMenuHandler(itemName, *) {
  *  refuses to run when Outlook is run as an administrator.  Because we are running this AHK script 
  *  as an administrator, we cannot simply run Outlook.  Instead, we must run it as a standard user.
  *  
- *  @param shortcut       If passed, is the shortcut/keystrokes that should be sent to Outlook
- *                        after it has been run or activated
+ *  @param shortcut                If passed, is the shortcut/keystrokes that should be sent to Outlook
+ *                                 after it has been run or activated
  */
 RunOrActivateOutlook(shortcut := "") {
   outlookTitle := "i)" Configuration.Work.UserEmailAddress "\s-\sOutlook"
@@ -176,7 +171,7 @@ RunOrActivateOutlook(shortcut := "") {
  *        Run, %ComSpec% /c ""C:\Program Files\Git\git-bash.exe" --hide c:\users\brian-kummer\Personal\Code\git\home-automation\ha.sh %command% && sleep 10 &",, Hide
  *        Run, %ComSpec% /c ""C:\Program Files\Git\git-bash.exe" c:\users\brian-kummer\Personal\Code\git\home-automation\ha.sh %command% &",, Hide
  * 
- *  @param command        The command to execute
+ *  @param command                 The command to execute
  */
 HomeAutomationCommand(command) {
   workingFolder := Configuration.MyPersonalFolder "\Code\git\home-automation"
@@ -188,7 +183,7 @@ HomeAutomationCommand(command) {
 /**
  *  Creates a random GUID
  * 
- *  @param wantUppercase        If True, GUID is all uppercase, else is all lowercase
+ *  @param wantUppercase           If True, GUID is all uppercase, else is all lowercase
  */
 CreateRandomGUID(wantUppercase) {
   newGUID := ComObject("Scriptlet.TypeLib").Guid
@@ -196,4 +191,22 @@ CreateRandomGUID(wantUppercase) {
 	newGUID := StrReplace(NewGUID, "}")
  
   return wantUppercase ? StrUpper(newGUID) : StrLower(newGUID)
+}
+
+
+/**
+ *  Opens the wiki
+ * 
+ *  @param searchForSelectedText   If set and text is selected, then the selected text is 
+ *                                 searched for in the wiki, else the wiki home page is opened
+ */
+OpenWiki(searchForSelectedText) {
+  if (searchForSelectedText) {
+    selectedText := GetSelectedTextUsingClipboard()
+    if (StrLen(selectedText) > 0) {
+      RunOrActivateApp("Search - Confluence", URI_Encode(Configuration.Work.Wiki.SearchUrl selectedText))
+      return
+    } 
+  }
+  RunOrActivateApp("Home - Confluence", Configuration.Work.Wiki.Url)
 }
