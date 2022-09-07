@@ -120,10 +120,14 @@ SourceCodeMenuHandler(itemName, *) {
   selectedText := GetSelectedTextUsingClipboard()
 
   if (itemName ~= "Code") {
-    searchCriteria := Configuration.Work.SourceCode.SearchCodePrefix " " selectedText
-    AlwaysRunApp("Search — Bitbucket", Configuration.Work.SourceCode.SearchCodeUrl URI_Encode(searchCriteria))
+    ; More often than not, I want to search for the selected text as a phrase, instead 
+    ; of as individual words, so I want the selected text enclosed in double quotes. But,
+    ; our source code search doesn't want the double quotes URL encoded. So I must 
+    ; separately URL encode the prefix and the selected text and mash them together.
+    searchCriteria := UriEncode(Configuration.Work.SourceCode.SearchCodePrefix " ") '"' UriEncode(selectedText) '"'
+    AlwaysRunApp("Search — Bitbucket", Configuration.Work.SourceCode.SearchCodeUrl searchCriteria)
   } else if (itemName ~= "Repositories") {
-    AlwaysRunApp("Repositories — Bitbucket", Configuration.Work.SourceCode.SearchRepositoriesUrl URI_Encode(GetSelectedTextUsingClipboard()))
+    AlwaysRunApp("Repositories — Bitbucket", Configuration.Work.SourceCode.SearchRepositoriesUrl UriEncode(GetSelectedTextUsingClipboard()))
   } else if (itemName ~= "Schema") {
     RunOrActivateApp("eventschema", Configuration.Work.SourceCode.SchemaUrl)
   } else if (itemName ~= "Cance&l") {
@@ -204,7 +208,7 @@ OpenWiki(searchForSelectedText) {
   if (searchForSelectedText) {
     selectedText := GetSelectedTextUsingClipboard()
     if (StrLen(selectedText) > 0) {
-      RunOrActivateApp("Search - Confluence", URI_Encode(Configuration.Work.Wiki.SearchUrl selectedText))
+      RunOrActivateApp("Search - Confluence", UriEncode(Configuration.Work.Wiki.SearchUrl selectedText))
       return
     } 
   }

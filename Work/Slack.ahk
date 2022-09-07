@@ -144,9 +144,9 @@ class Slack {
    */
   SetStatusPlaying()     => this.SetSlackHomeStatusAndPresence("playing", "auto")
   SetStatusNone()        => this.SetStatusAndPresence("none", "auto")
-  SetStatusMeeting()     => this.SetSlackWorkStatusAndPresence("meeting", "auto")
-  SetStatusBeRightBack() => this.SetSlackWorkStatusAndPresence("brb", "away")
-  SetStatusVacation()    => this.SetSlackWorkStatusAndPresence("vacation", "away")
+  SetStatusMeeting()     => this.SetStatusAndPresence("meeting", "auto")
+  SetStatusBeRightBack() => this.SetStatusAndPresence("brb", "away")
+  SetStatusVacation()    => this.SetStatusAndPresence("vacation", "away")
 
 
 
@@ -155,9 +155,9 @@ class Slack {
    */
   SetStatusWorking() {
     if AmAtOffice() {
-      this.SetSlackWorkStatusAndPresence("workingInOffice", "auto")
+      this.SetStatusAndPresence("workingInOffice", "auto")
     } else {
-      this.SetSlackWorkStatusAndPresence("workingRemotely", "auto")
+      this.SetStatusAndPresence("workingRemotely", "auto")
     }
   }
 
@@ -169,9 +169,9 @@ class Slack {
    */
   SetStatusEating(lunchIsBeforeHour) {
     if (A_Hour < lunchIsBeforeHour) {
-      this.SetSlackWorkStatusAndPresence("lunch", "away")
+      this.SetStatusAndPresence("lunch", "away")
     } else {
-      this.SetSlackWorkStatusAndPresence("dinner", "away")
+      this.SetStatusAndPresence("dinner", "away")
     }
   }
 

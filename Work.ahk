@@ -101,7 +101,7 @@ return
   {
     ; Only do this if there was selected text
     whr := ComObject("Msxml2.XMLHTTP")
-    whr.Open("GET", "https://www.google.com/search?q=" URI_Encode(A_Clipboard), false)
+    whr.Open("GET", "https://www.google.com/search?q=" UriEncode(A_Clipboard), false)
     whr.Send()
     contents := whr.ResponseText
 

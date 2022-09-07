@@ -218,19 +218,21 @@ AmConnectedToInternet(flag := 0x40) {
 
 
 /**
- *  URL encodes a string
+ *  Functions to URL encode/decode a string
+ *  https://www.autohotkey.com/boards/viewtopic.php?t=86419
  * 
- *  @param str      The string to encode
- *  @param all
- *  @return         The URL-encoded string
+ *  @param str      The string to encode/decode
+ *  @return         The URL-encoded/decoded string
  */
-URI_Encode(str, all := False) {
-  Static doc := ComObject("HTMLfile")
-  try {
-    doc.write("<body><script>document.body.innerText = encodeURI" . (all ? "Component" : "") . '("' . str . '");</script>')
-    ;Return, doc.body.innerText, doc.body.innerText := ""
-    return doc.body.innerText
-  }
+UriEncode( str )
+{
+  ( obj := ComObject("HTMLfile") ).write('<p>/</p><script>document.getElementsByTagName("p")[0].innerHTML=encodeURI("' str '");</script>')
+  return obj.getElementsByTagName("p")[0].innerHTML
+}
+UriDecode( str )
+{
+  ( obj := ComObject("HTMLfile") ).write('<p>/</p><script>document.getElementsByTagName("p")[0].innerHTML=decodeURI("' str '");</script>')
+  return obj.getElementsByTagName("p")[0].innerHTML
 }
 
 

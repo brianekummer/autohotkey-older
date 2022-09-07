@@ -33,6 +33,7 @@
                                          - Search repositories for selected text
                                          - Event schema repository
 ✦ t                   Windows (AHK)    Terminal/Cmder/bash
+✦ v                   Windows (AHK)    VS Code
 ✦ w                   Windows (AHK)    Wiki/Confluence
 ✦ ^ w                 Windows (AHK)    Wiki/Confluence- search for selected text
 PrintScreen           Windows (AHK)    Windows screenshot tool
@@ -88,7 +89,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
   ✦ ! p               Slack (AHK)      Status - Playing. Sets home Slack status to 8bit.
   ✦ ! w               Slack (AHK)      Status - Working. Clears Slack statuses and sets presence to auto.
 #### Spotify
-  ^ mousewheel        Spotify (AHK)     Decrease/increase font size
+  ^ mousewheel        Spotify (AHK)    Decrease/increase font size
 #### Typora
   ^ mousewheel        Typora (AHK)     Decrease/increase font size
   ✦ [                 Typora (AHK)     Toggle left sidebar
@@ -158,7 +159,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
         - ✦ v       - open vs code
         - ✦ ^ v     - vs code and auto format
     - MORE COMPLEX
-        - Window management
+        - Window management - THIS IS ONLY MILDLY USEFUL ONCE UPGRADE TO WINDOWS 11
             H left         HS       Snap active window to left half/third/two-thirds of the screen
             H right        HS       Snap active window to right half/third/two-thirds of the screen
             H up           HS       Snap active window to top half/third/two-thirds of the screen
@@ -190,7 +191,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
         - Can I get it working with AHK??? ✦ [
             - Can't tell by the active window. maybe I can loop through all the active windows in
     - VS Code
-        ✦ v    Windows (AHK)    VS Code
         ✦ ^ v  Open VS Code, create a new doc, paste selected text, then format it
     - Customizing App Behavior
         - Slack:
