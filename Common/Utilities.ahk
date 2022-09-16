@@ -60,8 +60,8 @@ AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10) {
 /**
  *  Activate a window and send it keystrokes
  * 
- *  @param windowId    The window id of the window to activate and send keystrokes to
- *  @param keystroke   The keystrokes to send
+ *  @param windowId              The window id of the window to activate and send keystrokes to
+ *  @param keystroke             The keystrokes to send
  *  @return 
  */
 ActivateWindowByIdAndSendKeystroke(windowId, keystroke) {
@@ -80,7 +80,7 @@ ActivateWindowByIdAndSendKeystroke(windowId, keystroke) {
  *  Get the text that is currently selected by using the clipboard, while preserving the clipboard's 
  *  current contents.
  *  
- *  @return       The text that was selected when this function was called
+ *  @return                      The text that was selected when this function was called
 */
 GetSelectedTextUsingClipboard() {
   selectedText := ""
@@ -102,8 +102,8 @@ GetSelectedTextUsingClipboard() {
  *    - This is very simple code, but it shows the command box as it runs
  *    - From https://autohotkey.com/docs/commands/Run.htm
  * 
- *  @param command    The command to run
- *  @return           The standard output from running command
+ *  @param command               The command to run
+ *  @return                      The standard output from running command
  */
 RunWaitOne(command) {
   shell := ComObject("WScript.Shell")           ; WshShell object: http://msdn.microsoft.com/en-us/library/aew9yb99
@@ -118,20 +118,20 @@ RunWaitOne(command) {
  *    - No console is visible while this runs
  *    - The output is redirected to the clipboard, where this script can get it and return
  *
- *  @param command    The command to run
- *  @return           The standard output from running command
+ *  @param command               The command to run
+ *  @return                      The standard output from running command
  */
  RunWaitHidden(command) {
-	Sleep(250)                  ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
-  clipSaved := ClipboardAll()	; Save the entire clipboard
+	Sleep(250)                     ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
+  clipSaved := ClipboardAll()	   ; Save the entire clipboard
   A_Clipboard := ""
 
 	RunWait(command " | clip", , "hide")
   output := A_Clipboard
 	
-	Sleep(250)                ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
-  A_Clipboard := clipSaved  ; Restore the original clipboard. Note the use of Clipboard (not ClipboardAll).
-  clipSaved := ""			      ; Free the memory in case the clipboard was very large
+	Sleep(250)                     ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
+  A_Clipboard := clipSaved       ; Restore the original clipboard. Note the use of Clipboard (not ClipboardAll).
+  clipSaved := ""			           ; Free the memory in case the clipboard was very large
 
 	return output
 }
@@ -152,7 +152,7 @@ RunWaitOne(command) {
  *  When I upgraded AHK to v2, this no longer worked for me, so I found a modified version:
  *  https://www.autohotkey.com/boards/viewtopic.php?t=78190
  *
- *  @param prms*     The parameters to pass to the shell
+ *  @param prms*                 The parameters to pass to the shell
  */
 ShellRun(prms*) {
   shellWindows := ComObject("Shell.Application").Windows
@@ -183,8 +183,8 @@ ShellRun(prms*) {
 /**
  *  Am I near one of the specified networks?
  *
- *  @param wifiNetworks   List of wifi network names as a regex string, such as "(mycompany|mycobyod)" 
- *  @return               True if am near any of the wifi networks, else False
+ *  @param wifiNetworks          List of wifi network names as a regex string, such as "(mycompany|mycobyod)" 
+ *  @return                      True if am near any of the wifi networks, else False
  */
 AmNearWifiNetwork(wifiNetworks) {
   nearWifiNetwork := False
@@ -209,8 +209,9 @@ AmNearWifiNetwork(wifiNetworks) {
 
 /**
  *  Am I connected to a the internet?
+ *    https://www.autohotkey.com/board/topic/80587-how-to-find-internet-connection-status/ 
  * 
- *  https://www.autohotkey.com/board/topic/80587-how-to-find-internet-connection-status/ 
+ *  @return                      Returns 1 if connected to internet, else returns 0
  */
 AmConnectedToInternet(flag := 0x40) { 
   return DllCall("Wininet.dll\InternetGetConnectedState", "Str", flag, "Int", 0) 
@@ -221,15 +222,15 @@ AmConnectedToInternet(flag := 0x40) {
  *  Functions to URL encode/decode a string
  *  https://www.autohotkey.com/boards/viewtopic.php?t=86419
  * 
- *  @param str      The string to encode/decode
- *  @return         The URL-encoded/decoded string
+ *  @param str                   The string to encode/decode
+ *  @return                      The URL-encoded/decoded string
  */
-UriEncode( str )
+UriEncode(str)
 {
   ( obj := ComObject("HTMLfile") ).write('<p>/</p><script>document.getElementsByTagName("p")[0].innerHTML=encodeURI("' str '");</script>')
   return obj.getElementsByTagName("p")[0].innerHTML
 }
-UriDecode( str )
+UriDecode(str)
 {
   ( obj := ComObject("HTMLfile") ).write('<p>/</p><script>document.getElementsByTagName("p")[0].innerHTML=decodeURI("' str '");</script>')
   return obj.getElementsByTagName("p")[0].innerHTML
@@ -241,4 +242,15 @@ UriDecode( str )
  */
 LockWorkstation() {
   DllCall("user32.dll\LockWorkStation")
+}
+
+
+/**
+ *  Convert date/time to Unix timestamp
+ * 
+ *  @param dateTimeInUtc         The date/time to convert, in UTC               
+ *  @return                      The Unix date/time (epoch)
+ */
+ConvertDateTimeToUnixTimestamp(dateTimeInUtc) {
+  return DateDiff(dateTimeInUtc, 19700101000000, 'seconds')
 }

@@ -29,15 +29,15 @@ class Slack {
     this.Tokens := StrSplit(EnvGet("AHK_SLACK_TOKENS"), "|")
 
     this.Statuses := Map(
-      "none", this.BuildStatus("", "|", 0),
-      "meeting", this.BuildStatus("SLACK_STATUS_MEETING", "Meeting|:spiral_calendar_pad:", 0), 
-      "workingInOffice", this.BuildStatus("SLACK_STATUS_WORKING_OFFICE", "Office|:cityscape:", 0), 
-      "workingRemotely", this.BuildStatus("SLACK_STATUS_WORKING_REMOTELY", "Working remotely|:house_with_garden:", 0),
-      "vacation", this.BuildStatus("SLACK_STATUS_VACATION", "Vacationing|:palm_tree:", 0), 
-      "lunch", this.BuildStatus("SLACK_STATUS_LUNCH", "Lunch|:hamburger:", 0), 
-      "dinner", this.BuildStatus("SLACK_STATUS_DINNER", "Dinner|:poultry_leg:", 0), 
-      "brb", this.BuildStatus("SLACK_STATUS_BRB", "Be Right Back|:brb:", 0), 
-      "playing", this.BuildStatus("SLACK_STATUS_PLAYING", "Playing|:8bit:", 0)
+      "none",      this.BuildStatus("", "|", 0),
+      "meeting",   this.BuildStatus("SLACK_STATUS_MEETING",          "Meeting|:spiral_calendar_pad:", 0), 
+      "office",    this.BuildStatus("SLACK_STATUS_WORKING_OFFICE",   "Office|:cityscape:", 0), 
+      "remote",    this.BuildStatus("SLACK_STATUS_WORKING_REMOTELY", "Working remotely|:house_with_garden:", 0),
+      "vacation",  this.BuildStatus("SLACK_STATUS_VACATION",         "Vacationing|:palm_tree:", 0), 
+      "lunch",     this.BuildStatus("SLACK_STATUS_LUNCH",            "Lunch|:hamburger:", 0), 
+      "dinner",    this.BuildStatus("SLACK_STATUS_DINNER",           "Dinner|:poultry_leg:", 0), 
+      "brb",       this.BuildStatus("SLACK_STATUS_BRB",              "Be Right Back|:brb:", 0), 
+      "playing",   this.BuildStatus("SLACK_STATUS_PLAYING",          "Playing|:8bit:", 0),
     )
   }
   
@@ -79,10 +79,6 @@ class Slack {
         if (AmConnectedToInternet()) {
           ; I'm connected to a network
           done := True
-          ;if (AmAtOffice())
-          ;  this.SetStatus(this.Statuses["workingInOffice"])
-          ;else
-          ;  this.SetStatus(this.Statuses["workingRemotely"])
           this.SetStatusWorking()
         } else {
           ; Wait for 30 seconds and check again
@@ -142,12 +138,11 @@ class Slack {
   /**
    *  Simple functions to set a specific status
    */
-  SetStatusPlaying()     => this.SetSlackHomeStatusAndPresence("playing", "auto")
+  SetStatusPlaying()     => this.SetSlackHomeStatusAndPresence("playing", "auto", this.CalculatePlayingExpirationTime("030000"))
   SetStatusNone()        => this.SetStatusAndPresence("none", "auto")
   SetStatusMeeting()     => this.SetStatusAndPresence("meeting", "auto")
   SetStatusBeRightBack() => this.SetStatusAndPresence("brb", "away")
   SetStatusVacation()    => this.SetStatusAndPresence("vacation", "away")
-
 
 
   /**
@@ -155,9 +150,9 @@ class Slack {
    */
   SetStatusWorking() {
     if AmAtOffice() {
-      this.SetStatusAndPresence("workingInOffice", "auto")
+      this.SetStatusAndPresence("office", "auto")
     } else {
-      this.SetStatusAndPresence("workingRemotely", "auto")
+      this.SetStatusAndPresence("remote", "auto")
     }
   }
 
@@ -220,8 +215,9 @@ class Slack {
    * 
    *  @param newStatusKey        The status key of the new status (the key from this.Statuses)
    *  @param newPresence         The new presence (auto|away)
+   *  @param expiration          The expiration for this status, as a unix timestamp
    */
-  SetStatusAndPresence(newStatusKey, newPresence := "") {
+  SetStatusAndPresence(newStatusKey, newPresence := "", expiration := this.Statuses[newStatusKey].expiration) {
     this.SetStatus(this.Statuses[newStatusKey])
     this.SetPresence(newPresence)
   }
@@ -231,13 +227,15 @@ class Slack {
    *  Set Slack status for home and away
    * 
    *  @param newStatusKey        The status key of the new status (the key from this.Statuses)
+   *  @param newPresence         The new presence (auto|away)
+   *  @param expiration          The expiration for this status, as a unix timestamp
    */
-  SetSlackHomeStatusAndPresence(newStatusKey, newPresence := "") {
-    this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[2]])
+  SetSlackHomeStatusAndPresence(newStatusKey, newPresence := "", expiration := this.Statuses[newStatusKey].expiration) {
+    this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[2]], expiration)
     this.SetPresence(newPresence, [this.Tokens[2]])
   }
-  SetSlackWorkStatusAndPresence(newStatusKey, newPresence := "") {
-    this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[1]])
+  SetSlackWorkStatusAndPresence(newStatusKey, newPresence := "", expiration := this.Statuses[newStatusKey].expiration) {
+    this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[1]], expiration)
     this.SetPresence(newPresence, [this.Tokens[1]])
   }
   
@@ -247,10 +245,11 @@ class Slack {
    * 
    *  @param newStatus           The status object of the new status, contains properties text, emoji, expiration
    *  @param tokens              The array of tokens for my Slack accounts. Defaults to all my accounts.
+   *  @param expiration          The expiration for this status, as a unix timestamp
    */
-  SetStatus(newStatus, tokens := this.Tokens) {
+  SetStatus(newStatus, tokens := this.Tokens, expiration := newStatus.expiration) {
     webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
-    data := "profile={'status_text': '" newStatus.text "', 'status_emoji': '" newStatus.emoji "', 'status_expiration': " newStatus.expiration "}"
+    data := "profile={'status_text': '" newStatus.text "', 'status_emoji': '" newStatus.emoji "', 'status_expiration': " expiration "}"
 
     for i, thisToken in tokens {
       webRequest.Open("POST", "https://slack.com/api/users.profile.set")
@@ -281,10 +280,33 @@ class Slack {
   }
 
 
+/**
+ *  Calculate when I want my playing status to automatically expire
+ *
+ *  @param expirationTime        Expiration time, such as "030000" for 3:00 am
+ *  @return                      Returns expiration time as Unix timestamp
+ */
+CalculatePlayingExpirationTime(expirationTime) {
+  expirationDateTimeLocal := FormatTime(, "yyyyMMdd") expirationTime
+
+  if ((A_Hour "0000") >= expirationTime) {
+    ; We're already past the expiration time, so will expire tomorrow
+    expirationDateTimeLocal := DateAdd(expirationDateTimeLocal, 1, "day") 
+  }
+
+  ; Convert to UTC, assumes negative UTC offset (US/Canada/etc)
+  utcOffsetInHours := DateDiff(A_NowUTC, A_Now, "hours")
+  expirationDateTimeUtc := DateAdd(expirationDateTimeLocal, utcOffsetInHours, "hours")
+
+  ; Return unix timestamp
+  return ConvertDateTimeToUnixTimestamp(expirationDateTimeUtc) 
+}
 
   
 
-  /******************************  Unused Code  ******************************/
+
+
+/******************************  Unused Code  ******************************/
 
 
 

@@ -45,7 +45,7 @@ class Jira
    *      story number and set it to be our current sprint number
    *    - Else if Ctrl is pressed, try to find a specific story number to open
    * 
-   *    - If we cannot find a speciifc story, then open the current sprint board
+   *    - If we cannot find a specific story, then open the current sprint board
    */
   OpenJira() {
     openSprintBoard := True

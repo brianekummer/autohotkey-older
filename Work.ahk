@@ -70,6 +70,9 @@ MySlack.SetStatusBasedOnLocation()
 global SourceCodeMenu := Menu()
 CreateSourceCodeMenu()
 
+global IdentifiersMenu := Menu()
+global identifiers := []
+CreateIdentifiersMenu()
 return
 
 
@@ -79,7 +82,9 @@ return
 /*******************************  Debugging, troubleshooting, and proof-of-concept work  *******************************/
 
 
-;AppsKey::    Msgbox(Configuration.Work.SourceCode.SchemaUrl)
+;AppsKey:: {
+;} 
+
 
 
 ;---------------------------------------------------------------------------------------------------------------------
@@ -183,6 +188,61 @@ Volume_Mute::            ToggleMuteVOIPApps()
 
 
 /**
+ *  Pop-up menu of identifiers
+ *    ✦ =               Opens a menu of commonly used identifiers/constants. Selecting one outputs
+ *                      that constant to the currently-active window.
+ */
+ CapsLock & =:: IdentifiersMenu.Show()
+
+
+/**
+ *  Calendar
+ *    ✦ c                Run or activate Outlook and switch to the calendar, using an Outlook
+ *                       shortcut
+ */
+CapsLock & c::           RunOrActivateOutlook("^2")
+
+
+ /**
+ *  Google search
+ *    ✦ g                Search for the selected text
+ */
+  CapsLock & g::         GoogleSearch()
+
+
+/**
+ *  Inbox
+ *    ✦ i                Run or activate Outlook and switch to the inbox, using an Outlook shortcut
+ */
+CapsLock & i::           RunOrActivateOutlook("^+I")
+
+
+/**
+ *  IntelliJ
+ *    ✦ l                UNUSED - Start IntelliJ
+ *    ✦ [                Toggle left sidebar
+ *
+ */
+;CapsLock & l::            RunOrActivateAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
+#HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
+  CapsLock & [::         SendInput("!1")
+#HotIf
+
+
+/**
+ *  Jira
+ *    ✦ j                Opens the current sprint board
+ *    ✦ ^ j              Search for a specific story number to open
+ *                         - If the selected text looks like a Jira story number (e.g. 
+ *                           PROJECT-1234), then open that story
+ *                         - If the Git Bash window has text that looks like a Jira story number, 
+ *                           then open that story
+ *                         - Last resort is to open the current sprint board
+ */
+CapsLock & j::           MyJira.OpenJira()
+
+
+/**
  *  Slack
  *    ✦ k                Open Slack
  *    ✦ ^ k              Open Slack and go to the "jump to" window
@@ -204,60 +264,25 @@ Volume_Mute::            ToggleMuteVOIPApps()
  *     ✦ ! w             Status: Working
  *                         - Sets Slack status to office/remote depending on my location
  */
-CapsLock & k::           MySlack.RunOrActivateSlack((GetKeyState("Ctrl") ? "^k" : ""))    
+ CapsLock & k::           MySlack.RunOrActivateSlack((GetKeyState("Ctrl") ? "^k" : ""))    
 
-#HotIf WinActive("ahk_exe i)\\slack\.exe$", )
-  ^wheelup::             SendInput("^{=}")
-  ^wheeldown::           SendInput("^{-}")
-  CapsLock & [::         SendInput("^+{d}")
-  ^k::                   SendInput("^+{u}")
-#HotIf
-
-#HotIf GetKeyState("Alt")
-  CapsLock & b::         SlackStatus_BeRightBack()
-  CapsLock & c::         MySlack.SetStatusNone()
-  CapsLock & e::         SlackStatus_Eating(15)    ; Lunch is before 3:00pm/15:00
-  CapsLock & m::         MySlack.SetStatusMeeting()
-  CapsLock & p::         MySlack.SetStatusPlaying()
-  CapsLock & w::         MySlack.SetStatusWorking()
-#HotIf
-
-
-/**
- *  Calendar
- *    ✦ c                Run or activate Outlook and switch to the calendar, using an Outlook
- *                       shortcut
- */
-CapsLock & c::           RunOrActivateOutlook("^2")
-
-
-/**
- *  Inbox
- *    ✦ i                Run or activate Outlook and switch to the inbox, using an Outlook shortcut
- */
-CapsLock & i::           RunOrActivateOutlook("^+I")
-
-
-/**
- *  Jira
- *    ✦ j                Opens the current sprint board
- *    ✦ ^ j              Search for a specific story number to open
- *                         - If the selected text looks like a Jira story number (e.g. 
- *                           PROJECT-1234), then open that story
- *                         - If the Git Bash window has text that looks like a Jira story number, 
- *                           then open that story
- *                         - Last resort is to open the current sprint board
- */
-CapsLock & j::           MyJira.OpenJira()
-
-
-/**
- *  Google search
- *    ✦ g               Search for the selected text
- */
-CapsLock & g::           GoogleSearch()
-
-
+ #HotIf WinActive("ahk_exe i)\\slack\.exe$", )
+   ^wheelup::             SendInput("^{=}")
+   ^wheeldown::           SendInput("^{-}")
+   CapsLock & [::         SendInput("^+{d}")
+   ^k::                   SendInput("^+{u}")
+ #HotIf
+ 
+ #HotIf GetKeyState("Alt")
+   CapsLock & b::         SlackStatus_BeRightBack()
+   CapsLock & c::         MySlack.SetStatusNone()
+   CapsLock & e::         SlackStatus_Eating(15)    ; Lunch is before 3:00pm/15:00
+   CapsLock & m::         MySlack.SetStatusMeeting()
+   CapsLock & p::         MySlack.SetStatusPlaying()
+   CapsLock & w::         MySlack.SetStatusWorking()
+ #HotIf
+ 
+ 
 /**
  *  Music/Spotify
  *    ✦ m                Run or activate Spotify
@@ -289,6 +314,14 @@ CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
 
 
 /**
+ *  Generate a random UUID/GUID
+ *    ✦ u                Generate random UUID (lowercase)
+ *    ✦ + u              Generate random UUID (uppercase)
+ */
+ CapsLock & u::           SendInput(CreateRandomGUID(GetKeyState("Shift")))
+ 
+ 
+ /**
  *  Visual Studio
  *    ✦ [               Toggle left sidebar
  *                       Use Shift+Esc to exit, or click outside
@@ -301,15 +334,11 @@ CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
 
 
 /**
- *  IntelliJ
- *    ✦ l                UNUSED - Start IntelliJ
- *    ✦ [                Toggle left sidebar
- *
+ *  Wiki
+ *    ✦ w                Open wiki page
+ *    ✦ ^ w              Search the wiki for the selected text
  */
-;CapsLock & l::            RunOrActivateAppAsAdmin("ahk_exe i)\\idea64\.exe$", Configuration.WindowsProgramFilesFolder "\JetBrains\IntelliJ IDEA Community Edition 2021.2.3\bin\idea64.exe",, 20)
-#HotIf WinActive("ahk_exe i)\\idea64\.exe$", )
-  CapsLock & [::         SendInput("!1")
-#HotIf
+ CapsLock & w::           OpenWiki(GetKeyState("Ctrl"))
 
 
 /**
@@ -354,23 +383,6 @@ CapsLock & Numpad1::     HomeAutomationCommand("officelitebottom brightness " (G
 CapsLock & Numpad2::     HomeAutomationCommand("officelitebottom toggle")
 CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "100" : "+"))
 
-
-/**
- *  Generate a random UUID/GUID
- *    ✦ u                Generate random UUID (lowercase)
- *    ✦ + u              Generate random UUID (uppercase)
- */
-CapsLock & u::           SendInput(CreateRandomGUID(GetKeyState("Shift")))
-
-
-
-/**
- *  Wiki
- *    ✦ w                Open wiki page
- *    ✦ ^ w              Search the wiki for the selected text
- */
-CapsLock & w::           OpenWiki(GetKeyState("Ctrl"))
-  
 
 
 
