@@ -6,6 +6,10 @@
  * 
  *  Modifiers
  *    ^ = Ctrl     ! = Alt     + = Shift     # = Windows      ✦ = CapsLock/Hyper
+ * 
+ *  Notes
+ *    - This MUST be run as administrator. See Utilities.VerifyRunningAsAdmin() for tips
+ *      on how to do this.
  */
 
 

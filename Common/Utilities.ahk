@@ -10,13 +10,39 @@
 
 
 /**
- *  Verify this is running as admin, else give instructions for how to make it
- *  run as admin.
+ *  Verify this is running as admin, else point me to this code for tips.
+ *   
+ *  I've stopped installing AHK and am instead using AHK Portable, so I cannot 
+ *  use the old RunAsAdmin() function that I used to use, since (I believe) it
+ *  requires that Windows has a program association for the .ahk extension.
+ *  So I see two options:
+ *    1. Create a Windows shortcut to the AutoHotkey*.exe I'm using and pass
+ *       it the name of the script to run:
+ *         - "Target" is the exe name and parameters, like this:
+ *             "D:\...\AutoHotkey64.exe" /script "D:\...Work.ahk"
+ *         - ADDITIONALLY, the shortcut must run AHK as an admin, which is 
+ *           achieved by clicking the "Advanced" button and checking "Run as admin"
+ *         - HOWEVER, this does not work if AHK is on a removable drive, like a
+ *           flash drive, or a SD card
+ *    2. Use Windows Task Scheduler to start the script every time I log in.
+ *         - Start Task Scheduler
+ *         - Action => Create Task (not a Basic task)
+ *         - General tab:
+ *             Select "Run only when user is logged in"
+ *         - Triggers tab:
+ *             At log on of ...\Brian-Kummer
+ *         - Actions tab:  (quote it exactly as shown below)
+ *             Start a program
+ *               Program/script: "D:\Portable Apps\AHK v2\AutoHotkey64.exe"
+ *               Add arguments:  /script "D:\Personal\Code\git\autohotkey\Work.ahk"
+ *               Start in:       D:\Personal\Code\git\autohotkey
+ *           If the script doesn't start the next time I log in, then look in the 
+ *           event log for details:  
+ *             Applications and Services Logs => Microsoft => Windows => TaskScheduler => Operational
  */
  VerifyRunningAsAdmin() {
   if (! A_IsAdmin) {
-    MsgBox("This script must be run as administrator.`n`nSince I'm running AHK Portable, this script is started with a Windows shortcut whose Target specifies the AHK exe and the script name, something like this:`n     `"D:\...\AutoHotkey64.exe`" /script `"D:\...Work.ahk`"`n`nAdditionally, the shortcut must run AHK as an admin, which is achieved by clicking the `"Advanced`" button and checking `"Run as admin`".", 
-      "Must Run as Admin", "OK Iconx")
+    MsgBox("This script must be run as administrator. See comments in function VerifyRunningAsAdmin() for tips on how to accomplish this.", "Must Run as Admin", "OK Iconx")
     ExitApp()
   }
 }
