@@ -61,9 +61,12 @@ CapsLock:: return
     || WinActive("iHeartRadio ahk_exe i)ApplicationFrameHost.exe")) {
 	    WinMinimize("A")      ; Do not want to close these apps
     
-    } else if (RegExMatch(processNameNoExtension, "i)chrome|iexplore|firefox|notepad++|ssms|devenv|eclipse|winmergeu|robo3t|code|idea64") 
-    || WinActive("ahk_exe msedge.exe")) {
-      SendInput("^{f4}")    ; Close a WINDOW/TAB/DOCUMENT
+    } else if (RegExMatch(processNameNoExtension, "i)chrome|iexplore|firefox|ssms|devenv|eclipse|winmergeu|robo3t|code|idea64") 
+      || WinActive("ahk_exe msedge.exe")) {
+        SendInput("^{f4}")  ; Close a WINDOW/TAB/DOCUMENT
+
+    } else if (RegExMatch(processNameNoExtension, "i)notepad++")) {
+      SendInput("^{w}")     ; Close a WINDOW using Ctrl-w
     
     } else {
       SendInput("!{f4}")    ; Close the APP
