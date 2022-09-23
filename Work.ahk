@@ -20,7 +20,7 @@
  SetCapsLockState("AlwaysOff")    ; Disable the CapsLock LED on my keyboard
  SetNumLockState("On")            ; Turn on Scroll Lock, so my macros with keypad work
  SetTitleMatchMode("RegEx")       ; Make windowing commands use regex
- RunAsAdmin()
+ VerifyRunningAsAdmin()
  
 
 
@@ -395,4 +395,3 @@ CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (G
 #Include "%A_ScriptDir%\Common\Common.ahk"
 #Include "%A_ScriptDir%\Work\Work Functions.ahk"
 #Include "%A_ScriptDir%\Work\Mute VOIP Apps.ahk"
-#Include "%A_ScriptDir%\Lib\RunAsAdmin.ahk"

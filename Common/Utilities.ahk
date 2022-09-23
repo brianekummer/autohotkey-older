@@ -10,6 +10,19 @@
 
 
 /**
+ *  Verify this is running as admin, else give instructions for how to make it
+ *  run as admin.
+ */
+ VerifyRunningAsAdmin() {
+  if (! A_IsAdmin) {
+    MsgBox("This script must be run as administrator.`n`nSince I'm running AHK Portable, this script is started with a Windows shortcut whose Target specifies the AHK exe and the script name, something like this:`n     `"D:\...\AutoHotkey64.exe`" /script `"D:\...Work.ahk`"`n`nAdditionally, the shortcut must run AHK as an admin, which is achieved by clicking the `"Advanced`" button and checking `"Run as admin`".", 
+      "Must Run as Admin", "OK Iconx")
+    ExitApp()
+  }
+}
+
+
+/**
  *  Run or activate an app or url
  * 
  *  There are a large number of options, all are defaulted to what I most commonly use.

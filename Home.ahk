@@ -20,7 +20,7 @@ SetWorkingDir(A_ScriptDir)       ; Ensures a consistent starting directory
 SetCapsLockState("AlwaysOff")    ; Disable the CapsLock LED on my keyboard
 SetNumLockState("On")            ; Turn on Scroll Lock, so my macros with keypad work
 SetTitleMatchMode("RegEx")       ; Make windowing commands use regex
-RunAsAdmin()
+VerifyRunningAsAdmin()
 
 
 
@@ -42,4 +42,3 @@ return
  */
 #Include "%A_ScriptDir%\Common\Common.ahk"
 #Include "%A_ScriptDir%\Home\Home Functions.ahk"
-#Include "%A_ScriptDir%\Lib\RunAsAdmin.ahk"
