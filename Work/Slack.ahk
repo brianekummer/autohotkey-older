@@ -18,10 +18,17 @@
  *    - Utilities.AmAtOffice()
  *    - Environment variables          ; See "Configure.bat" for details
  *        AHK_SLACK_TOKENS             ; Assumes 1st token is always work, 2nd is home
+ * 
+ * 
+ *  TO DO-
+ *    - Do I still want the MOBILE status, set on my phone?
+ *    - Re-code the automated status transitions
+ *      https://github.com/brianekummer/hammerspoon/blob/master/my-slack.lua
+ *    - When do BRB at home, do I want to lock laptop, so can easily clear that when I get back?
  */
 
 
-class Slack {
+ class Slack {
   /**
    *  Constructor that initializes variables
    */
@@ -38,6 +45,59 @@ class Slack {
       "dinner",    this.BuildStatus("SLACK_STATUS_DINNER",           "Dinner|:poultry_leg:", 0), 
       "brb",       this.BuildStatus("SLACK_STATUS_BRB",              "Be Right Back|:brb:", 0), 
       "playing",   this.BuildStatus("SLACK_STATUS_PLAYING",          "Playing|:8bit:", 0),
+      "commuting", this.BuildStatus("SLACK_STATUS_COMMUTING",        "Commuting|:blue_car:", 0),
+      "mobile",    this.BuildStatus("SLACK_STATUS_MOBILE",           "Mobile|:iphone:", 0)
+    )
+
+    /**
+     *  Definitions for automated transitions from one Slack status to another
+     * 
+     *  "event|location|current_slack_status", new_slack_status,
+     *    - event                  unlocked
+     *    - location               office|not-office
+     *    - current_slack_status   My current status in Slack (the key to this.Statuses)
+     *    - new_slack_status       Status to change to
+     *                               - "" means do not change status
+     *                               - else is a key to this.Statuses
+     * 
+     *  These transitions are handled elsewhere
+     *    - playing                Will always be set with an expiration date/time
+     *    - commuting              Tasker on my phone will handle all transitions
+     */
+    this.SlackStatusTransitions := Map(
+      ; I unlocked the laptop while in the office
+      "unlocked|office|none",          "office",          ; Unlocked laptop in office after ... not sure when
+      "unlocked|office|office",        "",                ; Is no change
+      "unlocked|office|remote",        "office",          ; Unlocked laptop in office after remote/WFH
+      "unlocked|office|vacation",      "office",          ; Unlocked laptop in office after vacation
+      "unlocked|office|lunch",         "office",          ; Unlocked laptop in office after lunch
+      "unlocked|office|dinner",        "office",          ; Unlocked laptop in office after dinner (unlikely)
+      "unlocked|office|meeting",       "prompt-office",   ; PROMPT if want to set status to office or stay in meeting
+      "unlocked|office|brb",           "office",          ; Unlocked laptop in office after brb
+      ;"unlocked|office|mobile",       "office",          ; Unlocked laptop in office after on phone
+    
+      ; I unlocked the laptop while working remotely
+      "unlocked|not-office|none",      "remote",          ; Probably first login of the day at home
+      "unlocked|not-office|office",    "remote",          ; Unlocked laptop at home after office
+      "unlocked|not-office|remote",    "",                ; Is no change
+      "unlocked|not-office|vacation",  "",                ; I could be using laptop while on vacation
+      "unlocked|not-office|lunch",     "remote",          ; Unlocked laptop at home after lunch
+      "unlocked|not-office|dinner",    "remote",          ; Unlocked laptop at home after dinner
+      "unlocked|not-office|meeting",   "prompt-remote",   ; PROMPT if want to set status to remote or stay in meeting
+      "unlocked|not-office|brb",       "remote",          ; Unlocked laptop in office after brb
+      ;"unlocked|not-office|mobile",   "remote",          ; Unlocked laptop at home after on phone
+    
+      ; When go into focusing/studying/dnd I set my Slack status with an explicit end time so that's visible
+      ; to my co-workers/family. By the time this code is fired, Slack could have already cleared my status. 
+      ; So I'll define maps for both possibilities.
+      ;"exiting-focusing|work|focusing",     "office",        ; Came out of focusing/dnd while in the office
+      ;"exiting-focusing|work|none",         "office",
+      ;"exiting-focusing|not-work|focusing", "none",          ; Came out of focusing/dnd while at home
+      ;"exiting-focusing|not-work|none",     "none",
+      ;"exiting-studying|work|studying",     "office",        ; Came out of studying while in the office
+      ;"exiting-studying|work|none",         "office",
+      ;"exiting-studying|not-work|studying", "none",          ; Came out of studying while at home
+      ;"exiting-studying|not-work|none",     "none"
     )
   }
   
@@ -278,6 +338,72 @@ class Slack {
       }
     }
   }
+
+
+
+/**
+ *  TODO - Set or adjust my do not disturb status for each of my Slack accounts
+ */
+/*
+SetDoNotDisturb(durationMinutes) {
+  print("Setting Slack do not disturb for " .. durationMinutes .. " minutes")
+  for key, token in pairs(SLACK_TOKENS) do
+    hs.http.post("https://slack.com/api/users.setSnooze?token=" .. token .. "&num_minutes=" .. durationMinutes)
+  end
+}
+*/
+
+
+/**
+ *  TODO - Clear my do not disturb status for each of my Slack accounts
+ */
+/*
+ClearDoNotDisturb() {
+  print("Clearing Slack do not disturb")
+  for key, token in pairs(SLACK_TOKENS) do
+    hs.http.post("https://slack.com/api/dnd.endSnooze?token=" .. token)
+  end
+}
+*/
+
+
+/**
+ * Calculate my new Slack status, using slackStatusChanges
+ *
+ * Sometimes I want to prompt if the status should be changed
+ */
+/*
+CalculateNewStatusKey(eventType) {
+  local location = getLocation()
+  local currentStatusName = convertEmojiToStatusDetails(getSlackStatusEmoji())
+  local newStatusName = slackStatusChanges[
+      eventType .. "," .. 
+      location .. "," .. 
+      currentStatusName]
+
+  print("Calculate new Slack status\r" ..
+        "  Current emoji = " .. (getSlackStatusEmoji() or "NIL") .. "\r" ..
+        "  Current status is " .. currentStatusName .. "\r" ..
+        "  Searching for status for '" .. eventType .. "," .. location .. "," .. currentStatusName .. "'\r" ..
+        "  New status is " .. (newStatusName or "NIL"))
+
+  if newStatusName ~= nil and newStatusName ~= currentStatusName then
+    if newStatusName:match("prompt") then
+      -- If new status is "(prompt-xxx)", then prompt me if I want to change
+      -- my Slack status to XXX
+      newStatusName = newStatusName:match("prompt%-(%a+)")
+      local prompt = "Do you want to set your Slack status to " .. newStatusName:upper() .. "?"
+      if hs.dialog.blockAlert(prompt, "", "Yes", "No", "informational") == "No" then
+        newStatusName = nil
+      end
+    end    
+  end
+
+  print("Calculated Slack status change: '" .. eventType .. "," .. location .. "," .. currentStatusName .. "' => " .. (newStatusName or "NIL"))
+
+  return newStatusName
+end
+}*/
 
 
 /**
