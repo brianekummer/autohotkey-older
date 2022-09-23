@@ -18,6 +18,7 @@
 
 ### Shortcuts
 ✦ ^ ! Esc             Windows (AHK)    Reload AHK (emergency restart)
+✦ =                   Windows (AHK)    Identifiers pop-up menu
 ✦ b                   Windows (AHK)    Browser (if a url is selected, open it)
 ✦ c                   Windows (AHK)    Calendar
 ✦ g                   Windows (AHK)    Google search for selected text
@@ -132,6 +133,11 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
     └── Experiments
 
 
+## Tips
+- AFter changing an environment variable, I have to CLOSE and RESTART AHK to get the new value(s). Reloading the 
+  current script is not enough.
+  
+
 ## Dependencies
 - IntelliJ
   - Plugin "macOS Dark Mode Sync" by Johnathan Gilday automatically switches between Darcula and Intellij when OS changes
@@ -140,13 +146,17 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - VS Code extension "theme-switcher" by latusinski to toggle between light and dark mode
 
 
+## General Status
+- 9/9/2022
+    - I still have problem w/activating Chrome, sometimes it flashes on the taskbar but doesn't activate
+    - Still have issues with windows loading slowly (slow computer) and RunOrActivateApp throwing an error when it can't find the window in the specified time. Not sure how to fix this.
+    - Sometimes CapsLock still gets stuck and I have to do my reload. I haven't paid attention to what causes that.
+        - At home, I **THINK** that using my mouse to control Spotify does that more often
+
 ## To Do's
-### Evaluate Status of What I Have
-- Do I have problems w/some apps activating? Find the pattern!!
-- Does CapsLock still get stuck? Is it "fixed"?
-- Does Spotify now always open? YES
 ### Definitely Do These Things
 - Other automation ideas
+    - CONSIDER a hotkey for SQL Server Mngt Studio that inserts "SELECT TOP * FROM LOG..." command
     - EASY
         - ✦ ^ g     - Use Google search to try to fix the selected text
                         CODED- NEED TO EVALUATE HOW USEFUL THIS REALLY IS
@@ -173,7 +183,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Watch YouTube AHK playlist
 - Learn about UIA, specifically for improving my Mute VOIP
     - https://www.the-automator.com/automate-any-program-with-ui-automation/
-- I have code to do url encode/decode in old code: https://github.com/brianekummer/autohotkey-old/blob/master/My%20Automations%20Utilities.ahk
     
 ### Maybe Do These
 - Is there any use for AppsKey (context menu)?
