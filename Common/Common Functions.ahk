@@ -127,3 +127,95 @@ RunOrActivateSpotify() {
   RunOrActivateApp("ahk_exe Spotify.exe", A_StartMenu "\Programs\My Shortcuts\Spotify.lnk", False)
   FixCapsLockIfBroken()
 }
+
+
+/**
+ *  Run of activate VS Code
+ */
+ RunOrActivateVSCode() {
+  selectedText := ""
+  restoreClipboard := false
+  if (GetKeyState("Ctrl")) {
+    ; Save the selected text into the clipboard, based on code in Utilities.GetSelectedTextUsingClipboard().
+    ; Later, in VSCodeNewFile(), we'll paste the clipboard into the new file because, for large amounts of text, that's 
+    ; much faster than SendInput(selectedText)
+    clipSaved := A_Clipboard  
+    A_Clipboard := ""
+    SendInput("^c")
+    Errorlevel := !ClipWait(1)
+    selectedText := A_Clipboard
+    Sleep(100)
+
+    restoreClipboard := true
+  }
+  
+  RunOrActivateAppAsAdmin("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
+
+  if (StrLen(selectedText) > 0) {
+    ; There is selected text, so create a new file, paste the selected text into the new file, and format it using
+    ; the default formatter
+    Sleep(500)
+    VSCodeNewFile(selectedText)
+  }
+
+  if (restoreClipboard) {
+    A_Clipboard := clipSaved
+    clipSaved := ""
+  }
+}
+
+
+/**
+ *  Create a new document in VSCode, insert the provided contents, and format it using the default formatter
+ *
+ *  ASSUMES fileContents is still in the clipboard, because is much faster to paste the clipboard than to
+ *  use SendInput() for large amounts of text
+ * 
+ *  @param fileContents            The text to insert into the new file
+ */
+VSCodeNewFile(fileContents) {
+  ; Define the regular expression patterns to recognize different types of text
+  ;   - The order of these matters. Xml also matches Html, and some Html with some JavaScript might match 
+  ;     the Json regex.
+  ;   - Identifying SQL is complex. As a rough guess, look for any one of the following:
+  ;       CREATE|ALTER...FUNCTION|PROCEDURE|VIEW|INDEX...AS BEGIN
+  ;       DROP...FUNCTION|PROCEDURE|VIEW|INDEX
+  ;       SELECT...FROM
+  languageRegexes := Map(
+    "html",  "s).*<html>.*/.*>",
+    "xml",   "s)^\s*<.*>.*/.*>",
+    "json",  "s)^\s*\[?\{.*\:.*\,.*\}",
+    "sql",   "is)(" .
+                "(\b(create|alter)\b.*\b(function|procedure|view|index)\b.*\bas\s+begin\b)|" .
+                "(\bdrop\b.*\b(function|procedure|view|index)\b)|" .
+                "(\bselect\b.*\bfrom\b)" .
+              ")+"
+  )
+
+  ; Create a new document and paste in the selected text
+  SendInput("^n")
+  SendInput("^v")
+  Sleep(1000)
+
+  ; Look to see if the selected text is something we know how to format
+  for language, regex in languageRegexes {
+    if (RegExMatch(fileContents, regex)) {
+      ; YES- the selected text is "language"
+
+      ; Set the language in VS Code
+      SendInput("^{k}m")
+      Sleep(250)
+      SendInput(language "{Enter}")
+      Sleep(1500)
+
+      ; Format the file using the language's default formatter
+      SendInput("+!{f}")
+
+      break
+    }
+  }
+
+  ; Scroll back to the start of the file
+  Sleep(250)
+  SendInput("^{Home}")
+}

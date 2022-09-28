@@ -31,8 +31,8 @@
 /**
  *  Include classes here, because they must be included before the auto-execute section 
  */
-#Include "%A_ScriptDir%\Work\Jira.ahk"
-#Include "%A_ScriptDir%\Work\Slack.ahk"
+#Include Work\Jira.ahk
+#Include Work\Slack.ahk
 
 
 
@@ -88,84 +88,6 @@ return
 
 ;AppsKey:: {
 ;} 
-
-
-
-;---------------------------------------------------------------------------------------------------------------------
-; Use Google search to try to fix the selected text
-;   - For example, this changes "Where is you're house?" to "Where is your house?"
-;   - Code adapted from https://jacksautohotkeyblog.wordpress.com/2016/09/22/fixing-grammar-problems-with-google-search-intermediate-autohotkey-tip/
-;---------------------------------------------------------------------------------------------------------------------
-/*
-
-    << I DON'T KNOW HOW USEFUL THIS REALLY IS... it's cool code, but likely not very useful. >>
-
-*/
-#^g:: {       ; Windows|AHK|Google search to fix selected text
-  clipSave := A_Clipboard                               ; Save clipboard contents so we can restore when done
-  A_Clipboard := ""                                     ; Empty clipboard so ClipWait has something to detect
-  SendInput("^c")                                       ; Copies selected text
-  Errorlevel := !ClipWait()
-  if (!ErrorLevel)
-  {
-    ; Only do this if there was selected text
-    whr := ComObject("Msxml2.XMLHTTP")
-    whr.Open("GET", "https://www.google.com/search?q=" UriEncode(A_Clipboard), false)
-    whr.Send()
-    contents := whr.ResponseText
-
-    if (RegExMatch(contents, "Showing results for <a.*?>(.*?)</a>", &match))
-    {
-      ; Strip out span, bold, and italic tags, then output the results
-      A_Clipboard := RegExReplace(match[1], "(<b>|<i>|<span>|<\/b>|<\/i>|<\/span>)", "")
-
-      SendInput("^v")
-      Sleep(250)
-      A_Clipboard := clipSave  
-    }
-  }
-}
-
-
-
-;---------------------------------------------------------------------------------------------------------------------
-; Grammarly - Paste the selected text into a new document on Grammarly.com
-;
-; To create a new document in Grammarly.com, navigate to https://app.grammarly.com/docs/new.
-;   - It takes a few seconds to load
-;   - When it is almost ready to allow editing, it changes the URL to something like this:
-;     https://app.grammarly.com/ddocs/565623631. 
-;   - Recent versions of Chrome don't allow us to easily or reliably get the URL from code
-;   - I could press !d/^i/f6 to get to the Chrome omnibar so I can copy the URL, but there is no easy/consistent 
-;     way to get back to the page content
-;   - My solution is to use the Chrome extension called "Url in Title" by Guillaume Ryder, which adds the URL to the
-;     title of the webpage, so AHK can watch for it. You can specify a whitelist so that only the whitelisted sites
-;     display the URL in the title. I confligured the extension like this:
-;       Tab title format: {title} - {protocol}://{hostname}{port}/{path}
-;       Whitelist: https://app.grammarly.com
-;
-; Decisions
-;   - Grammarly Windows app was my first choice, but is very keyboard unfriendly, so had to use the web page
-;   - CAN THAT BE AUTOMATED USING AUTOHOTKEY UIA ??
-;
-; Dependencies
-;   - Chrome extension "URL in Title". https://github.com/erichgoldman/add-url-to-window-title
-;---------------------------------------------------------------------------------------------------------------------
-/******* NEEDS CONVERTED TO AHK v2
-#^+g:: {   ; Windows|AHK|Paste selected text into new document on Grammarly.com
-	selectedText := GetSelectedTextUsingClipboard()
-  Run, "https://app.grammarly.com/docs/new"
-	WinWaitActive, Grammarly - https://app.grammarly.com/ddocs, , 15
-	If !ErrorLevel
-  {
-	  Sleep, 1250
-    SendInput %selectedText%
-    Sleep, 500
-  }
-}
-*/
-
-
 
 
 

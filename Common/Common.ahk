@@ -108,19 +108,16 @@ CapsLock & t::           RunOrActivateAppAsAdmin("Cmder", "C:\tools\Cmder\Cmder.
 
 /**
  *  Visual Studio Code
- *    ✦ v                Open VS Code on my work laptop
- *    ✦ ! v              Open VS Code on my personal laptop
+ *    ✦ v                Run or activate VS Code
+ *    ✦ ^ v              Run or activate VS Code, create a new document, paste in the selected text, then format it
  *
  *    ^ mousewheel       Decrease/increase font size
  *    ✦ [                Toggle left sidebar
- *
- *  TODO-
- *    ✦ ^ v              Open VS Code, create a new doc, paste selected text, then format it
  */
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & v::        SendKeystrokesToPersonalLaptop("{CapsLock down}v{CapsLock up}")
 ;#If
-CapsLock & v::           RunOrActivateAppAsAdmin("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
+ CapsLock & v::          RunOrActivateVSCode()
 
 #HotIf WinActive("ahk_exe i)\\code\.exe$", )
   ^wheelup::             SendInput("{Blind}^{=}")
@@ -375,4 +372,4 @@ end
 #Include "%A_ScriptDir%\Common\Convert Case.ahk"
 #Include "%A_ScriptDir%\Common\Customize Windows.ahk"
 #Include "%A_ScriptDir%\Common\My Auto Correct.ahk"
-#Include "%A_ScriptDir%\Common\Utilities.ahk"
+#Include "%A_ScriptDir%\\Common\Utilities.ahk"
