@@ -130,7 +130,10 @@ RunOrActivateSpotify() {
 
 
 /**
- *  Run of activate VS Code
+ *  Run or activate VS Code
+ * 
+ *  If Ctrl is pressed, then the selected text is inserted into a new VS Code file and the
+ *  file is formatted using the default formatter for that file type
  */
  RunOrActivateVSCode() {
   selectedText := ""
@@ -168,13 +171,13 @@ RunOrActivateSpotify() {
 /**
  *  Create a new document in VSCode, insert the provided contents, and format it using the default formatter
  *
- *  ASSUMES fileContents is still in the clipboard, because is much faster to paste the clipboard than to
+ *  ASSUMES fileContents is still in the clipboard, because it is much faster to paste the clipboard than to
  *  use SendInput() for large amounts of text
  * 
  *  @param fileContents            The text to insert into the new file
  */
 VSCodeNewFile(fileContents) {
-  ; Define the regular expression patterns to recognize different types of text
+  ; List the languages we recognize and a regular expression to recognize that language
   ;   - The order of these matters. Xml also matches Html, and some Html with some JavaScript might match 
   ;     the Json regex.
   ;   - Identifying SQL is complex. As a rough guess, look for any one of the following:
@@ -186,10 +189,10 @@ VSCodeNewFile(fileContents) {
     "xml",   "s)^\s*<.*>.*/.*>",
     "json",  "s)^\s*\[?\{.*\:.*\,.*\}",
     "sql",   "is)(" .
-                "(\b(create|alter)\b.*\b(function|procedure|view|index)\b.*\bas\s+begin\b)|" .
-                "(\bdrop\b.*\b(function|procedure|view|index)\b)|" .
-                "(\bselect\b.*\bfrom\b)" .
-              ")+"
+               "(\b(create|alter)\b.*\b(function|procedure|view|index)\b.*\bas\s+begin\b)|" .
+               "(\bdrop\b.*\b(function|procedure|view|index)\b)|" .
+               "(\bselect\b.*\bfrom\b)" .
+             ")+"
   )
 
   ; Create a new document and paste in the selected text

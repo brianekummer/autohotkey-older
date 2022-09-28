@@ -12,7 +12,7 @@
   ; TODO- This appears to work if Parsec is not running, but fails if it is already open
   if (!WinExist("ahk_exe parsecd.exe")) {
     ;msgbox Parsec is NOT running
-    Run('"' A_StartMenu '\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
+    Run('"' A_StartMenu '\Programs\Startup\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
     
     ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
     if (ErrorLevel) {
@@ -115,8 +115,11 @@ CreateSourceCodeMenu() {
 
 /**
  *  The handler for the source code pop-up menu
+ * 
+ *  @param itemName                The name/texdt of the menu item
  */
 SourceCodeMenuHandler(itemName, *) {
+  clipboard := A_Clipboard
   selectedText := GetSelectedTextUsingClipboard()
 
   if (itemName ~= "Code") {
@@ -126,12 +129,58 @@ SourceCodeMenuHandler(itemName, *) {
     ; separately URL encode the prefix and the selected text and mash them together.
     searchCriteria := UriEncode(Configuration.Work.SourceCode.SearchCodePrefix " ") '"' UriEncode(selectedText) '"'
     AlwaysRunApp("Search — Bitbucket", Configuration.Work.SourceCode.SearchCodeUrl searchCriteria)
+
   } else if (itemName ~= "Repositories") {
-    AlwaysRunApp("Repositories — Bitbucket", Configuration.Work.SourceCode.SearchRepositoriesUrl UriEncode(GetSelectedTextUsingClipboard()))
+    ; Because I expect to often use this from within a terminate window, which doesn't 
+    ; return the selected text, so instead, I'll copy the text to the clipboard and THEN
+    ; initiate this hotkey.
+    if (StrLen(selectedText) = 0) {
+      selectedText := clipboard
+    }
+    AlwaysRunApp("Repositories — Bitbucket", Configuration.Work.SourceCode.SearchRepositoriesUrl UriEncode(selectedText))
+
   } else if (itemName ~= "Schema") {
     RunOrActivateApp("eventschema", Configuration.Work.SourceCode.SchemaUrl)
+
   } else if (itemName ~= "Cance&l") {
     SendInput("{Escape}")
+  }
+}
+
+
+/**
+ *  Creates the identifiers pop-up menu
+ * 
+ *  This only needs created when the script starts, it is merely shown/hidden
+ *  each time it is needed.
+ */
+ CreateIdentifiersMenu() {
+  for i, item in StrSplit(EnvGet("AHK_CONSTANTS"), "|") {
+    kv := StrSplit(item, ",")
+
+    ; Add to the menu
+    IdentifiersMenu.Add(kv[1], IdentifiersMenuHandler)
+
+    ; Save for IdentifiersMenuHandler
+    identifiers.push({key: kv[1], value: kv[2]})
+  }
+
+  IdentifiersMenu.Add()         ; Add a separator
+  IdentifiersMenu.Add("Cance&l", IdentifiersMenuHandler)
+}
+
+
+/**
+ *  The handler for the identifiers pop-up menu
+ * 
+ *  @param itemName                The name/text of the menu item
+ */
+IdentifiersMenuHandler(itemName, *) {
+  for i, item in identifiers {
+    if (itemName == item.key) {
+      SendInput(item.value)
+      break
+    }
   }
 }
 

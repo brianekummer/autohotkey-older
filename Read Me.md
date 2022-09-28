@@ -35,6 +35,7 @@
                                          - Event schema repository
 ✦ t                   Windows (AHK)    Terminal/Cmder/bash
 ✦ v                   Windows (AHK)    VS Code
+✦ ^ v                 Windows (AHK)    VS Code - insert selected text into a new VS Code document and format it
 ✦ w                   Windows (AHK)    Wiki/Confluence
 ✦ ^ w                 Windows (AHK)    Wiki/Confluence- search for selected text
 PrintScreen           Windows (AHK)    Windows screenshot tool
@@ -166,8 +167,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
                         EVERYTHING AND SEEMS OUT-OF-THE-WAY.
                            THIS WOULD KILL THE GOOGLE SEARCH THING ABOVE.
        
-        - ✦ v       - open vs code
-        - ✦ ^ v     - vs code and auto format
     - MORE COMPLEX
         - Window management - THIS IS ONLY MILDLY USEFUL ONCE UPGRADE TO WINDOWS 11
             H left         HS       Snap active window to left half/third/two-thirds of the screen
@@ -199,8 +198,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
         - +{Esc} makes it go away
         - Can I get it working with AHK??? ✦ [
             - Can't tell by the active window. maybe I can loop through all the active windows in
-    - VS Code
-        ✦ ^ v  Open VS Code, create a new doc, paste selected text, then format it
     - Customizing App Behavior
         - Slack:
            ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
