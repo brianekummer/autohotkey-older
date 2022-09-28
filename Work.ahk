@@ -157,13 +157,13 @@ CapsLock & i::           RunOrActivateOutlook("^+I")
 
 /**
  *  Jira
- *    ✦ j                Opens the current sprint board
- *    ✦ ^ j              Search for a specific story number to open
- *                         - If the selected text looks like a Jira story number (e.g. 
- *                           PROJECT-1234), then open that story
- *                         - If the Git Bash window has text that looks like a Jira story number, 
- *                           then open that story
- *                         - Last resort is to open the current sprint board
+ *    ✦ j                - If the selected text looks like a Jira story number (e.g. PROJECT-1234),
+ *                         then open that story
+ *                       - If the selected text is the url to a Jira sprint, then parse out the
+ *                         story number and save that as our current sprint number
+ *                       - If a Git Bash window has a window title that looks like a Jira story number, 
+ *                         then open that story
+ *                       - Last option is to open the current sprint board
  */
 CapsLock & j::           MyJira.OpenJira()
 

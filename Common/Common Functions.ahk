@@ -132,25 +132,20 @@ RunOrActivateSpotify() {
 /**
  *  Run or activate VS Code
  * 
- *  If Ctrl is pressed, then the selected text is inserted into a new VS Code file and the
- *  file is formatted using the default formatter for that file type
+ *  Run or activate VS Code. If there is selected text, and it is a format we know, then create a new file,
+ *  insert the selected text, and format it using the default formatter for that file type
  */
  RunOrActivateVSCode() {
+  ; Save the selected text into the clipboard, based on code in Utilities.GetSelectedTextUsingClipboard().
+  ; Later, in VSCodeNewFile(), we'll paste the clipboard into the new file because, for large amounts of text, that's 
+  ; much faster than SendInput(selectedText)
   selectedText := ""
-  restoreClipboard := false
-  if (GetKeyState("Ctrl")) {
-    ; Save the selected text into the clipboard, based on code in Utilities.GetSelectedTextUsingClipboard().
-    ; Later, in VSCodeNewFile(), we'll paste the clipboard into the new file because, for large amounts of text, that's 
-    ; much faster than SendInput(selectedText)
-    clipSaved := A_Clipboard  
-    A_Clipboard := ""
-    SendInput("^c")
-    Errorlevel := !ClipWait(1)
-    selectedText := A_Clipboard
-    Sleep(100)
-
-    restoreClipboard := true
-  }
+  clipSaved := A_Clipboard  
+  A_Clipboard := ""
+  SendInput("^c")
+  Errorlevel := !ClipWait(1)
+  selectedText := A_Clipboard
+  Sleep(100)
   
   RunOrActivateAppAsAdmin("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
 
@@ -161,15 +156,16 @@ RunOrActivateSpotify() {
     VSCodeNewFile(selectedText)
   }
 
-  if (restoreClipboard) {
-    A_Clipboard := clipSaved
-    clipSaved := ""
-  }
+  A_Clipboard := clipSaved
+  clipSaved := ""
 }
 
 
 /**
- *  Create a new document in VSCode, insert the provided contents, and format it using the default formatter
+ *  Optionally, create a new document in VSCode
+ * 
+ *  If the provided fileContents is a known file type, then create a new VS Code file, insert the provided contents,
+ *  and format it using the default formatter
  *
  *  ASSUMES fileContents is still in the clipboard, because it is much faster to paste the clipboard than to
  *  use SendInput() for large amounts of text
@@ -195,15 +191,15 @@ VSCodeNewFile(fileContents) {
              ")+"
   )
 
-  ; Create a new document and paste in the selected text
-  SendInput("^n")
-  SendInput("^v")
-  Sleep(1000)
-
   ; Look to see if the selected text is something we know how to format
   for language, regex in languageRegexes {
     if (RegExMatch(fileContents, regex)) {
       ; YES- the selected text is "language"
+
+      ; Create a new document and paste in the selected text
+      SendInput("^n")
+      SendInput("^v")
+      Sleep(1000)
 
       ; Set the language in VS Code
       SendInput("^{k}m")
@@ -214,11 +210,11 @@ VSCodeNewFile(fileContents) {
       ; Format the file using the language's default formatter
       SendInput("+!{f}")
 
+      ; Scroll back to the start of the file
+      Sleep(250)
+      SendInput("^{Home}")
+
       break
     }
   }
-
-  ; Scroll back to the start of the file
-  Sleep(250)
-  SendInput("^{Home}")
 }

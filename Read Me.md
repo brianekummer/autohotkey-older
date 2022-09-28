@@ -23,9 +23,14 @@
 ✦ c                   Windows (AHK)    Calendar
 ✦ g                   Windows (AHK)    Google search for selected text
 ✦ i                   Windows (AHK)    Inbox
-✦ j                   Windows (AHK)    JIRA- if a Jira sprint board's url is selected, update the sprint number
-                                             else open current project board
-✦ ^ j                 Windows (AHK)    JIRA- open selected story number
+
+
+
+✦ j                   Windows (AHK)    JIRA
+                                          - If the selected text is a Jira sprint board's url, parse out and save the sprint number
+                                          - If the selected text looks like a Jira story number, then open that story
+                                          - If a Git Bash window has a window title that looks like a Jira story number, then open that story
+                                          - Last option is to open the current sprint board
 ✦ m                   Windows (AHK)    Music/Spotify
 ✦ p                   Windows (AHK)    Parsec/Personal computer
 ✦ s                   Windows (AHK)    Source code- dashboard/overview
@@ -34,8 +39,7 @@
                                          - Search repositories for selected text
                                          - Event schema repository
 ✦ t                   Windows (AHK)    Terminal/Cmder/bash
-✦ v                   Windows (AHK)    VS Code
-✦ ^ v                 Windows (AHK)    VS Code - insert selected text into a new VS Code document and format it
+✦ v                   Windows (AHK)    VS Code- If there is selected text, insert it into a new VS Code file and format it
 ✦ w                   Windows (AHK)    Wiki/Confluence
 ✦ ^ w                 Windows (AHK)    Wiki/Confluence- search for selected text
 PrintScreen           Windows (AHK)    Windows screenshot tool
@@ -135,7 +139,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 
 
 ## Tips
-- AFter changing an environment variable, I have to CLOSE and RESTART AHK to get the new value(s). Reloading the 
+- After changing an environment variable, I have to CLOSE and RESTART AHK to get the new value(s). Reloading the 
   current script is not enough.
   
 
@@ -158,15 +162,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 ### Definitely Do These Things
 - Other automation ideas
     - CONSIDER a hotkey for SQL Server Mngt Studio that inserts "SELECT TOP * FROM LOG..." command
-    - EASY
-        - ✦ ^ g     - Use Google search to try to fix the selected text
-                        CODED- NEED TO EVALUATE HOW USEFUL THIS REALLY IS
-        - ✦ ^ + g   - grammarly
-                        IS THE APP STILL DIFFICULT TO AUTOMATE? DOES UIA FIX THIS?
-                        IS IT EVEN NECESSARY? THE GRAMMARLY APP INTEGRATES INTO
-                        EVERYTHING AND SEEMS OUT-OF-THE-WAY.
-                           THIS WOULD KILL THE GOOGLE SEARCH THING ABOVE.
-       
     - MORE COMPLEX
         - Window management - THIS IS ONLY MILDLY USEFUL ONCE UPGRADE TO WINDOWS 11
             H left         HS       Snap active window to left half/third/two-thirds of the screen
@@ -183,14 +178,12 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Learn about UIA, specifically for improving my Mute VOIP
     - https://www.the-automator.com/automate-any-program-with-ui-automation/
     
+    
 ### Maybe Do These
 - Is there any use for AppsKey (context menu)?
 - GUIs are so good w/AHK, what can I do with it?
 - From my old automations: https://github.com/brianekummer/autohotkey-old/blob/master/My%20Automations.ahk
     - WHAT KEYCODES?     - plain text paste
-
-
-
 - Other automation ideas
     - Visual Studio
         - Moved Solution Explorer to left side, pinned
@@ -204,8 +197,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
         - VS Code - IF this is the editor I'm going to use
         ~$^s                VS Code (AHK)    After save AHK file, reload current script
     - Standardize video keys for youtube and udemyI
-    - Grammarly? I coded it before, so should look into if it still works. Not sure how much I'd use Grammarly, but if
-      it's EASY, I'd use it more
     - ✦ numpadsub         Windows (AHK)       TEMP - price checks
     - ✦ space             Windows (AHK)       Toggle dark mode for active application
 
