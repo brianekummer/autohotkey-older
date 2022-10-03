@@ -25,10 +25,10 @@
     ; Is Parsec connected?
     ; Looks like I need to use FindText to look for the Connect button: https://www.autohotkey.com/boards/viewtopic.php?p=167586#p167586
     
-    WinActivate()
+    WinActivate
   }
   
-  WinMaximize()  ; Use the window found by WinExist|WinWaitActive
+  WinMaximize("A")  ; Use the window found by WinExist|WinWaitActive
 }
 
 

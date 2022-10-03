@@ -62,8 +62,8 @@ CapsLock:: return
 	    WinMinimize("A")      ; Do not want to close these apps
     
     } else if (RegExMatch(processNameNoExtension, "i)chrome|iexplore|firefox|ssms|devenv|eclipse|winmergeu|robo3t|code|idea64") 
-      || WinActive("ahk_exe msedge.exe")) {
-        SendInput("^{f4}")  ; Close a WINDOW/TAB/DOCUMENT
+    || WinActive("ahk_exe msedge.exe")) {
+      SendInput("^{f4}")  ; Close a WINDOW/TAB/DOCUMENT
 
     } else if (RegExMatch(processNameNoExtension, "i)notepad++")) {
       SendInput("^{w}")     ; Close a WINDOW using Ctrl-w

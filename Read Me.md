@@ -163,11 +163,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 - Other automation ideas
     - CONSIDER a hotkey for SQL Server Mngt Studio that inserts "SELECT TOP * FROM LOG..." command
     - MORE COMPLEX
-        - Window management - THIS IS ONLY MILDLY USEFUL ONCE UPGRADE TO WINDOWS 11
-            H left         HS       Snap active window to left half/third/two-thirds of the screen
-            H right        HS       Snap active window to right half/third/two-thirds of the screen
-            H up           HS       Snap active window to top half/third/two-thirds of the screen
-            H down         HS       Snap active window to top half/third/two-thirds of the screen
         - Focusing/studying   : Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
             - Should be able to do this in AHK GUI
             H ^ f ??       HS       Focusing. Starts Do Not Disturb timer for 30 minutes, 
@@ -196,7 +191,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
            ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
         - VS Code - IF this is the editor I'm going to use
         ~$^s                VS Code (AHK)    After save AHK file, reload current script
-    - Standardize video keys for youtube and udemyI
+    - Standardize video keys for youtube and udemy
     - ✦ numpadsub         Windows (AHK)       TEMP - price checks
     - ✦ space             Windows (AHK)       Toggle dark mode for active application
 
@@ -258,6 +253,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
         focus on input fields, etc.
     - Chrome now has "Scroll to text fragment" that will highlight parts of the web page, 
         but that also doesn't apply to input fields
+- Windows 11 new windows snapping feature eliminates the need to code my own windows management
 
 
 ## Research
