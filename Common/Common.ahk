@@ -17,7 +17,7 @@
  *  I have had scenarios where CapsLock was stuck on, so every left click of the mouse was play/pause
  *  for music, so I couldn't terminate AHK. This is the same as closing and restarting AHK.
  */
-#HotIf GetKeyState("Alt") and GetKeyState("Ctrl")
+#HotIf GetKeyState("Alt") && GetKeyState("Ctrl")
   CapsLock & Esc:: {
     if (WinActive("ahk_exe parsecd.exe")) {      ; When using personal laptop at work, tell personal laptop to reload
       SendKeystrokesToPersonalLaptop("{Alt down}{Control down}{CapsLock down}{Esc}{CapsLock up}{Control up}{Alt up}")
@@ -75,7 +75,7 @@ PrintScreen::SendInput("#+s")
 ;#If IsWorkLaptop && GetKeyState("Alt")
 ;  CapsLock & n::        SendKeystrokesToPersonalLaptop("{CapsLock down}n{CapsLock up}")
 ;#If
-CapsLock & n::           RunOrActivateApp("ahk_exe i)\\typora\.exe$", Configuration.WindowsProgramFilesFolder "\Typora\Typora.exe")
+CapsLock & n::           RunOrActivateApp("ahk_exe i)\\typora\.exe$", Configuration.WindowsProgramFilesFolder . "\Typora\Typora.exe")
 
 #HotIf WinActive("ahk_exe i)\\typora\.exe$", )
   ^wheelup::             SendInput("{Blind}^+{=}")

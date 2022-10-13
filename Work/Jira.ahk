@@ -27,7 +27,7 @@ class Jira
     this.DefaultRapidKey := EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY")
     this.DefaultSprint := EnvGet("AHK_JIRA_DEFAULT_SPRINT")
 
-    this.RegexStoryNumberWithProject := "i)\b(" this.MyProjectKeys ")([-_ ]|( - ))?\d{1,5}\b"
+    this.RegexStoryNumberWithProject := "i)\b(" . this.MyProjectKeys . ")([-_ ]|( - ))?\d{1,5}\b"
     this.RegexStoryNumberWithoutProject := "\b\d{1,5}\b"
   }
   
@@ -50,7 +50,7 @@ class Jira
     openSprintBoard := True
     selectedText := GetSelectedTextUsingClipboard()
 
-    if (selectedText  ~= (this.BaseUrl ".*sprint=\d+")) {
+    if (selectedText  ~= (this.BaseUrl . ".*sprint=\d+")) {
       ; Parse the sprint number from the URL and save it
       this.SaveNewSprintNumber(selectedText)
       openSprintBoard := False
@@ -60,7 +60,7 @@ class Jira
       storyNumber := this.FindStoryNumber(selectedText)
 
       if (StrLen(storyNumber) > 0) {
-        RunOrActivateApp("\[" storyNumber "\].*Jira", this.BuildStoryUrl(storyNumber))
+        RunOrActivateApp("\[" . storyNumber . "\].*Jira", this.BuildStoryUrl(storyNumber))
         openSprintBoard := False
       }
     }
@@ -95,7 +95,7 @@ class Jira
 
       if (sprintNumber > this.DefaultSprint) {
 
-        if (MsgBox("Change the current sprint number from " this.DefaultSprint " to " sprintNumber "?", "Change Jira Current Sprint Number", "YesNo Icon?") = "Yes") {
+        if (MsgBox("Change the current sprint number from " . this.DefaultSprint . " to " . sprintNumber . "?", "Change Jira Current Sprint Number", "YesNo Icon?") = "Yes") {
           ; Temporarily update the sprint number for the current instance of this script
           EnvSet("AHK_JIRA_DEFAULT_SPRINT", sprintNumber)
           this.DefaultSprint := sprintNumber
@@ -103,7 +103,7 @@ class Jira
           ; Permanently set the sprint number for the next time this script runs
           RegWrite(sprintNumber, "REG_SZ", "HKEY_CURRENT_USER\Environment", "AHK_JIRA_DEFAULT_SPRINT")
 
-          Msgbox("Current Jira sprint number changed to " sprintNumber ".", "Change Current Sprint Number")
+          Msgbox("Current Jira sprint number changed to " . sprintNumber . ".", "Change Current Sprint Number")
           savedSprintNumber := True
         }
       }
@@ -147,7 +147,7 @@ class Jira
    *  @return                   The url for that story
    */
   BuildStoryUrl(storyNumber) {
-    return this.BaseUrl "/browse/" storyNumber
+    return this.BaseUrl . "/browse/" . storyNumber
   }
 
 
@@ -158,7 +158,7 @@ class Jira
    *  @return                   The url for that sprint board
    */
   BuildSprintBoardUrl(sprintNumber) {
-    return this.BaseUrl "/secure/RapidBoard.jspa?rapidView=" this.DefaultRapidKey "&projectKey=" this.DefaultProjectKey "&sprint=" sprintNumber
+    return this.BaseUrl . "/secure/RapidBoard.jspa?rapidView=" . this.DefaultRapidKey . "&projectKey=" . this.DefaultProjectKey . "&sprint=" . sprintNumber
   }
 
 
@@ -178,7 +178,7 @@ class Jira
       } else { 
         ; Search for just a 1-5 digit number, and if found, add the default project name
         if (RegExMatch(selectedText, this.RegexStoryNumberWithoutProject, &matches) > 0) {
-          storyNumber := this.DefaultProjectKey "-" matches[]
+          storyNumber := this.DefaultProjectKey . "-" . matches[]
         }
       }  
     }

@@ -12,7 +12,7 @@
   ; TODO- This appears to work if Parsec is not running, but fails if it is already open
   if (!WinExist("ahk_exe parsecd.exe")) {
     ;msgbox Parsec is NOT running
-    Run('"' A_StartMenu '\Programs\Startup\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
+    Run('"' . A_StartMenu . '\Programs\Startup\Parsec.lnk" peer_id=' . Configuration.Work.ParsecPeerId)
     
     ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
     if (ErrorLevel) {
@@ -127,8 +127,8 @@ SourceCodeMenuHandler(itemName, *) {
     ; of as individual words, so I want the selected text enclosed in double quotes. But,
     ; our source code search doesn't want the double quotes URL encoded. So I must 
     ; separately URL encode the prefix and the selected text and mash them together.
-    searchCriteria := UriEncode(Configuration.Work.SourceCode.SearchCodePrefix " ") '"' UriEncode(selectedText) '"'
-    AlwaysRunApp("Search — Bitbucket", Configuration.Work.SourceCode.SearchCodeUrl searchCriteria)
+    searchCriteria := UriEncode(Configuration.Work.SourceCode.SearchCodePrefix . " ") . '"' . UriEncode(selectedText) . '"'
+    AlwaysRunApp("Search — Bitbucket", Configuration.Work.SourceCode.SearchCodeUrl . searchCriteria)
 
   } else if (itemName ~= "Repositories") {
     ; Because I expect to often use this from within a terminate window, which doesn't 
@@ -137,7 +137,7 @@ SourceCodeMenuHandler(itemName, *) {
     if (StrLen(selectedText) = 0) {
       selectedText := clipboard
     }
-    AlwaysRunApp("Repositories — Bitbucket", Configuration.Work.SourceCode.SearchRepositoriesUrl UriEncode(selectedText))
+    AlwaysRunApp("Repositories — Bitbucket", Configuration.Work.SourceCode.SearchRepositoriesUrl . UriEncode(selectedText))
 
   } else if (itemName ~= "Schema") {
     RunOrActivateApp("eventschema", Configuration.Work.SourceCode.SchemaUrl)
@@ -196,9 +196,9 @@ IdentifiersMenuHandler(itemName, *) {
  *                                 after it has been run or activated
  */
 RunOrActivateOutlook(shortcut := "") {
-  outlookTitle := "i)" Configuration.Work.UserEmailAddress "\s-\sOutlook"
+  outlookTitle := "i)" . Configuration.Work.UserEmailAddress . "\s-\sOutlook"
   if (!WinExist(outlookTitle)) {
-    outlookExe := Configuration.WindowsProgramFilesFolder "\Microsoft Office\root\Office16\OUTLOOK.EXE"
+    outlookExe := Configuration.WindowsProgramFilesFolder . "\Microsoft Office\root\Office16\OUTLOOK.EXE"
 	  ShellRun(outlookExe)
 	  WinWaitActive("outlookTitle", , 5)
   }
@@ -227,9 +227,9 @@ RunOrActivateOutlook(shortcut := "") {
  *  @param command                 The command to execute
  */
 HomeAutomationCommand(command) {
-  workingFolder := Configuration.MyPersonalFolder "\Code\git\home-automation"
-  scriptName := workingFolder "\home_automation.py"
-  Run A_ComSpec ' /c " "python" "' scriptName '" ' command ' " ', workingFolder, "Hide"
+  workingFolder := Configuration.MyPersonalFolder . "\Code\git\home-automation"
+  scriptName := workingFolder . "\home_automation.py"
+  Run(A_ComSpec . ' /c " "python" "' . scriptName . '" ' . command . ' " ', workingFolder, "Hide")
 }
 
 
@@ -257,7 +257,7 @@ OpenWiki(searchForSelectedText) {
   if (searchForSelectedText) {
     selectedText := GetSelectedTextUsingClipboard()
     if (StrLen(selectedText) > 0) {
-      RunOrActivateApp("Search - Confluence", UriEncode(Configuration.Work.Wiki.SearchUrl selectedText))
+      RunOrActivateApp("Search - Confluence", UriEncode(Configuration.Work.Wiki.SearchUrl . selectedText))
       return
     } 
   }

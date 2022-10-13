@@ -102,7 +102,7 @@ class Slack {
     try {
       webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
       webRequest.Open("GET", "https://slack.com/api/users.profile.get")
-      webRequest.SetRequestHeader("Authorization", "Bearer " this.Tokens[1])
+      webRequest.SetRequestHeader("Authorization", "Bearer " . this.Tokens[1])
       webRequest.Send()
       results := webRequest.ResponseText
 
@@ -128,7 +128,7 @@ class Slack {
    *  @param shortcut            The shortcut key to send to the Slack app after it is run or activated
    */
    RunOrActivateSlack(shortcut := "") {
-    RunOrActivateApp("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder "\Slack\Slack.exe")
+    RunOrActivateApp("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder . "\Slack\Slack.exe")
     if (shortcut != "") {
       SendInput(shortcut)
     }
@@ -249,12 +249,12 @@ class Slack {
    */
   SetStatus(newStatus, tokens := this.Tokens, expiration := newStatus.expiration) {
     webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
-    data := "profile={'status_text': '" newStatus.text "', 'status_emoji': '" newStatus.emoji "', 'status_expiration': " expiration "}"
+    data := "profile={'status_text': '" . newStatus.text . "', 'status_emoji': '" . newStatus.emoji . "', 'status_expiration': " . expiration "}"
 
     for i, thisToken in tokens {
       webRequest.Open("POST", "https://slack.com/api/users.profile.set")
       webRequest.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-      webRequest.SetRequestHeader("Authorization", "Bearer " thisToken)
+      webRequest.SetRequestHeader("Authorization", "Bearer " . thisToken)
       webRequest.Send(data)
     }
   }
@@ -271,9 +271,9 @@ class Slack {
       webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
 
       for i, thisToken in tokens {
-        webRequest.Open("POST", "https://slack.com/api/users.setPresence?presence=" newPresence)
+        webRequest.Open("POST", "https://slack.com/api/users.setPresence?presence=" . newPresence)
         webRequest.SetRequestHeader("Content-Type", "application/application/json")
-        webRequest.SetRequestHeader("Authorization", "Bearer " thisToken)
+        webRequest.SetRequestHeader("Authorization", "Bearer " . thisToken)
         webRequest.Send("")
       }
     }
@@ -315,7 +315,7 @@ CalculatePlayingExpirationTime(expirationTime) {
    *  @param newStatus       The status object of the new status, contains properties text, emoji, expiration
    */
   SetStatusViaKeyboard(newStatus) {
-    SendInput("/status " newStatus.text " " newStatus.emoji "{enter}")
+    SendInput("/status " . newStatus.text . " " . newStatus.emoji . "{enter}")
   }
 
 

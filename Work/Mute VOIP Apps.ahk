@@ -97,7 +97,7 @@ GetTeamsMeetingInfo() {
   
   loop aid.Length {
     thisId := aid[A_Index]
-    title := WinGetTitle("ahk_id " thisId)
+    title := WinGetTitle("ahk_id " . thisId)
     
     if (title != "Microsoft Teams Notification") && (title != "") && (!RegExMatch(title, "\[QSP\]$")) {
       return { windowId: thisId, keystrokesToMute: "^+m" }

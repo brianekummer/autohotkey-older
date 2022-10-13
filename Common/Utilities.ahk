@@ -116,7 +116,7 @@ AlwaysRunApp(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10) {
  */
 ActivateWindowByIdAndSendKeystroke(windowId, keystroke) {
   if (windowId) {
-    WinActivate("ahk_id " windowId)
+    WinActivate("ahk_id " . windowId)
     Sleep(150)
     SendInput(keystroke)
     return True
@@ -157,7 +157,7 @@ GetSelectedTextUsingClipboard() {
  */
 RunWaitOne(command) {
   shell := ComObject("WScript.Shell")           ; WshShell object: http://msdn.microsoft.com/en-us/library/aew9yb99
-  exec := shell.Exec(A_ComSpec " /C " command)  ; Execute a single command via cmd.exe
+  exec := shell.Exec(A_ComSpec . " /C " . command)  ; Execute a single command via cmd.exe
   
   return exec.StdOut.ReadAll()                  ; Read and return the command's output 
 }
@@ -176,7 +176,7 @@ RunWaitOne(command) {
   clipSaved := ClipboardAll()	   ; Save the entire clipboard
   A_Clipboard := ""
 
-	RunWait(command " | clip", , "hide")
+	RunWait(command . " | clip", , "hide")
   output := A_Clipboard
 	
 	Sleep(250)                     ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
@@ -238,9 +238,9 @@ ShellRun(prms*) {
  */
 AmNearWifiNetwork(wifiNetworks) {
   nearWifiNetwork := False
-  wifiNetworksPattern := "i)" wifiNetworks
+  wifiNetworksPattern := "i)" . wifiNetworks
 
-	allNetworks := RunWaitHidden(A_ComSpec " /c netsh wlan show networks")
+	allNetworks := RunWaitHidden(A_ComSpec . " /c netsh wlan show networks")
 
   pos := 1
   match := [""]
@@ -277,12 +277,12 @@ AmConnectedToInternet(flag := 0x40) {
  */
 UriEncode(str)
 {
-  ( obj := ComObject("HTMLfile") ).write('<p>/</p><script>document.getElementsByTagName("p")[0].innerHTML=encodeURI("' str '");</script>')
+  ( obj := ComObject("HTMLfile") ).write('<p>/</p><script>document.getElementsByTagName("p")[0].innerHTML=encodeURI("' . str . '");</script>')
   return obj.getElementsByTagName("p")[0].innerHTML
 }
 UriDecode(str)
 {
-  ( obj := ComObject("HTMLfile") ).write('<p>/</p><script>document.getElementsByTagName("p")[0].innerHTML=decodeURI("' str '");</script>')
+  ( obj := ComObject("HTMLfile") ).write('<p>/</p><script>document.getElementsByTagName("p")[0].innerHTML=decodeURI("' . str . '");</script>')
   return obj.getElementsByTagName("p")[0].innerHTML
 }
 

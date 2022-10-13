@@ -48,19 +48,19 @@ ConvertCase() {
       str := Format("{:T}", A_Clipboard)
       static tCase := "(?:A(?:nd?|s|t)?|B(?:ut|y)|For|In|Nor|O(?:f|n|r)|Per|T(?:he|o))"
       loop 3	   ; Must run at least twice to overcome potential misses from using '\K'
-        str := RegExReplace(str, "s)[^\.\?\!]\h+\K\b" tCase "\b(?![\.\?\!])", "$L0")
+        str := RegExReplace(str, "s)[^\.\?\!]\h+\K\b" . tCase . "\b(?![\.\?\!])", "$L0")
       A_Clipboard := str
       ToolTip("Title Case")
 
     default:
-      MsgBox("Error, cycleNumber is " cycleNumber)
+      MsgBox("Error, cycleNumber is " . cycleNumber)
       cycleNumber := 1
   }
 
   SetTimer(RemoveToolTip, -3000)
 
   len := Strlen(A_Clipboard)
-  SendInput("^v{left " len "}+{right " len "}")         ; Paste the changed text and select all the text we just updated
+  SendInput("^v{left " . len . "}+{right " . len . "}")         ; Paste the changed text and select all the text we just updated
   Sleep(250)                                            ; This seems to get rid of weird behavior
   A_Clipboard := clipSave                               ; Restore clipboard to original value
 

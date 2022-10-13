@@ -43,7 +43,7 @@
  */
 InitializeCommonGlobalVariables()
 Configuration.Work := {
-  UserEmailAddress: EnvGet("USERNAME") "@" EnvGet("USERDNSDOMAIN"),
+  UserEmailAddress: EnvGet("USERNAME") . "@" . EnvGet("USERDNSDOMAIN"),
   SourceCode: {
     Url: EnvGet("AHK_SOURCE_CODE_URL"),
     SchemaUrl: EnvGet("AHK_SOURCE_CODE_SCHEMA_URL"),
@@ -115,10 +115,10 @@ Volume_Mute::            ToggleMuteVOIPApps()
 
 /**
  *  Pop-up menu of identifiers
- *    ✦ =               Opens a menu of commonly used identifiers/constants. Selecting one outputs
- *                      that constant to the currently-active window.
+ *    ✦ =                Opens a menu of commonly used identifiers/constants. Selecting one outputs
+ *                       that constant to the currently-active window.
  */
- CapsLock & =:: IdentifiersMenu.Show()
+CapsLock & =::           IdentifiersMenu.Show()
 
 
 /**

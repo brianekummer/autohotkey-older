@@ -56,7 +56,7 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True) {
     ; TODO- This appears to work if Parsec is not running, but fails if it is already open
     if (!WinExist("ahk_exe parsecd.exe")) {
       MsgBox("Parsec is NOT running")
-      Run('"' A_StartMenu '\Programs\Parsec.lnk" peer_id=' Configuration.Work.ParsecPeerId)
+      Run('"' . A_StartMenu . '\Programs\Parsec.lnk" peer_id=' . Configuration.Work.ParsecPeerId)
       
       ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
       if (ErrorLevel) {
@@ -94,7 +94,7 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True) {
 GoogleSearch() {
   selectedText := GetSelectedTextUsingClipboard()
   selectedText := RegExReplace(RegExReplace(selectedText, "\r?\n", " "), "(^\s+|\s+$)")
-  RunOrActivateApp("- Google Chrome", "https://www.google.com/search?hl=en&q=" selectedText)
+  RunOrActivateApp("- Google Chrome", "https://www.google.com/search?hl=en&q=" . selectedText)
 }
 
 
@@ -108,7 +108,7 @@ RunOrActivateBrowser() {
   if (selectedText ~= "https?:\/\/") {
     AlwaysRunApp("- Google Chrome", selectedText)
   } else {
-    RunOrActivateApp("- Google Chrome", Configuration.WindowsProgramFilesFolder "\Google\Chrome\Application\chrome.exe")
+    RunOrActivateApp("- Google Chrome", Configuration.WindowsProgramFilesFolder . "\Google\Chrome\Application\chrome.exe")
   }
 }
 
@@ -124,7 +124,7 @@ RunOrActivateBrowser() {
  *  means it must be available for Home.ahk to compile, so I moved it into Common Functions.ahk.
  */
 RunOrActivateSpotify() {
-  RunOrActivateApp("ahk_exe Spotify.exe", A_StartMenu "\Programs\My Shortcuts\Spotify.lnk", False)
+  RunOrActivateApp("ahk_exe Spotify.exe", A_StartMenu . "\Programs\My Shortcuts\Spotify.lnk", False)
   FixCapsLockIfBroken()
 }
 
@@ -147,7 +147,7 @@ RunOrActivateSpotify() {
   selectedText := A_Clipboard
   Sleep(100)
   
-  RunOrActivateAppAsAdmin("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder "\Microsoft VS Code\Code.exe")
+  RunOrActivateAppAsAdmin("ahk_exe i)\\code\.exe$", Configuration.WindowsProgramFilesFolder . "\Microsoft VS Code\Code.exe")
 
   if (StrLen(selectedText) > 0) {
     ; There is selected text, so create a new file, paste the selected text into the new file, and format it using
@@ -184,11 +184,11 @@ VSCodeNewFile(fileContents) {
     "html",  "s).*<html>.*/.*>",
     "xml",   "s)^\s*<.*>.*/.*>",
     "json",  "s)^\s*\[?\{.*\:.*\,.*\}",
-    "sql",   "is)(" .
-               "(\b(create|alter)\b.*\b(function|procedure|view|index)\b.*\bas\s+begin\b)|" .
-               "(\bdrop\b.*\b(function|procedure|view|index)\b)|" .
-               "(\bselect\b.*\bfrom\b)" .
-             ")+"
+    "sql",   "is)("
+               . "(\b(create|alter)\b.*\b(function|procedure|view|index)\b.*\bas\s+begin\b)|"
+               . "(\bdrop\b.*\b(function|procedure|view|index)\b)|"
+               . "(\bselect\b.*\bfrom\b)"
+           . ")+"
   )
 
   ; Look to see if the selected text is something we know how to format
