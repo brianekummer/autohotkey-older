@@ -72,10 +72,19 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
   SW_SHOWMAXIMIZED := 3
 
   if (!WinExist(winTitle) || runEvenIfOpen) {
+    ; When starting an app, it is always better to pass a maximize flag instead of 
+    ; starting the app, doing a WinWait(), and then a WinMaximize()
     if (asAdminUser) {
       Run(whatToRun,, (maximizeWindow ? "max" : ""))
     } else {
       ShellRun(whatToRun,,,, (maximizeWindow ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL))
+    }
+
+    ; Windows doesn't always set focus to this new window, so we need to use WinActivate
+    WinWait(winTitle,, timeToWait)
+    if (WinExist(winTitle)) {
+      ; If the window now exists, activate it, else, give up
+      WinActivate(winTitle)
     }
 
   } else {
@@ -87,6 +96,7 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
   }   
 }
 
+/***** Run the app as admin user *****/
 RunOrActivateAppAsAdmin(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10) {
   RunOrActivateApp(winTitle, whatToRun, maximizeWindow, True, timeToWait)
 }
