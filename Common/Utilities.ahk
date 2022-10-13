@@ -68,22 +68,23 @@
  *  @param runEvenIfOpen    Run the app even if it's already open? True|False
  */
 RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False) {
+  SW_SHOWNORMAL := 0        ; https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
+  SW_SHOWMAXIMIZED := 3
+
   if (!WinExist(winTitle) || runEvenIfOpen) {
-    if asAdminUser {
-      Run(whatToRun)
+    if (asAdminUser) {
+      Run(whatToRun,, (maximizeWindow ? "max" : ""))
     } else {
-      ShellRun(whatToRun)
+      ShellRun(whatToRun,,,, (maximizeWindow ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL))
     }
 
-    WinWait(winTitle,, timeToWait)
-    WinActivate(winTitle)
   } else {
     WinActivate(winTitle)
-  }
 
-  if (maximizeWindow) {
-    WinMaximize(winTitle)
-  }
+    if (maximizeWindow) {
+      WinMaximize(winTitle)
+    }
+  }   
 }
 
 RunOrActivateAppAsAdmin(winTitle, whatToRun, maximizeWindow := True, timeToWait := 10) {
@@ -247,7 +248,7 @@ AmNearWifiNetwork(wifiNetworks) {
 
 
 /**
- *  Am I connected to a the internet?
+ *  Am I connected to the internet?
  *    https://www.autohotkey.com/board/topic/80587-how-to-find-internet-connection-status/ 
  * 
  *  @return                      Returns 1 if connected to internet, else returns 0

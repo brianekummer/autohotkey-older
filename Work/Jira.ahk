@@ -95,7 +95,7 @@ class Jira
 
       if (sprintNumber > this.DefaultSprint) {
 
-        if (MsgBox("Change the current sprint number from " this.DefaultSprint " to " sprintNumber "?", "Change Current Sprint Number", "YesNo Icon?") = "Yes") {
+        if (MsgBox("Change the current sprint number from " this.DefaultSprint " to " sprintNumber "?", "Change Jira Current Sprint Number", "YesNo Icon?") = "Yes") {
           ; Temporarily update the sprint number for the current instance of this script
           EnvSet("AHK_JIRA_DEFAULT_SPRINT", sprintNumber)
           this.DefaultSprint := sprintNumber
