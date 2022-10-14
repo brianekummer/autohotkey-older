@@ -11,7 +11,7 @@
  *  - Based on code by J. Scott Elblein (GeekDrop.com), modified by Brian Kummer
  *    https://geekdrop.com/content/super-handy-autohotkey-ahk-script-to-change-the-case-of-text-in-line-or-wrap-text-in-quotes
  *  - Code is noticeably faster by using SendInput for moving cursor
-  *  - For converting to title case, instead of using AutoHotkey's StringUpper/StringLower with the title option (which
+ *  - For converting to title case, instead of using AutoHotkey's StringUpper/StringLower with the title option (which
  *    capitalizes EVERY word, including articles, prepositions, etc), I'm using code from this thread that is more 
  *    accurate: https://www.autohotkey.com/boards/viewtopic.php?t=19036
  *  - I tried using my GetSelectedTextUsingClipboard() method to get the selected text, but it was unreliable and MUCH

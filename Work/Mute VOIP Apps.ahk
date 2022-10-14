@@ -38,9 +38,10 @@ ToggleMuteVOIPApps() {
  *    WinGet, callWindowIds, List, Slack call with .* \| \d+:\d\d
  *    windowId := callWindowIds1     ; Return 1st matching window
  *
- *  @return       If there's an active call, returns an object with the window id and keystrokes to mute, else returns ""
+ *  @return              If there's an active call, returns an object with the window id and keystrokes to mute,
+ *                       else returns ""
  */
- GetSlackCallInfo() {
+GetSlackCallInfo() {
   try {
     windowId := WinGetID("Slack call with .* \| \d+:\d\d")
     returnValue := { windowId: windowId, keystrokesToMute: "m" }
@@ -60,7 +61,8 @@ ToggleMuteVOIPApps() {
  *    WinGet, huddleWindowIds, List, (.* screen share)
  *    windowId := huddleWindowIds1    ; Return 1st matching window
  * 
- *  @return       If there's an active huddle, returns an object with the window id and keystrokes to mute, else returns ""
+ *  @return              If there's an active huddle, returns an object with the window id and keystrokes to mute, 
+ *                       else returns ""
  */
 GetSlackHuddleInfo() {
   try {
@@ -85,7 +87,8 @@ GetSlackHuddleInfo() {
  *    - I tried to simplify the logic using a single regex, but doing NOTs in regex is igly, and excluding the
  *      null title made this very confusing.  This code is MUCH simpler to understand.
  *
- *  @return       If there's an active meeting, returns an object with the window id and keystrokes to mute, else returns ""
+ *  @return              If there's an active meeting, returns an object with the window id and keystrokes to mute, 
+ *                       else returns ""
  */
 GetTeamsMeetingInfo() {
   oid := WinGetList("ahk_exe Teams.exe",,,)
@@ -111,7 +114,8 @@ GetTeamsMeetingInfo() {
 /**
  *  Gets the window id of the active Zoom meeting, if there is one
  *  
- *  @return       If there's an active meeting, returns an object with the window id and keystrokes to mute, else returns ""
+ *  @return              If there's an active meeting, returns an object with the window id and keystrokes to mute,
+ *                       else returns ""
  */
 GetZoomMeetingInfo() {
   try {
@@ -131,7 +135,8 @@ GetZoomMeetingInfo() {
  *  This does NOT search through all the open Chrome tabs, but if the Meet is the active tab in any instance of 
  *  Chrome, then this code finds it.
  * 
- *  @return       If there's an active meet, returns an object with the window id and keystrokes to mute, else returns ""
+ *  @return              If there's an active meet, returns an object with the window id and keystrokes to mute, 
+ *                       else returns ""
  */
 GetGoogleMeetInfo() {
   try {

@@ -40,7 +40,7 @@
  *           event log for details:  
  *             Applications and Services Logs => Microsoft => Windows => TaskScheduler => Operational
  */
- VerifyRunningAsAdmin() {
+VerifyRunningAsAdmin() {
   if (! A_IsAdmin) {
     MsgBox("This script must be run as administrator. See comments in function VerifyRunningAsAdmin() for tips on how to accomplish this.", "Must Run as Admin", "OK Iconx")
     ExitApp()
@@ -131,7 +131,7 @@ ActivateWindowByIdAndSendKeystroke(windowId, keystroke) {
  *  current contents.
  *  
  *  @return                      The text that was selected when this function was called
-*/
+ */
 GetSelectedTextUsingClipboard() {
   selectedText := ""
   ClipSaved := A_Clipboard  
@@ -171,7 +171,7 @@ RunWaitOne(command) {
  *  @param command               The command to run
  *  @return                      The standard output from running command
  */
- RunWaitHidden(command) {
+RunWaitHidden(command) {
 	Sleep(250)                     ; KUMMER TRYING THIS TO PREVENT ERRORS READING FROM CLIPBOARD
   clipSaved := ClipboardAll()	   ; Save the entire clipboard
   A_Clipboard := ""

@@ -135,7 +135,7 @@ RunOrActivateSpotify() {
  *  Run or activate VS Code. If there is selected text, and it is a format we know, then create a new file,
  *  insert the selected text, and format it using the default formatter for that file type
  */
- RunOrActivateVSCode() {
+RunOrActivateVSCode() {
   ; Save the selected text into the clipboard, based on code in Utilities.GetSelectedTextUsingClipboard().
   ; Later, in VSCodeNewFile(), we'll paste the clipboard into the new file because, for large amounts of text, that's 
   ; much faster than SendInput(selectedText)

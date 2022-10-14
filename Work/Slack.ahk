@@ -127,7 +127,7 @@ class Slack {
    * 
    *  @param shortcut            The shortcut key to send to the Slack app after it is run or activated
    */
-   RunOrActivateSlack(shortcut := "") {
+  RunOrActivateSlack(shortcut := "") {
     RunOrActivateApp("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder . "\Slack\Slack.exe")
     if (shortcut != "") {
       SendInput(shortcut)
@@ -280,27 +280,27 @@ class Slack {
   }
 
 
-/**
- *  Calculate when I want my playing status to automatically expire
- *
- *  @param expirationTime        Expiration time, such as "030000" for 3:00 am
- *  @return                      Returns expiration time as Unix timestamp
- */
-CalculatePlayingExpirationTime(expirationTime) {
-  expirationDateTimeLocal := FormatTime(, "yyyyMMdd") expirationTime
+  /**
+   *  Calculate when I want my playing status to automatically expire
+   *
+   *  @param expirationTime        Expiration time, such as "030000" for 3:00 am
+   *  @return                      Returns expiration time as Unix timestamp
+   */
+  CalculatePlayingExpirationTime(expirationTime) {
+    expirationDateTimeLocal := FormatTime(, "yyyyMMdd") expirationTime
 
-  if ((A_Hour "0000") >= expirationTime) {
-    ; We're already past the expiration time, so will expire tomorrow
-    expirationDateTimeLocal := DateAdd(expirationDateTimeLocal, 1, "day") 
+    if ((A_Hour "0000") >= expirationTime) {
+      ; We're already past the expiration time, so will expire tomorrow
+      expirationDateTimeLocal := DateAdd(expirationDateTimeLocal, 1, "day") 
+    }
+
+    ; Convert to UTC, assumes negative UTC offset (US/Canada/etc)
+    utcOffsetInHours := DateDiff(A_NowUTC, A_Now, "hours")
+    expirationDateTimeUtc := DateAdd(expirationDateTimeLocal, utcOffsetInHours, "hours")
+
+    ; Return unix timestamp
+    return ConvertDateTimeToUnixTimestamp(expirationDateTimeUtc) 
   }
-
-  ; Convert to UTC, assumes negative UTC offset (US/Canada/etc)
-  utcOffsetInHours := DateDiff(A_NowUTC, A_Now, "hours")
-  expirationDateTimeUtc := DateAdd(expirationDateTimeLocal, utcOffsetInHours, "hours")
-
-  ; Return unix timestamp
-  return ConvertDateTimeToUnixTimestamp(expirationDateTimeUtc) 
-}
 
   
 
