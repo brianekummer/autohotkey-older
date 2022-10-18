@@ -173,44 +173,73 @@ RunOrActivateVSCode() {
  *  @param fileContents            The text to insert into the new file
  */
 VSCodeNewFile(fileContents) {
-  ; List the languages we recognize and a regular expression to recognize that language
-  ;   - The order of these matters. Xml also matches Html, and some Html with some JavaScript might match 
+  ; List the formats we recognize, a regular expression to recognize that format, and either 
+  ; a "language" whose formatter we should use, or a "command" to execute that will format the 
+  ; document.
+  ;   - The order of these matters. Xml also matches html, and html with some JavaScript could match 
   ;     the Json regex.
   ;   - Identifying SQL is complex. As a rough guess, look for any one of the following:
   ;       CREATE|ALTER...FUNCTION|PROCEDURE|VIEW|INDEX...AS BEGIN
   ;       DROP...FUNCTION|PROCEDURE|VIEW|INDEX
   ;       SELECT...FROM
-  languageRegexes := Map(
-    "html",  "s).*<html>.*/.*>",
-    "xml",   "s)^\s*<.*>.*/.*>",
-    "json",  "s)^\s*\[?\{.*\:.*\,.*\}",
-    "sql",   "is)("
-               . "(\b(create|alter)\b.*\b(function|procedure|view|index)\b.*\bas\s+begin\b)|"
-               . "(\bdrop\b.*\b(function|procedure|view|index)\b)|"
-               . "(\bselect\b.*\bfrom\b)"
-           . ")+"
-  )
+  knownFormats := [
+    {
+      name:     "html",                       ; VSC Extension: "HTML formatter" by Nikolaos Georgiou
+      regex:    "s).*<html>.*/.*>",
+      language: "html"
+    }, 
+    {
+      name:     "xml",                        ; VSC Extension: "XML Tools" by Josh Johnson
+      regex:    "s)^\s*<.*>.*/.*>",
+      language: "xml"
+    },
+    {
+      name:     "json",                       ; Built-in formatter?
+      regex:    "s)^\s*\[?\{.*\:.*\,.*\}",
+      language: "json"
+    },
+    {
+      name:     "sql",                        ; VSC Extension: "SQL Formatter" by adpyke
+      regex:    "is)("
+                . "(\b(create|alter)\b.*\b(function|procedure|view|index)\b.*\bas\s+begin\b)|"
+                . "(\bdrop\b.*\b(function|procedure|view|index)\b)|"
+                . "(\bselect\b.*\bfrom\b)"
+              . ")+",
+      language: "sql"
+    },
+    {
+      name:     "stacktrace",                 ; VSC Extension: "stacktrace-formatter" by polston
+      regex:    "\bat.*\(.*\) in .*:line",
+      command:  "Format Stack Trace"
+    }
+  ]
 
-  ; Look to see if the selected text is something we know how to format
-  for language, regex in languageRegexes {
-    if (RegExMatch(fileContents, regex)) {
-      ; YES- the selected text is "language"
+  for format in knownFormats {
+    if (RegExMatch(fileContents, format.regex)) {
+      ; YES- the format of the selected text is known
 
       ; Create a new document and paste in the selected text
       SendInput("^n")
       SendInput("^v")
       Sleep(1000)
+      
+      if (format.HasProp("language")) {
+        ; Set the language for the document, then format the document using the default formatter
+        SendInput("^{k}m")
+        Sleep(250)
+        SendInput(format.language . "{Enter}")
+        Sleep(1500)
 
-      ; Set the language in VS Code
-      SendInput("^{k}m")
-      Sleep(250)
-      SendInput(language "{Enter}")
-      Sleep(1500)
+        SendInput("+!{f}")
+ 
+      } else if (StrLen(format.command) > 0) {
+        ; Open the command palette, type the command, and press Enter
+        SendInput("^+p")
+        Sleep(250)
+        SendInput(format.command . "{Enter}")
+      }
 
-      ; Format the file using the language's default formatter
-      SendInput("+!{f}")
-
-      ; Scroll back to the start of the file
+      ; Scroll back to the start of the document
       Sleep(250)
       SendInput("^{Home}")
 

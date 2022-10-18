@@ -108,7 +108,7 @@ CapsLock & t::           RunOrActivateAppAsAdmin("Cmder", "C:\tools\Cmder\Cmder.
 
 /**
  *  Visual Studio Code
- *    ✦ v                Run or activate VS Code. If there is selected text that is a know file type,
+ *    ✦ v                Run or activate VS Code. If there is selected text that is a known file type,
  *                       then create a new file, paste in the selected text, then format it
  *
  *    ^ mousewheel       Decrease/increase font size

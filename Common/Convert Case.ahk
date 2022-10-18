@@ -60,7 +60,7 @@ ConvertCase() {
   SetTimer(RemoveToolTip, -3000)
 
   len := Strlen(A_Clipboard)
-  SendInput("^v{left " . len . "}+{right " . len . "}")         ; Paste the changed text and select all the text we just updated
+  SendInput("^v{left " . len . "}+{right " . len . "}") ; Paste the changed text and select all the text we just updated
   Sleep(250)                                            ; This seems to get rid of weird behavior
   A_Clipboard := clipSave                               ; Restore clipboard to original value
 

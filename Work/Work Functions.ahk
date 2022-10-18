@@ -65,7 +65,7 @@ SlackStatus_BeRightBack() {
 
 
 /**
- *  Sets my status to either lunch or dinner, depending on the current time
+ *  Sets my Slack status to either lunch or dinner, depending on the current time
  * 
  *  If I'm working at home, then turn off my smart devices in my office
  * 

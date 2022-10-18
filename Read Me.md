@@ -160,6 +160,12 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 
 ## To Do's
 ### Definitely Do These Things
+- Look into formatting .NET exceptions and stack traces in VS Code
+    - extension stacktrace-formatter looks promising/decent. BUT it does not have a file type, must use
+      command pallete and "Format Stack Trace"
+        - is there a somewhat standard file extension I can use? not sure how that would help...
+    - this website is great, but doesn't help me: https://elmah.io/tools/stack-trace-formatter/
+    - This isn't bad either: https://staxmanade.com/ExceptionMessageBeautifier/
 - Other automation ideas
     - CONSIDER a hotkey for SQL Server Mngt Studio that inserts "SELECT TOP * FROM LOG..." command
     - MORE COMPLEX

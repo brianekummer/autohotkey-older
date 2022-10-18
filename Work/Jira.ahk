@@ -41,10 +41,10 @@ class Jira
 
   /**
    *  Jira
-   *    - If the selected text is the url to a Jira sprint, then parse out the
+   *    - If the selected text is the url to a Jira sprint board, then parse out the
    *      story number and set it to be our current sprint number
    *    - If the selected text looks like a Jira story number, then open that story
-   *    - Else, then open the current sprint board
+   *    - Else, open the current sprint board
    */
   OpenJira() {
     openSprintBoard := True
@@ -55,7 +55,7 @@ class Jira
       this.SaveNewSprintNumber(selectedText)
       openSprintBoard := False
       
-    } else if (StrLen(selectedText) > 0) {      ;else if (GetKeyState("Ctrl")) {
+    } else if (StrLen(selectedText) > 0) {
       ; Try to find a specific story to open
       storyNumber := this.FindStoryNumber(selectedText)
 
