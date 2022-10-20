@@ -23,14 +23,12 @@
 ✦ c                   Windows (AHK)    Calendar
 ✦ g                   Windows (AHK)    Google search for selected text
 ✦ i                   Windows (AHK)    Inbox
-
-
-
 ✦ j                   Windows (AHK)    JIRA
                                           - If the selected text is a Jira sprint board's url, parse out and save the sprint number
                                           - If the selected text looks like a Jira story number, then open that story
                                           - If a Git Bash window has a window title that looks like a Jira story number, then open that story
                                           - Last option is to open the current sprint board
+✦ k                   Windows (AHK)    Slack
 ✦ m                   Windows (AHK)    Music/Spotify
 ✦ p                   Windows (AHK)    Parsec/Personal computer
 ✦ s                   Windows (AHK)    Source code- dashboard/overview
@@ -160,12 +158,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 
 ## To Do's
 ### Definitely Do These Things
-- Look into formatting .NET exceptions and stack traces in VS Code
-    - extension stacktrace-formatter looks promising/decent. BUT it does not have a file type, must use
-      command pallete and "Format Stack Trace"
-        - is there a somewhat standard file extension I can use? not sure how that would help...
-    - this website is great, but doesn't help me: https://elmah.io/tools/stack-trace-formatter/
-    - This isn't bad either: https://staxmanade.com/ExceptionMessageBeautifier/
 - Other automation ideas
     - CONSIDER a hotkey for SQL Server Mngt Studio that inserts "SELECT TOP * FROM LOG..." command
     - MORE COMPLEX

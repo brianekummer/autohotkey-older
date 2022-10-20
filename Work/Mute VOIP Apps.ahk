@@ -84,7 +84,7 @@ GetSlackHuddleInfo() {
  *    - Make sure title is not the notification
  *    - The screen sharing window uses null title, so make sure that the window does not have a null title
  *    - I have no idea why other window(s?) end with "[QSP]", but the meeting window does not (as of Oct 2021)
- *    - I tried to simplify the logic using a single regex, but doing NOTs in regex is igly, and excluding the
+ *    - I tried to simplify the logic using a single regex, but doing NOTs in regex is ugly, and excluding the
  *      null title made this very confusing.  This code is MUCH simpler to understand.
  *
  *  @return              If there's an active meeting, returns an object with the window id and keystrokes to mute, 

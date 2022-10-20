@@ -116,11 +116,11 @@ CreateSourceCodeMenu() {
 /**
  *  The handler for the source code pop-up menu
  * 
- *  @param itemName                The name/texdt of the menu item
+ *  @param itemName                The name/text of the menu item
  */
 SourceCodeMenuHandler(itemName, *) {
   clipboard := A_Clipboard
-  selectedText := GetSelectedTextUsingClipboard()
+  selectedText := Rtrim(GetSelectedTextUsingClipboard())
 
   if (itemName ~= "Code") {
     ; More often than not, I want to search for the selected text as a phrase, instead 
@@ -131,9 +131,9 @@ SourceCodeMenuHandler(itemName, *) {
     AlwaysRunApp("Search — Bitbucket", Configuration.Work.SourceCode.SearchCodeUrl . searchCriteria)
 
   } else if (itemName ~= "Repositories") {
-    ; Because I expect to often use this from within a terminate window, which doesn't 
-    ; return the selected text, so instead, I'll copy the text to the clipboard and THEN
-    ; initiate this hotkey.
+    ; I expect to often use this from within a terminate window, which doesn't return
+    ; the selected text, so instead, I'll copy the text to the clipboard and THEN initiate
+    ; this hotkey.
     if (StrLen(selectedText) = 0) {
       selectedText := clipboard
     }
@@ -218,7 +218,7 @@ RunOrActivateOutlook(shortcut := "") {
  *  I'd love to get this working asynchronously, so I could pound the key a couple of times instead of 
  *  having to wait for each one.
  *    - This does not work
- *       ShellRun("C:\Python39\python.exe c:\users\brian-kummer\Personal\Code\git\home-automation\home_automation.py %command%")
+ *        ShellRun("C:\Python39\python.exe c:\users\brian-kummer\Personal\Code\git\home-automation\home_automation.py %command%")
  *    - Try running python from within Git Bash (skip ha.sh), could add "&" to end of command to run in
  *      background- this delays, but doesn't work
  *        Run, %ComSpec% /c ""C:\Program Files\Git\git-bash.exe" --hide c:\users\brian-kummer\Personal\Code\git\home-automation\ha.sh %command% && sleep 10 &",, Hide

@@ -165,7 +165,7 @@ RunOrActivateVSCode() {
  *  Optionally, create a new document in VSCode
  * 
  *  If the provided fileContents is a known file type, then create a new VS Code file, insert the provided contents,
- *  and format it using the default formatter
+ *  and format it
  *
  *  ASSUMES fileContents is still in the clipboard, because it is much faster to paste the clipboard than to
  *  use SendInput() for large amounts of text
