@@ -82,7 +82,8 @@ class Jira
 
 
   /**
-   *  Possibly save the sprint number parsed from this url
+   *  If the selected text is the url of a Jira sprint, then save the sprint number
+   *  in our environment variable.
    *  
    *  @param selectedText       The selected text
    *  @return                   Was the sprint number saved? True/False

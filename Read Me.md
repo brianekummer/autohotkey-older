@@ -197,7 +197,7 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 ## Future Ideas
 - Any use for text-to-speech? ComObject("SAPI.SpVoice").Speak("Speak this phrase")
 - Popup menus are useful- can I use them elsewhere?
-- GUIs in AHK v2 are easier- anythijng to do here?
+- GUIs in AHK v2 are easier- anything to do here?
 - Are timed tooltips useful somewhere?
 
 

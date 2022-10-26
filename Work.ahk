@@ -86,8 +86,8 @@ return
 /*******************************  Debugging, troubleshooting, and proof-of-concept work  *******************************/
 
 
-;AppsKey:: {
-;} 
+
+AppsKey:: FixCapsLockIfBroken()   ; Not sure this is always enough to fix my issues, but will try it
 
 
 
