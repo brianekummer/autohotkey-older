@@ -38,6 +38,19 @@ return
 
 
 
+/**
+ *  Notion
+ *    ✦ [                Toggle left sidebar
+ *    ^ mousewheel       Decrease/increase font size
+ */
+#HotIf WinActive("ahk_exe i)\\notion\.exe$", )
+  ^wheelup::              SendInput("^{+}")
+  ^wheeldown::            SendInput("^{-}")
+  CapsLock & [::          SendInput("^{\}")
+#HotIf
+
+
+
 
 /**
  *  Include all libraries, utilities, and other AutoHotkey scripts
