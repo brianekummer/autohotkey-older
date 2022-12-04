@@ -132,6 +132,8 @@ class Slack {
     if (shortcut != "") {
       SendInput(shortcut)
     }
+
+    CommonReturn()
   }
 
 
@@ -154,6 +156,8 @@ class Slack {
     } else {
       this.SetStatusAndPresence("remote", "auto")
     }
+
+    CommonReturn()
   }
 
   
@@ -168,8 +172,14 @@ class Slack {
     } else {
       this.SetStatusAndPresence("dinner", "away")
     }
+
+    CommonReturn()
   }
 
+
+  SetPresenceAway() {
+    this.SetPresence("away")
+  }
 
   
 
@@ -220,6 +230,8 @@ class Slack {
   SetStatusAndPresence(newStatusKey, newPresence := "", expiration := this.Statuses[newStatusKey].expiration) {
     this.SetStatus(this.Statuses[newStatusKey])
     this.SetPresence(newPresence)
+
+    CommonReturn()
   }
 
 
@@ -233,10 +245,14 @@ class Slack {
   SetSlackHomeStatusAndPresence(newStatusKey, newPresence := "", expiration := this.Statuses[newStatusKey].expiration) {
     this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[2]], expiration)
     this.SetPresence(newPresence, [this.Tokens[2]])
+
+    CommonReturn()
   }
   SetSlackWorkStatusAndPresence(newStatusKey, newPresence := "", expiration := this.Statuses[newStatusKey].expiration) {
     this.SetStatus(this.Statuses[newStatusKey], [this.Tokens[1]], expiration)
     this.SetPresence(newPresence, [this.Tokens[1]])
+
+    CommonReturn()
   }
   
 

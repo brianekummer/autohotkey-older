@@ -52,6 +52,7 @@ Configuration.Work := {
     SearchRepositoriesUrl: EnvGet("AHK_SOURCE_CODE_SEARCH_REPOSITORIES_URL")
   },
   ParsecPeerId: EnvGet("AHK_PARSEC_PEER_ID"),
+  HomeAutomationUrl: EnvGet("AHK_HA_SERVER_URL"),
   WifiNetworks: {
     Office: EnvGet("AHK_OFFICE_WIFI_NETWORKS"),
     Home: EnvGet("AHK_HOME_WIFI_NETWORKS")
@@ -70,12 +71,13 @@ global MyJira := Jira()
 global MySlack := Slack()
 MySlack.SetStatusBasedOnLocation()
 
-; Define the pop-up menu for accessing source code
+; Define the pop-up menus
 global SourceCodeMenu := Menu()
-CreateSourceCodeMenu()
-
+global PersonalMenu := Menu()
 global IdentifiersMenu := Menu()
 global identifiers := []
+CreateSourceCodeMenu()
+CreatePersonalMenu()
 CreateIdentifiersMenu()
 return
 
@@ -133,7 +135,7 @@ CapsLock & c::           RunOrActivateOutlook("^2")
  *  Google search
  *    ✦ g                Search for the selected text
  */
-  CapsLock & g::         GoogleSearch()
+CapsLock & g::           GoogleSearch()
 
 
 /**
@@ -190,23 +192,23 @@ CapsLock & j::           MyJira.OpenJira()
  *     ✦ ! w             Status: Working
  *                         - Sets Slack status to office/remote depending on my location
  */
- CapsLock & k::           MySlack.RunOrActivateSlack((GetKeyState("Ctrl") ? "^k" : ""))    
+CapsLock & k::            MySlack.RunOrActivateSlack((GetKeyState("Ctrl") ? "^k" : ""))    
 
- #HotIf WinActive("ahk_exe i)\\slack\.exe$", )
-   ^wheelup::             SendInput("^{=}")
-   ^wheeldown::           SendInput("^{-}")
-   CapsLock & [::         SendInput("^+{d}")
-   ^k::                   SendInput("^+{u}")
- #HotIf
+#HotIf WinActive("ahk_exe i)\\slack\.exe$", )
+  ^wheelup::              SendInput("^{=}")
+  ^wheeldown::            SendInput("^{-}")
+  CapsLock & [::          SendInput("^+{d}")
+  ^k::                    SendInput("^+{u}")
+#HotIf
  
- #HotIf GetKeyState("Alt")
-   CapsLock & b::         SlackStatus_BeRightBack()
-   CapsLock & c::         MySlack.SetStatusNone()
-   CapsLock & e::         SlackStatus_Eating(15)    ; Lunch is before 3:00pm/15:00
-   CapsLock & m::         MySlack.SetStatusMeeting()
-   CapsLock & p::         MySlack.SetStatusPlaying()
-   CapsLock & w::         MySlack.SetStatusWorking()
- #HotIf
+#HotIf GetKeyState("Alt")
+  CapsLock & b::          SlackStatus_BeRightBack()
+  CapsLock & c::          MySlack.SetStatusNone()
+  CapsLock & e::          SlackStatus_Eating(15)    ; Lunch is before 3:00pm/15:00
+  CapsLock & m::          MySlack.SetStatusMeeting()
+  CapsLock & p::          MySlack.SetStatusPlaying()
+  CapsLock & w::          MySlack.SetStatusWorking()
+#HotIf
  
  
 /**
@@ -225,7 +227,7 @@ CapsLock & m::           RunOrActivateSpotify()
  *  Personal computer using Parsec
  *    ✦ p                Connect to personal computer
  */
-CapsLock & p::           ConnectToPersonalComputer()
+CapsLock & p::           ConnectToPersonalComputer(GetKeyState("Ctrl"))
 
 
 /**
@@ -264,7 +266,7 @@ CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
  *    ✦ w                Open wiki page
  *    ✦ ^ w              Search the wiki for the selected text
  */
- CapsLock & w::           OpenWiki(GetKeyState("Ctrl"))
+CapsLock & w::           OpenWiki(GetKeyState("Ctrl"))
 
 
 /**
@@ -287,30 +289,50 @@ CapsLock & s::           OpenSourceCode(GetKeyState("Ctrl"))
  *   ✦ ^ +               Air cleaner: cycle between fan speeds
  *                       This is valid for vesync air cleaner, not Wyze plugs
  */
-CapsLock & NumpadAdd::   HomeAutomationCommand("officeac         toggle")     
-CapsLock & NumpadEnter:: HomeAutomationCommand("officefan        toggle")
+;CapsLock & NumpadAdd::   HomeAutomationCommand("officeac         toggle")     
+;CapsLock & NumpadEnter:: HomeAutomationCommand("officefan        toggle")
+;
+; Because ^NumLock produces key code of Pause, must do hot keys differently for minimum brightness for officelite
+;CapsLock & NumLock::     HomeAutomationCommand("officelite       brightness -")
+;CapsLock & Pause::       HomeAutomationCommand("officelite       brightness 1")
+;
+;CapsLock & NumpadDiv::   HomeAutomationCommand("officelite       toggle")
+;CapsLock & NumpadMult::  HomeAutomationCommand("officelite       brightness " (GetKeyState("Ctrl") ? "100" : "+"))
+;
+;CapsLock & Numpad7::     HomeAutomationCommand("officelitetop    brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
+;CapsLock & Numpad8::     HomeAutomationCommand("officelitetop    toggle")
+;CapsLock & Numpad9::     HomeAutomationCommand("officelitetop    brightness " (GetKeyState("Ctrl") ? "100" : "+"))
+;
+;CapsLock & Numpad4::     HomeAutomationCommand("officelitemiddle brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
+;CapsLock & Numpad5::     HomeAutomationCommand("officelitemiddle toggle")
+;CapsLock & Numpad6::     HomeAutomationCommand("officelitemiddle brightness " (GetKeyState("Ctrl") ? "100" : "+"))
+;
+;CapsLock & Numpad1::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
+;CapsLock & Numpad2::     HomeAutomationCommand("officelitebottom toggle")
+;CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "100" : "+"))
+
+
+CapsLock & NumpadAdd::   HomeAutomationCommand("officeac",         "toggle")     
+CapsLock & NumpadEnter:: HomeAutomationCommand("officefan",        "toggle")
 
 ; Because ^NumLock produces key code of Pause, must do hot keys differently for minimum brightness for officelite
-CapsLock & NumLock::     HomeAutomationCommand("officelite       brightness -")
-CapsLock & Pause::       HomeAutomationCommand("officelite       brightness 1")
+CapsLock & NumLock::     HomeAutomationCommand("officelite",       "brightness", "-")
+CapsLock & Pause::       HomeAutomationCommand("officelite",       "brightness", "1")
 
-CapsLock & NumpadDiv::   HomeAutomationCommand("officelite       toggle")
-CapsLock & NumpadMult::  HomeAutomationCommand("officelite       brightness " (GetKeyState("Ctrl") ? "100" : "+"))
+CapsLock & NumpadDiv::   HomeAutomationCommand("officelite",       "toggle")
+CapsLock & NumpadMult::  HomeAutomationCommand("officelite",       "brightness", (GetKeyState("Ctrl") ? "100" : "+"))
 
-CapsLock & Numpad7::     HomeAutomationCommand("officelitetop    brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
-CapsLock & Numpad8::     HomeAutomationCommand("officelitetop    toggle")
-CapsLock & Numpad9::     HomeAutomationCommand("officelitetop    brightness " (GetKeyState("Ctrl") ? "100" : "+"))
+CapsLock & Numpad7::     HomeAutomationCommand("officelitetop",    "brightness", (GetKeyState("Ctrl") ? "1"   : "-"))
+CapsLock & Numpad8::     HomeAutomationCommand("officelitetop",    "toggle")
+CapsLock & Numpad9::     HomeAutomationCommand("officelitetop",    "brightness", (GetKeyState("Ctrl") ? "100" : "+"))
 
-CapsLock & Numpad4::     HomeAutomationCommand("officelitemiddle brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
-CapsLock & Numpad5::     HomeAutomationCommand("officelitemiddle toggle")
-CapsLock & Numpad6::     HomeAutomationCommand("officelitemiddle brightness " (GetKeyState("Ctrl") ? "100" : "+"))
+CapsLock & Numpad4::     HomeAutomationCommand("officelitemiddle", "brightness", (GetKeyState("Ctrl") ? "1"   : "-"))
+CapsLock & Numpad5::     HomeAutomationCommand("officelitemiddle", "toggle")
+CapsLock & Numpad6::     HomeAutomationCommand("officelitemiddle", "brightness", (GetKeyState("Ctrl") ? "100" : "+"))
 
-CapsLock & Numpad1::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
-CapsLock & Numpad2::     HomeAutomationCommand("officelitebottom toggle")
-CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "100" : "+"))
-
-
-
+CapsLock & Numpad1::     HomeAutomationCommand("officelitebottom", "brightness", (GetKeyState("Ctrl") ? "1"   : "-"))
+CapsLock & Numpad2::     HomeAutomationCommand("officelitebottom", "toggle")
+CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom", "brightness", (GetKeyState("Ctrl") ? "100" : "+"))
 
 
 /**

@@ -8,27 +8,75 @@
 /**
  *  Connect to my personal computer
  */
- ConnectToPersonalComputer() {
+ CreatePersonalMenu() {
+  PersonalMenu.Add("Personal &Chrome", PersonalMenuHandler)
+  PersonalMenu.Add("&Start Workday", PersonalMenuHandler)
+  PersonalMenu.Add("&Done with Workday", PersonalMenuHandler)
+  PersonalMenu.Add()  ; Add a separator
+  PersonalMenu.Add("Cance&l", PersonalMenuHandler)
+}
+
+ConnectToPersonalComputer(showPopupMenu) {
+  if (showPopupMenu) {
+    PersonalMenu.Show()
+  
   ; TODO- This appears to work if Parsec is not running, but fails if it is already open
-  if (!WinExist("ahk_exe parsecd.exe")) {
-    ;msgbox Parsec is NOT running
-    Run('"' . A_StartMenu . '\Programs\Startup\Parsec.lnk" peer_id=' . Configuration.Work.ParsecPeerId)
-    
-    ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
-    if (ErrorLevel) {
-      MsgBox("WinWait timed out.")
-      return
-    }
   } else {
-    ;Msgbox Parsec IS running
-  
-    ; Is Parsec connected?
-    ; Looks like I need to use FindText to look for the Connect button: https://www.autohotkey.com/boards/viewtopic.php?p=167586#p167586
+    if (!WinExist("ahk_exe parsecd.exe")) {
+      ;msgbox Parsec is NOT running
+      Run('"' . A_StartMenu . '\Programs\Startup\Parsec.lnk" peer_id=' . Configuration.Work.ParsecPeerId)
     
-    WinActivate
-  }
+      ErrorLevel := WinWaitActive("ahk_exe parsecd.exe", , 5) , ErrorLevel := ErrorLevel = 0 ? 1 : 0
+      if (ErrorLevel) {
+        MsgBox("WinWait timed out.")
+        return
+      }
+    } else {
+      ;Msgbox Parsec IS running
   
-  WinMaximize("A")  ; Use the window found by WinExist|WinWaitActive
+      ; Is Parsec connected?
+      ; Looks like I need to use FindText to look for the Connect button: https://www.autohotkey.com/boards/viewtopic.php?p=167586#p167586
+    
+      WinActivate
+    }
+  
+    WinMaximize("A")  ; Use the window found by WinExist|WinWaitActive
+  }
+
+  CommonReturn()
+}
+
+
+/**
+ *  The handler for the personal pop-up menu
+ * 
+ *  @param itemName                The name/text of the menu item
+ */
+PersonalMenuHandler(itemName, *) {
+  if (itemName ~= "Chrome") {
+    AlwaysRunApp("", "D:\Portable Apps\GoogleChromePortable\GoogleChromePortable.exe")
+
+  } else if (itemName ~= "Start") {
+    ; 1. Turn on air cleaner, top and bottom lights
+    ; 2. Set Slack status to working
+    HomeAutomationCommand("officeac,officelite,officelitetop,officelitebottom", "on")
+    MySlack.SetStatusWorking()
+
+  } else if (itemName ~= "Done") {
+    ; 1. Set Slack status of all my accounts to away
+    ; 2. Sleep for 30 seconds so I can leave the room
+    ; 3. Turn off all smart devices
+    ; 4. Put the computer to sleep
+    MySlack.SetPresenceAway()
+    Sleep(30000)
+    HomeAutomationCommand("officeac,officefan,officelite,officelitetop,officelitemiddle,officelitebottom", "off")
+    PutLaptopToSleep()
+
+  } else if (itemName ~= "Cance&l") {
+    SendInput("{Escape}")
+  }
+
+  CommonReturn()
 }
 
 
@@ -61,6 +109,8 @@ SlackStatus_BeRightBack() {
   if AmAtOffice() {
     LockWorkstation()
   }
+
+  CommonReturn()
 }
 
 
@@ -75,10 +125,12 @@ SlackStatus_Eating(lunchIsBeforeHour) {
   MySlack.SetStatusEating(lunchIsBeforeHour)
 
   if AmAtHome() {
-    HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom off")
+    HomeAutomationCommand("officelite,officelitetop,officelitemiddle,officelitebottom", "off")
   }
 
   LockWorkstation()
+
+  CommonReturn()
 }
 
 
@@ -145,6 +197,8 @@ SourceCodeMenuHandler(itemName, *) {
   } else if (itemName ~= "Cance&l") {
     SendInput("{Escape}")
   }
+
+  CommonReturn()
 }
 
 
@@ -182,6 +236,8 @@ IdentifiersMenuHandler(itemName, *) {
       break
     }
   }
+
+  CommonReturn()
 }
 
 
@@ -207,29 +263,30 @@ RunOrActivateOutlook(shortcut := "") {
   if (shortcut != "") {
     SendInput(shortcut)
   }
+
+  CommonReturn()
 }	
 
 
 /**
  *  Executes a home automation command
  * 
- *  This code works synchronously, so I don't love it, but at least it does not display a console box
- *
- *  I'd love to get this working asynchronously, so I could pound the key a couple of times instead of 
- *  having to wait for each one.
- *    - This does not work
- *        ShellRun("C:\Python39\python.exe c:\users\brian-kummer\Personal\Code\git\home-automation\home_automation.py %command%")
- *    - Try running python from within Git Bash (skip ha.sh), could add "&" to end of command to run in
- *      background- this delays, but doesn't work
- *        Run, %ComSpec% /c ""C:\Program Files\Git\git-bash.exe" --hide c:\users\brian-kummer\Personal\Code\git\home-automation\ha.sh %command% && sleep 10 &",, Hide
- *        Run, %ComSpec% /c ""C:\Program Files\Git\git-bash.exe" c:\users\brian-kummer\Personal\Code\git\home-automation\ha.sh %command% &",, Hide
- * 
- *  @param command                 The command to execute
+ *  @param deviceNames             The device(s) to act upon
+ *  @param action                  The action to take
+ *  @param actionValue             An optional parameter for some actions
  */
-HomeAutomationCommand(command) {
-  workingFolder := Configuration.MyPersonalFolder . "\Code\git\home-automation"
-  scriptName := workingFolder . "\home_automation.py"
-  Run(A_ComSpec . ' /c " "python" "' . scriptName . '" ' . command . ' " ', workingFolder, "Hide")
+HomeAutomationCommand(deviceNames, action, actionValue := "") {
+  webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
+  data := '"action": "' . action . '"'
+  if (actionValue  != "") {
+    data .= ', "action_value": "' . actionValue . '"'
+  }
+
+  webRequest.Open("PUT", Configuration.Work.HomeAutomationUrl . "/devices/" . deviceNames)
+  webRequest.SetRequestHeader("Content-Type", "application/json")
+  webRequest.Send("{" . data . "}")
+
+  CommonReturn()
 }
 
 

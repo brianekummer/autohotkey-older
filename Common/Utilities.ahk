@@ -93,7 +93,9 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
     if (maximizeWindow) {
       WinMaximize(winTitle)
     }
-  }   
+  }
+
+  CommonReturn()
 }
 
 /***** Run the app as admin user *****/
@@ -123,6 +125,8 @@ ActivateWindowByIdAndSendKeystroke(windowId, keystroke) {
   } else {
     return False
   }
+
+  CommonReturn()
 }
 
 
@@ -183,6 +187,8 @@ RunWaitHidden(command) {
   A_Clipboard := clipSaved       ; Restore the original clipboard. Note the use of Clipboard (not ClipboardAll).
   clipSaved := ""			           ; Free the memory in case the clipboard was very large
 
+  CommonReturn()
+
 	return output
 }
 
@@ -227,6 +233,8 @@ ShellRun(prms*) {
    
   ; IShellDispatch2.ShellExecute
   shell.ShellExecute(prms*)
+
+  CommonReturn()
 }
 
 
@@ -237,10 +245,12 @@ ShellRun(prms*) {
  *  @return                      True if am near any of the wifi networks, else False
  */
 AmNearWifiNetwork(wifiNetworks) {
+  ;msgbox "Checking if near wifi - " . wifiNetworks
   nearWifiNetwork := False
   wifiNetworksPattern := "i)" . wifiNetworks
 
 	allNetworks := RunWaitHidden(A_ComSpec . " /c netsh wlan show networks")
+  ;msgbox "Found these networks: " . allNetworks
 
   pos := 1
   match := [""]
@@ -253,6 +263,7 @@ AmNearWifiNetwork(wifiNetworks) {
     }
   }
 
+  ;msgbox "Returning " . nearWifiNetwork
 	return nearWifiNetwork
 }	
 
@@ -292,6 +303,8 @@ UriDecode(str)
  */
 LockWorkstation() {
   DllCall("user32.dll\LockWorkStation")
+
+  CommonReturn()
 }
 
 
@@ -303,4 +316,12 @@ LockWorkstation() {
  */
 ConvertDateTimeToUnixTimestamp(dateTimeInUtc) {
   return DateDiff(dateTimeInUtc, 19700101000000, 'seconds')
+}
+
+
+/**
+ *  Put the laptop to sleep
+ */
+PutLaptopToSleep() {
+  DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
 }

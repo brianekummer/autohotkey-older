@@ -85,6 +85,9 @@ SendKeystrokesToPersonalLaptop(keystrokes, activateFirst := True) {
   ; OLD STUFF I DON'T NEED
   ;OLD- ControlSend,, %keystrokes%, Parsec
   ;SendInput {Blind}%keystrokes%
+
+
+  CommonReturn()
 }
 
 
@@ -246,4 +249,12 @@ VSCodeNewFile(fileContents) {
       break
     }
   }
+}
+
+
+/**
+ *  We'll try this
+ */
+CommonReturn() {
+  FixCapsLockIfBroken()
 }

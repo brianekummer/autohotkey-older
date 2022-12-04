@@ -44,7 +44,7 @@ return
  *    ^ mousewheel       Decrease/increase font size
  */
 #HotIf WinActive("ahk_exe i)\\notion\.exe$", )
-  ^wheelup::              SendInput("^{+}")
+  ^wheelup::              SendInput("^{=}")
   ^wheeldown::            SendInput("^{-}")
   CapsLock & [::          SendInput("^{\}")
 #HotIf
