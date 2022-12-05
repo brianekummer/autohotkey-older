@@ -289,29 +289,6 @@ CapsLock & w::           OpenWiki(GetKeyState("Ctrl"))
  *   ✦ ^ +               Air cleaner: cycle between fan speeds
  *                       This is valid for vesync air cleaner, not Wyze plugs
  */
-;CapsLock & NumpadAdd::   HomeAutomationCommand("officeac         toggle")     
-;CapsLock & NumpadEnter:: HomeAutomationCommand("officefan        toggle")
-;
-; Because ^NumLock produces key code of Pause, must do hot keys differently for minimum brightness for officelite
-;CapsLock & NumLock::     HomeAutomationCommand("officelite       brightness -")
-;CapsLock & Pause::       HomeAutomationCommand("officelite       brightness 1")
-;
-;CapsLock & NumpadDiv::   HomeAutomationCommand("officelite       toggle")
-;CapsLock & NumpadMult::  HomeAutomationCommand("officelite       brightness " (GetKeyState("Ctrl") ? "100" : "+"))
-;
-;CapsLock & Numpad7::     HomeAutomationCommand("officelitetop    brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
-;CapsLock & Numpad8::     HomeAutomationCommand("officelitetop    toggle")
-;CapsLock & Numpad9::     HomeAutomationCommand("officelitetop    brightness " (GetKeyState("Ctrl") ? "100" : "+"))
-;
-;CapsLock & Numpad4::     HomeAutomationCommand("officelitemiddle brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
-;CapsLock & Numpad5::     HomeAutomationCommand("officelitemiddle toggle")
-;CapsLock & Numpad6::     HomeAutomationCommand("officelitemiddle brightness " (GetKeyState("Ctrl") ? "100" : "+"))
-;
-;CapsLock & Numpad1::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "1"   : "-"))
-;CapsLock & Numpad2::     HomeAutomationCommand("officelitebottom toggle")
-;CapsLock & Numpad3::     HomeAutomationCommand("officelitebottom brightness " (GetKeyState("Ctrl") ? "100" : "+"))
-
-
 CapsLock & NumpadAdd::   HomeAutomationCommand("officeac",         "toggle")     
 CapsLock & NumpadEnter:: HomeAutomationCommand("officefan",        "toggle")
 
