@@ -17,7 +17,21 @@
  */
 class Jira
 {
+
   /**
+   *  Functions to get/build window titles and urls for Jira stories and sprint boards
+   */
+   GetStoryWindowTitle(storyNumber)            => "\[" . storyNumber . "\].*Jira"
+   GetStoryUrl(storyNumber)                    => this.BaseUrl . "/browse/" . storyNumber
+
+   GetDefaultBoardWindowTitle()                => "Agile Board - Jira"
+   GetSprintBoardUrl(
+     rapidKey := this.DefaultRapidKey, 
+     projectKey := this.DefaultProjectKey, 
+     sprintNumber := this.DefaultSprintNumber) => this.BaseUrl . "/secure/RapidBoard.jspa?rapidView=" . rapidKey . "&projectKey=" . projectKey . "&sprint=" . sprintNumber
+
+
+   /**
    *  Constructor that initializes variables
    */
    __New() {
@@ -25,13 +39,11 @@ class Jira
     this.MyProjectKeys := EnvGet("AHK_JIRA_MY_PROJECT_KEYS")
     this.DefaultProjectKey := EnvGet("AHK_JIRA_DEFAULT_PROJECT_KEY")
     this.DefaultRapidKey := EnvGet("AHK_JIRA_DEFAULT_RAPID_KEY")
-    this.DefaultSprint := EnvGet("AHK_JIRA_DEFAULT_SPRINT")
+    this.DefaultSprintNumber := EnvGet("AHK_JIRA_DEFAULT_SPRINT")
 
     this.RegexStoryNumberWithProject := "i)\b(" . this.MyProjectKeys . ")([-_ ]|( - ))?\d{1,5}\b"
     this.RegexStoryNumberWithoutProject := "\b\d{1,5}\b"
   }
-  
-
 
 
 
@@ -47,27 +59,28 @@ class Jira
    *    - Else, open the current sprint board
    */
   OpenJira() {
-    openSprintBoard := True
+    openDefaultSprintBoard := True
     selectedText := GetSelectedTextUsingClipboard()
 
-    if (selectedText  ~= (this.BaseUrl . ".*sprint=\d+")) {
+    if (selectedText ~= (this.BaseUrl . ".*sprint=\d+")) {
       ; Parse the sprint number from the URL and save it
       this.SaveNewSprintNumber(selectedText)
-      openSprintBoard := False
+      openDefaultSprintBoard := False
       
     } else if (StrLen(selectedText) > 0) {
       ; Try to find a specific story to open
       storyNumber := this.FindStoryNumber(selectedText)
 
       if (StrLen(storyNumber) > 0) {
-        RunOrActivateApp("\[" . storyNumber . "\].*Jira", this.BuildStoryUrl(storyNumber))
-        openSprintBoard := False
+        this.OpenStory(storyNumber)
+        openDefaultSprintBoard := False
       }
     }
 
-    if (openSprintBoard) {
-      ; Either did not try to find a Jira story number, or did not, so open the default Jira board
-      RunOrActivateApp("Agile Board - Jira", this.BuildSprintBoardUrl(this.DefaultSprint))
+    if (openDefaultSprintBoard) {
+      ; Either did not try to find a Jira story number, or did not find one, 
+      ; so open the default sprint's board
+      this.OpenDefaultSprintBoard()
     }
   }
 
@@ -140,26 +153,22 @@ class Jira
     return storyNumber
   }
 
-
+  
   /**
-   *  Builds the url for a specific story
+   *  Opens a specific story
    * 
    *  @param storyNumber        The story number
-   *  @return                   The url for that story
    */
-  BuildStoryUrl(storyNumber) {
-    return this.BaseUrl . "/browse/" . storyNumber
+  OpenStory(storyNumber) {
+    RunOrActivateApp(this.GetStoryWindowTitle(storyNumber), this.GetStoryUrl(storyNumber))
   }
 
 
   /**
-   *  Builds the url for a specific sprint board
-   * 
-   *  @param sprintNumber       The sprint number
-   *  @return                   The url for that sprint board
+   *  Opens the default sprint board
    */
-  BuildSprintBoardUrl(sprintNumber) {
-    return this.BaseUrl . "/secure/RapidBoard.jspa?rapidView=" . this.DefaultRapidKey . "&projectKey=" . this.DefaultProjectKey . "&sprint=" . sprintNumber
+  OpenDefaultSprintBoard() {
+    RunOrActivateApp(this.GetDefaultBoardWindowTitle(), this.GetSprintBoardUrl())
   }
 
 
