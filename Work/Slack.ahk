@@ -28,6 +28,10 @@ class Slack {
    __New() {
     this.Tokens := StrSplit(EnvGet("AHK_SLACK_TOKENS"), "|")
 
+    this.SlackExe := Configuration.WindowsLocalAppDataFolder . "\Slack\Slack.exe"
+
+    this.PlayingExpirationTime := "030000"
+    this.StatusEmojiUnkown := "???"
     this.Statuses := Map(
       "none",      this.BuildStatus("", "|", 0),
       "meeting",   this.BuildStatus("SLACK_STATUS_MEETING",          "Meeting|:spiral_calendar_pad:", 0), 
@@ -39,6 +43,15 @@ class Slack {
       "brb",       this.BuildStatus("SLACK_STATUS_BRB",              "Be Right Back|:brb:", 0), 
       "playing",   this.BuildStatus("SLACK_STATUS_PLAYING",          "Playing|:8bit:", 0),
     )
+    this.Urls := {
+      Users: {
+        Profile: {
+          Get: "https://slack.com/api/users.profile.get",
+          Set: "https://slack.com/api/users.profile.set"
+        },
+        SetPresence: "https://slack.com/api/users.setPresence"
+      }
+    }
   }
   
 
@@ -58,9 +71,9 @@ class Slack {
    *  If I am on PTO, then don't change the status before the PTO status expires.
    */
   SetStatusBasedOnLocation() {
-    ; Get current Slack status (network errors are returned as emoji "???")
+    ; Get current Slack status (network errors are returned as emoji this.StatusEmojiUnkown)
     currentEmoji := this.GetStatusEmoji()
-    while (currentEmoji = "???") {
+    while (currentEmoji = this.StatusEmojiUnkown) {
       Sleep(30000)
       currentEmoji := this.GetStatusEmoji() 
     }
@@ -101,7 +114,7 @@ class Slack {
   GetStatusEmoji() {
     try {
       webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
-      webRequest.Open("GET", "https://slack.com/api/users.profile.get")
+      webRequest.Open("GET", this.Urls.Users.Profile.Get)
       webRequest.SetRequestHeader("Authorization", "Bearer " . this.Tokens[1])
       webRequest.Send()
       results := webRequest.ResponseText
@@ -115,7 +128,7 @@ class Slack {
       statusEmoji := RegExReplace(statusEmoji, 'i)(status_emoji|\"|,)')
       statusEmoji := RegExReplace(statusEmoji, "i)::", ":")
     } catch {
-      statusEmoji := "???"
+      statusEmoji := this.StatusEmojiUnkown
     }
 
     return statusEmoji
@@ -128,7 +141,7 @@ class Slack {
    *  @param shortcut            The shortcut key to send to the Slack app after it is run or activated
    */
   RunOrActivateSlack(shortcut := "") {
-    RunOrActivateApp("ahk_exe slack.exe", Configuration.WindowsLocalAppDataFolder . "\Slack\Slack.exe")
+    RunOrActivateApp("ahk_exe slack.exe", this.SlackExe)
     if (shortcut != "") {
       SendInput(shortcut)
     }
@@ -140,7 +153,7 @@ class Slack {
   /**
    *  Simple functions to set a specific status
    */
-  SetStatusPlaying()     => this.SetSlackHomeStatusAndPresence("playing", "auto", this.CalculatePlayingExpirationTime("030000"))
+  SetStatusPlaying()     => this.SetSlackHomeStatusAndPresence("playing", "auto", this.CalculatePlayingExpirationTime(this.PlayingExpirationTime))
   SetStatusNone()        => this.SetStatusAndPresence("none", "auto")
   SetStatusMeeting()     => this.SetStatusAndPresence("meeting", "auto")
   SetStatusBeRightBack() => this.SetStatusAndPresence("brb", "away")
@@ -268,7 +281,7 @@ class Slack {
     data := "profile={'status_text': '" . newStatus.text . "', 'status_emoji': '" . newStatus.emoji . "', 'status_expiration': " . expiration "}"
 
     for i, thisToken in tokens {
-      webRequest.Open("POST", "https://slack.com/api/users.profile.set")
+      webRequest.Open("POST", this.Urls.Users.Profile.Set)
       webRequest.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
       webRequest.SetRequestHeader("Authorization", "Bearer " . thisToken)
       webRequest.Send(data)
@@ -287,7 +300,7 @@ class Slack {
       webRequest := ComObject("WinHttp.WinHttpRequest.5.1")
 
       for i, thisToken in tokens {
-        webRequest.Open("POST", "https://slack.com/api/users.setPresence?presence=" . newPresence)
+        webRequest.Open("POST", this.Urls.Users.SetPresence . "?presence=" . newPresence)
         webRequest.SetRequestHeader("Content-Type", "application/application/json")
         webRequest.SetRequestHeader("Authorization", "Bearer " . thisToken)
         webRequest.Send("")
