@@ -79,17 +79,90 @@ global identifiers := []
 CreateSourceCodeMenu()
 CreatePersonalMenu()
 CreateIdentifiersMenu()
+
+
+
+;MyGui := Gui()
+;MyGui.Opt("+AlwaysOnTop +Caption +ToolWindow")  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
+;MyGui.BackColor := "EEAA99"  ; Can be any RGB color (it will be made transparent below).
+;MyGui.SetFont("s32")  ; Set a large font size (32-point).
+;CoordText := MyGui.Add("Text", "cLime", "XXXXX YYYYY")  ; XX & YY serve to auto-size the window.
+;; Make all pixels of this color transparent and make the text itself translucent (150):
+;WinSetTransColor(MyGui.BackColor " 150", MyGui)
+;SetTimer(UpdateOSD, 200)
+;UpdateOSD()  ; Make the first update immediate rather than waiting for the timer.
+;MyGui.Show("x0 y400 NoActivate")  ; NoActivate avoids deactivating the currently active window.
+
+;hwnd := WinExist("A")
+;DrawBorder(hwnd, 0x00FF00, 1)
+
+;TaskBar_SetAttr(GRADIENT := 1, "0xc1" BGR := "0B0BD7") ; Blue-green-red
+
 return
 
+;UpdateOSD(*)
+;{
+;    MouseGetPos &MouseX, &MouseY
+;    CoordText.Value := "X" MouseX ", Y" MouseY
+;}
+;DrawBorder(hwnd, color:=0xFF0000, enable:=1) {
+;  static DWMWA_BORDER_COLOR := 34
+;  static DWMWA_COLOR_DEFAULT	:= 0xFFFFFFFF
+;  R := (color & 0xFF0000) >> 16
+;  G := (color & 0xFF00) >> 8
+;  B := (color & 0xFF)
+;  color := (B << 16) | (G << 8) | R
+;  DllCall("dwmapi\DwmSetWindowAttribute", "ptr", hwnd, "int", DWMWA_BORDER_COLOR, "int*", enable ? color : DWMWA_COLOR_DEFAULT, "int", 60)
+;}
 
 
+
+
+/* Make the windows 10 taskbar translucent (blur) -----------------------------------------
+https://autohotkey.com/boards/viewtopic.php?f=6&t=26752
+https://raw.githubusercontent.com/jNizM/AHK_TaskBar_SetAttr/master/scr/TaskBar_SetAttr.ahk
+TaskBar_SetAttr(option, color)
+option : 0 = off
+         1 = gradient    (+color)
+         2 = transparent (+color)
+         3 = blur
+color  : ABGR (alpha | blue | green | red) 0xffd7a78f
+-------------------------------------------------------------------------------------------
+*/
+;TaskBar_SetAttr(accent_state := 0, gradient_color := "0x01000000") {
+;  Static init, hTrayWnd, ver := DllCall("GetVersion") & 0xff < 10, pad := A_PtrSize = 8 ? 4 : 0, WCA_ACCENT_POLICY := 19
+;  msgbox ver
+;  If !(init) {
+;   ;If (ver)
+;   ; Throw Exception("Minimum support client: Windows 10", -1)
+;   If !(hTrayWnd := DllCall("user32\FindWindow", "str", "Shell_TrayWnd", "ptr", 0, "ptr"))
+;    Throw Exception("Failed to get the handle", -1)
+;   init := 1
+;  }
+;  accent_size := VarSetCapacity(ACCENT_POLICY, 16, 0)
+;  NumPut((accent_state > 0 && accent_state < 4) ? accent_state : 0, ACCENT_POLICY, 0, "int")
+;  If (accent_state >= 1) && (accent_state <= 2) && (RegExMatch(gradient_color, "0x[[:xdigit:]]{8}"))
+;   NumPut(gradient_color, ACCENT_POLICY, 8, "int")
+;  VarSetCapacity(WINCOMPATTRDATA, 4 + pad + A_PtrSize + 4 + pad, 0)
+;  && NumPut(WCA_ACCENT_POLICY, WINCOMPATTRDATA, 0, "int")
+;  && NumPut(&ACCENT_POLICY, WINCOMPATTRDATA, 4 + pad, "ptr")
+;  && NumPut(accent_size, WINCOMPATTRDATA, 4 + pad + A_PtrSize, "uint")
+;  If !(DllCall("user32\SetWindowCompositionAttribute", "ptr", hTrayWnd, "ptr", &WINCOMPATTRDATA))
+;   Throw Exception("Failed to set transparency / blur", -1)
+;  Return true
+;}
 
 
 /*******************************  Debugging, troubleshooting, and proof-of-concept work  *******************************/
 
 
-
-AppsKey:: FixCapsLockIfBroken()   ; Not sure this is always enough to fix my issues, but will try it
+;AppsKey:: FixCapsLockIfBroken()   ; Not sure this is always enough to fix my issues, but will try it
+;AppsKey:: SoundBeep
+AppsKey:: {
+  MsgBox(MyJira.BuildStoryWindowTitle("IQTC-9999"))
+  MsgBox(MyJira.BuildStoryUrl("IQTC-9999"))
+  MsgBox(MyJira.BuildSprintBoardUrl())
+}
 
 
 

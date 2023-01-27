@@ -107,12 +107,12 @@ class Jira
     if (RegExMatch(selectedText, "(?<=sprint\=)\d+", &matches) != 0) {
       sprintNumber := matches[]
 
-      if (sprintNumber > this.DefaultSprint) {
+      if (sprintNumber > this.DefaultSprintNumber) {
 
-        if (MsgBox("Change the current sprint number from " . this.DefaultSprint . " to " . sprintNumber . "?", "Change Jira Current Sprint Number", "YesNo Icon?") = "Yes") {
+        if (MsgBox("Change the current sprint number from " . this.DefaultSprintNumber . " to " . sprintNumber . "?", "Change Jira Current Sprint Number", "YesNo Icon?") = "Yes") {
           ; Temporarily update the sprint number for the current instance of this script
           EnvSet("AHK_JIRA_DEFAULT_SPRINT", sprintNumber)
-          this.DefaultSprint := sprintNumber
+          this.DefaultSprintNumber := sprintNumber
 
           ; Permanently set the sprint number for the next time this script runs
           RegWrite(sprintNumber, "REG_SZ", "HKEY_CURRENT_USER\Environment", "AHK_JIRA_DEFAULT_SPRINT")
@@ -153,22 +153,40 @@ class Jira
     return storyNumber
   }
 
-  
+
+
+  TestOpenStory(storyNumber) {
+    Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "' . this.GetStoryWindowTitle(storyNumber) . '" "' . this.GetStoryUrl(storyNumber) . '" True False 10 False')
+  }
+
+ 
   /**
    *  Opens a specific story
    * 
    *  @param storyNumber        The story number
    */
   OpenStory(storyNumber) {
-    RunOrActivateApp(this.GetStoryWindowTitle(storyNumber), this.GetStoryUrl(storyNumber))
+    ; ORIGINAL CODE
+    ;RunOrActivateApp(this.GetStoryWindowTitle(storyNumber), this.GetStoryUrl(storyNumber))
+
+    ; NEW CODE, WORKS BETTER
+    Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "' . this.GetStoryWindowTitle(storyNumber) . '" "' . this.GetStoryUrl(storyNumber) . '" True False 10 False')
+
+    ; NEWEST CODE- IS THIS EVEN BETTER? DOESN'T COMPILE :(
+    ;brianfn := TestOpenStory.Bind(storyNumber)
+    ;SetTimer(brianfn, -1)
   }
+
+       
+
 
 
   /**
    *  Opens the default sprint board
    */
   OpenDefaultSprintBoard() {
-    RunOrActivateApp(this.GetDefaultBoardWindowTitle(), this.GetSprintBoardUrl())
+    ;RunOrActivateApp(this.GetDefaultBoardWindowTitle(), this.GetSprintBoardUrl())
+    Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "' . this.GetDefaultBoardWindowTitle() . '" "' . this.GetSprintBoardUrl() . '" True False 10 False')
   }
 
 

@@ -128,6 +128,10 @@ RunOrActivateBrowser() {
  */
 RunOrActivateSpotify() {
   RunOrActivateApp("ahk_exe Spotify.exe", A_StartMenu . "\Programs\My Shortcuts\Spotify.lnk", False)
+
+  ; TODO- This breaks CapsLock- not sure why
+  ;Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "ahk_exe Spotify.exe" "' . A_StartMenu . '\Programs\My Shortcuts\Spotify.lnk" False False 10 False')
+
   FixCapsLockIfBroken()
 }
 

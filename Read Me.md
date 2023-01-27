@@ -158,8 +158,25 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 
 ## To Do's
 ### Definitely Do These Things
+- Look to troubleshoot issue with CapsLock getting stuck. Almost CERTAINLY from using WinWait() in Utilities.RunOrActivateApp(). 
+  When machine is slow, searching for a web page a second time while the first time is still running seems like my likely cause.
+  Idea might be to replace WinWait() with a loop. Example from Mikeyww here: https://www.autohotkey.com/boards/viewtopic.php?t=86067
+    - Does this work with multiple at the same time? Or will threading fix this?
+- Use constants/variables more, such as hard-coded Jira URLs, etc.
+    - Can do this: x = Format("Var has the value {1}.", Var)
+    - programs
+        - `'"' . A_StartMenu . '\Programs\Parsec.lnk"`
+        - `Configuration.WindowsProgramFilesFolder . "\Google\Chrome\Application\chrome.exe"`
+        - `A_StartMenu . "\Programs\My Shortcuts\Spotify.lnk"`
+        - `Configuration.WindowsProgramFilesFolder . "\Microsoft VS Code\Code.exe"`
+        - `Configuration.WindowsProgramFilesFolder . "\Typora\Typora.exe"`
+        - `"C:\tools\Cmder\Cmder.exe"`
+    - hard-coded window titles
+        - `"Agile Board - Jira"`
+        - `"\[" . storyNumber . "\].*Jira"`
+    - 
+
 - Other automation ideas
-    - CONSIDER a hotkey for SQL Server Mngt Studio that inserts "SELECT TOP * FROM LOG..." command
     - MORE COMPLEX
         - Focusing/studying   : Most of this is in my old code: https://github.com/brianekummer/autohotkey/blob/master/My%20Automations.ahk
             - Should be able to do this in AHK GUI
@@ -175,8 +192,6 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
 ### Maybe Do These
 - Is there any use for AppsKey (context menu)?
 - GUIs are so good w/AHK, what can I do with it?
-- From my old automations: https://github.com/brianekummer/autohotkey-old/blob/master/My%20Automations.ahk
-    - WHAT KEYCODES?     - plain text paste
 - Other automation ideas
     - Visual Studio
         - Moved Solution Explorer to left side, pinned
@@ -188,10 +203,9 @@ XButton2              Windows (AHK)    Minimize app or close window/tab or close
         - Slack:
            ✦ ! f               Slack (AHK)      Status - Focusing - what to do on Windows??
         - VS Code - IF this is the editor I'm going to use
-        ~$^s                VS Code (AHK)    After save AHK file, reload current script
-    - Standardize video keys for youtube and udemy
-    - ✦ numpadsub         Windows (AHK)       TEMP - price checks
-    - ✦ space             Windows (AHK)       Toggle dark mode for active application
+        ~$^s                VS Code (AHK)       After save AHK file, reload current script
+    - ✦ numpadsub         Windows (AHK)         TEMP - price checks
+    - ✦ space             Windows (AHK)        Toggle dark mode for active application
 
 
 ## Future Ideas

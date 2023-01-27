@@ -90,7 +90,10 @@ CapsLock:: return
 #HotIf Configuration.IsWorkLaptop
   CapsLock & wheelup::     SendMediaKey("{Blind}{Volume_Up 1}")
   CapsLock & wheeldown::   SendMediaKey("{Blind}{Volume_Down 1}")
+  
+  ;CapsLock & LButton::     SendMediaKey("{Blind}{Media_Play_Pause}")
   CapsLock & LButton::     SendMediaKey("{Blind}{Media_Play_Pause}")
+
   CapsLock & RButton::     RunOrActivateSpotify()
   CapsLock & XButton1::    SendMediaKey("{Blind}{Media_Prev}")
   CapsLock & XButton2::    SendMediaKey("{Blind}{Media_Next}")
@@ -105,16 +108,27 @@ SendMediaKey(mediaKey) {
 /**
  *  Fix the CapsLock key if it is now broken
  *  
- *  Both of these commands fix my problem
- *    - SetCapsLockState("AlwaysOff")  ; Disable the CapsLock LED on my keyboard
- *    - Reload                         ; I don't like this because it loses static variables like those used by ConvertCase
- *
+ *  SetCapsLockState("AlwaysOff")  ;
+ *    - Disables the CapsLock LED on my keyboard
+ *    - OFTEN fixes my problem, but not always
+ * 
+ *  Reload
+ *    - I don't like this because it loses static variables like those used by ConvertCase
+ *    - It ALWAYS fixes my problem
+ *    - BUT, you cannot do it to exit every function or you end up with DOZENS of copies
+ *      of AHK running, and the system comes to a crawl.
+ * 
  *  Several options did not work for me
  *    - Send "{Blind}{CapsLock up}"
  *    - Send "{CapsLock up}"
+ * 
+ *  Does checking key state of CapsLock accurately determine if we need to do this? 
+ *  No, sometimes I still have problems.
  */
 FixCapsLockIfBroken() {
+  ; This looks like the best I can do :(
   if (GetKeyState("CapsLock")) {   ; Does it matter if I use "P", "T", or no 2nd param?
-    SetCapsLockState("AlwaysOff")  ; Disable the CapsLock LED on my keyboard
+  ;  SoundBeep  
+     SetCapsLockState("AlwaysOff")  ; Disable the CapsLock LED on my keyboard
   }
 }

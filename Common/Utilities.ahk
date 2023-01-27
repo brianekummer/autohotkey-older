@@ -80,12 +80,23 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
       ShellRun(whatToRun,,,, (maximizeWindow ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL))
     }
 
+    ; OLD CODE THAT HAS ISSUES WITH CONCURRENCY
     ; Windows doesn't always set focus to this new window, so we need to use WinActivate
     WinWait(winTitle,, timeToWait)
     if (WinExist(winTitle)) {
       ; If the window now exists, activate it, else, give up
       WinActivate(winTitle)
     }
+
+
+    ; I THINK THERE'S SOMETHING WRONG WITH THIS
+    ;waitedForSeconds := 0
+    ;While (WinWaitActive(winTitle,, 0.25) == 0 && waitedForSeconds <= timeToWait) {
+    ;  Sleep(250)
+    ;  waitedForSeconds += 0.5
+    ;}
+    ;WinActivate(winTitle)
+
 
   } else {
     WinActivate(winTitle)
@@ -95,7 +106,7 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
     }
   }
 
-  CommonReturn()
+  ;CommonReturn()
 }
 
 /***** Run the app as admin user *****/

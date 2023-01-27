@@ -165,7 +165,8 @@ class Slack {
    */
   SetStatusWorking() {
     if AmAtOffice() {
-      this.SetStatusAndPresence("office", "auto")
+      ;this.SetStatusAndPresence("office", "auto")
+      this.SetStatusAndPresence("none", "auto")
     } else {
       this.SetStatusAndPresence("remote", "auto")
     }
