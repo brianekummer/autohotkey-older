@@ -68,35 +68,16 @@ VerifyRunningAsAdmin() {
  *  @param runEvenIfOpen    Run the app even if it's already open? True|False
  */
 RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := False, timeToWait := 10, runEvenIfOpen := False) {
-  SW_SHOWNORMAL := 0        ; https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow
-  SW_SHOWMAXIMIZED := 3
-
   if (!WinExist(winTitle) || runEvenIfOpen) {
-    ; When starting an app, it is always better to pass a maximize flag instead of 
-    ; starting the app, doing a WinWait(), and then a WinMaximize()
-    if (asAdminUser) {
-      Run(whatToRun,, (maximizeWindow ? "max" : ""))
-    } else {
-      ShellRun(whatToRun,,,, (maximizeWindow ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL))
-    }
+    ; THE BEST WAY TO RUN THIS IN A SEPARATE THREAD is to break the contents of this IF block
+    ; into a separate script, since that's the only code that needs split out to be run as a 
+    ; separate process. 
+    ;
+    ; This prevents me from needing to make any changes to any code that calls this function.
+    ;
+    ; IS IT WORTH WRAPPING THIS IN A SetTimer ?? MAYBE??? CAN TRY IT IN HERE AND SEE
 
-    ; OLD CODE THAT HAS ISSUES WITH CONCURRENCY
-    ; Windows doesn't always set focus to this new window, so we need to use WinActivate
-    WinWait(winTitle,, timeToWait)
-    if (WinExist(winTitle)) {
-      ; If the window now exists, activate it, else, give up
-      WinActivate(winTitle)
-    }
-
-
-    ; I THINK THERE'S SOMETHING WRONG WITH THIS
-    ;waitedForSeconds := 0
-    ;While (WinWaitActive(winTitle,, 0.25) == 0 && waitedForSeconds <= timeToWait) {
-    ;  Sleep(250)
-    ;  waitedForSeconds += 0.5
-    ;}
-    ;WinActivate(winTitle)
-
+    Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "' . winTitle . '" "' . whatToRun . '" ' . maximizeWindow . ' ' . asAdminUser . ' ' . timeToWait)
 
   } else {
     WinActivate(winTitle)
@@ -106,6 +87,7 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
     }
   }
 
+  ; TODO- Is this a problem?
   ;CommonReturn()
 }
 
