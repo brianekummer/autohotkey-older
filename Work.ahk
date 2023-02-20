@@ -1,7 +1,7 @@
 ﻿/**
  *  My AutoHotkey Automations for Work
  *
- *  Ideally, this script should contain only hotkeys and hostrings. Any supporting code
+ *  Ideally, this script should contain only hotkeys and hotstrings. Any supporting code
  *  should be in a "xxxx Functions.ahk" script.
  * 
  *  Modifiers

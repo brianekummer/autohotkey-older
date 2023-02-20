@@ -76,9 +76,7 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
     ; This prevents me from needing to make any changes to any code that calls this function.
     ;
     ; IS IT WORTH WRAPPING THIS IN A SetTimer ?? MAYBE??? CAN TRY IT IN HERE AND SEE
-
-    Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "' . winTitle . '" "' . whatToRun . '" ' . maximizeWindow . ' ' . asAdminUser . ' ' . timeToWait)
-
+    Run('"' . A_AHKPATH . '" Common\RunApp.ahk "' . winTitle . '" "' . whatToRun . '" ' . maximizeWindow . ' ' . asAdminUser . ' ' . timeToWait)
   } else {
     WinActivate(winTitle)
 
@@ -88,7 +86,7 @@ RunOrActivateApp(winTitle, whatToRun, maximizeWindow := True, asAdminUser := Fal
   }
 
   ; TODO- Is this a problem?
-  ;CommonReturn()
+  CommonReturn()
 }
 
 /***** Run the app as admin user *****/

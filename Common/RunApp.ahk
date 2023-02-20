@@ -1,3 +1,21 @@
+/**
+ *  RunApp
+ * 
+ *  Run an application or website and wait for it to appear. Since this code makes
+ *  use of WinWait, it'd ideally be in it's own thread or process. So it was broken
+ *  out into a separate script that can be executed with Run, putting it in a 
+ *  separate process.
+ *  
+ *  Notes
+ *    - xxxxx
+ *
+ *  To Do List
+ *    - Is the call to CommonReturn() in ShellRun() a problem? Since this is running 
+ *      in a different process, it may not matter
+ *    - Can any improvements be made to the code that waits for the app to start?
+ */
+
+
 #Requires AutoHotkey v2.0-b      ; I've converted all my code to AHK v2.0+
 #SingleInstance FORCE            ; Skip invocation dialog box and silently replace previously executing instance of this script
 ;Persistent                       ; Prevents script from exiting automatically when its last thread completes, allowing it to stay running in an idle state
@@ -14,20 +32,6 @@ SetTitleMatchMode("RegEx")       ; Make windowing commands use regex
  *  This code executes when the script starts, so declare global variables and do initializations here
  */
 InitializeCommonGlobalVariables()
-
-  ; Want to run this by a timer so can return to the original caller ASAP so it can continue
-  ; I'm not sure if this helps or not. There are still times where pressing hotkey 2nd time 
-  ; doesn't work, and it just types the letter j. I wonder if moving the settimer into Jira.ahk 
-  ; will help solve or reduce this problem. Even if it doesn't, this is substantially better
-  ; than the old code that wouldn't work well.
-  ; 
-  ; But the old code wasn't THAT bad, because typically-
-  ;   1. press H+J to open a jira website, is running very slow
-  ;   2. press H+J to open diff jira website. Code for 1st one pauses while 2nd one runs,
-  ;      but web page for 1st is still loading.
-  ;   3. 2nd page loads and code finishes, goes back to first code, and page is already loaded
-  ; Problem really is that pause/resume apparently messes w/CapsLock status.
-
 
 
 ; Constants
@@ -79,6 +83,6 @@ ExitApp()
  *  ShellRun() is in Utilities.ahk and uses CommonRestore(), which is in Customize Windows.ahk,
  *  which contains many functions that use variables defined in Common Functions.ahk
  */
-#Include "%A_ScriptDir%\Common\Common Functions.ahk"
-#Include "%A_ScriptDir%\Common\Customize Windows.ahk"
-#Include "%A_ScriptDir%\\Common\Utilities.ahk"
+#Include "Common Functions.ahk"
+#Include "Customize Windows.ahk"
+#Include "Utilities.ahk"

@@ -119,7 +119,7 @@ RunOrActivateBrowser() {
 /**
  *  Runs or activates the Spotify app
  *
- *  Since this is a Microsoft Store app, I needed to add a shortcut to me Start menu so that I can
+ *  Since this is a Microsoft Store app, I needed to add a shortcut to my Start menu so that I can
  *  run the shortcut.  Since the window title changes, depending if something is playing or not, 
  *  I am using the filename to find the window.
  * 
@@ -129,10 +129,9 @@ RunOrActivateBrowser() {
 RunOrActivateSpotify() {
   RunOrActivateApp("ahk_exe Spotify.exe", A_StartMenu . "\Programs\My Shortcuts\Spotify.lnk", False)
 
-  ; TODO- This breaks CapsLock- not sure why
-  ;Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "ahk_exe Spotify.exe" "' . A_StartMenu . '\Programs\My Shortcuts\Spotify.lnk" False False 10 False')
-
-  FixCapsLockIfBroken()
+  ; FixCapsLockIfBroken() and CommonReturn() aren't working for me today- this is.
+  ; I wonder if doing "Reload" after every use of "RunOrActivateApp()" would be helpful or not...
+  Reload
 }
 
 

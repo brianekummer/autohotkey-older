@@ -153,12 +153,6 @@ class Jira
     return storyNumber
   }
 
-
-
-  TestOpenStory(storyNumber) {
-    Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "' . this.GetStoryWindowTitle(storyNumber) . '" "' . this.GetStoryUrl(storyNumber) . '" True False 10 False')
-  }
-
  
   /**
    *  Opens a specific story
@@ -166,27 +160,15 @@ class Jira
    *  @param storyNumber        The story number
    */
   OpenStory(storyNumber) {
-    ; ORIGINAL CODE
-    ;RunOrActivateApp(this.GetStoryWindowTitle(storyNumber), this.GetStoryUrl(storyNumber))
-
-    ; NEW CODE, WORKS BETTER
-    Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "' . this.GetStoryWindowTitle(storyNumber) . '" "' . this.GetStoryUrl(storyNumber) . '" True False 10 False')
-
-    ; NEWEST CODE- IS THIS EVEN BETTER? DOESN'T COMPILE :(
-    ;brianfn := TestOpenStory.Bind(storyNumber)
-    ;SetTimer(brianfn, -1)
+    RunOrActivateApp(this.GetStoryWindowTitle(storyNumber), this.GetStoryUrl(storyNumber))
   }
-
-       
-
 
 
   /**
    *  Opens the default sprint board
    */
   OpenDefaultSprintBoard() {
-    ;RunOrActivateApp(this.GetDefaultBoardWindowTitle(), this.GetSprintBoardUrl())
-    Run('"C:\Program Files\AutoHotkey\AutoHotkey64.exe" test-run.ahk "' . this.GetDefaultBoardWindowTitle() . '" "' . this.GetSprintBoardUrl() . '" True False 10 False')
+    RunOrActivateApp(this.GetDefaultBoardWindowTitle(), this.GetSprintBoardUrl())
   }
 
 
